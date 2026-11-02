@@ -313,6 +313,7 @@
   }
 
   // ---------------------------------------------------------------- Inhalte
+  function wrapTables(html) { return String(html).replace(/<table>/g, '<div class="table-scroll"><table>').replace(/<\/table>/g, "</table></div>"); }
   var KIND = { "Erklärung": "k-erklaerung", "Fachtext": "k-fachtext", "Merke": "k-merke", "Beispiel": "k-beispiel", "Gesetzestext": "k-gesetz", "Grafik": "k-grafik", "Schaubild": "k-grafik" };
   function renderBlock(b) {
     var lk = b.lk ? '<span class="badge badge-lk lk-tag">nur LK</span>' : "";
@@ -322,7 +323,7 @@
     if (b.t === "svg") inner = '<figure class="figure" style="margin:0">' + b.svg + (b.caption ? "<figcaption>" + b.caption + "</figcaption>" : "") + "</figure>";
     else if (b.t === "table") inner = '<div class="table-scroll"><table><thead><tr>' + b.kopf.map(function (k) { return "<th>" + k + "</th>"; }).join("") + "</tr></thead><tbody>" +
       b.zeilen.map(function (z) { return "<tr>" + z.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" + (b.html || "");
-    else inner = b.html;
+    else inner = wrapTables(b.html);
     return '<section class="' + cls + '">' + lk + kind + (b.titel ? "<h3>" + b.titel + "</h3>" : "") + inner + (b.quelle ? '<p class="src">' + b.quelle + "</p>" : "") + "</section>";
   }
   function renderInhalte(body, meta, topic) {
