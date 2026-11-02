@@ -691,7 +691,10 @@
       ]
      },
      "erlass": false,
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q4-2",
@@ -724,7 +727,10 @@
       ]
      },
      "erlass": true,
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     }
    ]
   }

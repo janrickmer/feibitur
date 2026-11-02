@@ -289,4 +289,10 @@ LK_BEGRIFFE_KORREKTUR = {
     "q2-1": {"Keynesianismus": False},
     "q2-3": {"Inflationsziel": False, "Verbot der monetären Staatsfinanzierung": False},
     "q2-4": {"Mindestlohnkommission": False},
+    # Q4.1: Integrationstheorien stehen im KCGO nur auf erhöhtem Niveau.
+    "q4-1": {"Neofunktionalismus": True, "Spillover": True, "Supranationalismus (Integrationstheorie)": True,
+             "Realistischer Intergouvernementalismus": True, "Liberaler Intergouvernementalismus": True,
+             "Postfunktionalismus": True},
+    # Q4.3: Beziehungen zu USA, China, Russland stehen im KCGO nur auf erhöhtem Niveau.
+    "q4-3": {"Transatlantische Beziehungen": True, "Wirtschaftliche Sicherheit (De-Risking)": True},
 }
