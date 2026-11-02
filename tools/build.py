@@ -304,9 +304,9 @@ def _plain(x):
 # Schaubilder der Inhalte an die Plakatwelt anpassen (Farben, Schrift, eckige Kästen).
 # Materialien (Karikaturen, Tabellen in Aufgaben) bleiben unverändert.
 SVG_FARBEN = {
-    "#14213d": "#141618", "#22355e": "#2b2e30", "#333": "#2b2e30", "#3a2a00": "#141618", "#6a4b00": "#141618",
-    "#555": "#555a5c", "#666": "#555a5c", "#777": "#555a5c", "#888": "#555a5c",
-    "#eef2fb": "#f3f4f2", "#e3e3e3": "#f3f4f2", "#dfe6f7": "#e3e4e1",
+    "#14213d": "#141618", "#22355e": "#2a2f33", "#333": "#2a2f33", "#3a2a00": "#141618", "#6a4b00": "#141618",
+    "#555": "#52595e", "#666": "#52595e", "#777": "#52595e", "#888": "#52595e",
+    "#eef2fb": "#f1f3f4", "#e3e3e3": "#f1f3f4", "#dfe6f7": "#e1e4e6",
     "#b5302a": "#d23a1f", "#d9a400": "#f2b300", "#ffd75e": "#f2b300", "#fff7e0": "#fff1c2",
     "#6d86c0": "#2340c8", "#5b77b5": "#2340c8", "#3b5592": "#2340c8",
 }

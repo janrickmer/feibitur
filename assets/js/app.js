@@ -104,7 +104,7 @@
       });
     });
   }
-  function toolsBtn() { return '<a class="btn btn-small btn-tools" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a>"; }
+  function toolsBtn() { return '<a class="btn btn-small btn-tools" href="#/lerntools" aria-label="Lerntools">' + ICON.tools + "<span>Lerntools</span></a>"; }
   var SEC_NAME = { begriffe: "Fachbegriffe", inhalte: "Inhalte", aufgaben: "Übungsaufgaben" };
   function hjShort(t) { return t.id === "grundlagen" ? "G" : t.kurz; }
   function hjName(t) { return String(t.titel).replace(/^Q\d:\s*/, ""); }

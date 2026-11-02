@@ -78,7 +78,7 @@
 
   function shell(title, sub, inner, slug) {
     document.title = title + " – Feibitur";
-    F.app.innerHTML = F.topbar((slug ? '<a class="btn btn-small btn-tools" href="#/lerntools">' + I.tools + "<span>Alle Lerntools</span></a>" : "") + '<a class="btn btn-small" href="#/powi">Politik und Wirtschaft</a>') +
+    F.app.innerHTML = F.topbar((slug ? '<a class="btn btn-small btn-tools" href="#/lerntools" aria-label="Alle Lerntools">' + I.tools + "<span>Alle Lerntools</span></a>" : "") + '<a class="btn btn-small" href="#/powi">Politik und Wirtschaft</a>') +
       '<section class="tools-hero"><div class="tools-hero-in"><h1>' + esc(title) + "</h1>" + (sub ? "<p>" + sub + "</p>" : "") + "</div></section>" +
       '<main class="tools-main" id="tools-main">' + inner + "</main>" + F.footer();
     window.scrollTo(0, 0);

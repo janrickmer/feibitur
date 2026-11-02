@@ -1,0 +1,678 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T22:53:30Z",
+  "title": "Design System: Feibitur",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Plakatweiß",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "g1": {
+        "role": "neutral",
+        "displayName": "Beton hell",
+        "canonical": "oklch(96.3% 0.003 229)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "g2": {
+        "role": "neutral",
+        "displayName": "Beton",
+        "canonical": "oklch(91.7% 0.004 237)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "g3": {
+        "role": "neutral",
+        "displayName": "Beton mittel",
+        "canonical": "oklch(84.3% 0.008 242)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "g4": {
+        "role": "neutral",
+        "displayName": "Fuge",
+        "canonical": "oklch(63.9% 0.011 239)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "g5": {
+        "role": "neutral",
+        "displayName": "Schiefer",
+        "canonical": "oklch(46.0% 0.012 239)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "g6": {
+        "role": "neutral",
+        "displayName": "Asphalt",
+        "canonical": "oklch(30.2% 0.010 242)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Druckschwarz",
+        "canonical": "oklch(19.9% 0.005 248)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "q1": {
+        "role": "primary",
+        "displayName": "Zinnober Q1",
+        "canonical": "oklch(57.4% 0.193 32)",
+        "tonalRamp": [
+          "#1d0200",
+          "#480700",
+          "#781301",
+          "#ab1f01",
+          "#d84025",
+          "#fe664b",
+          "#feac9b",
+          "#ffe9e4"
+        ]
+      },
+      "q2": {
+        "role": "primary",
+        "displayName": "Kobalt Q2",
+        "canonical": "oklch(45.0% 0.212 267)",
+        "tonalRamp": [
+          "#020034",
+          "#080176",
+          "#1422ad",
+          "#2a4ad2",
+          "#456ef9",
+          "#7399ff",
+          "#abc3fe",
+          "#e8eefe"
+        ]
+      },
+      "q3": {
+        "role": "primary",
+        "displayName": "Petrol Q3",
+        "canonical": "oklch(49.0% 0.081 199)",
+        "tonalRamp": [
+          "#000e0f",
+          "#012a2c",
+          "#05494c",
+          "#026b6f",
+          "#368c90",
+          "#5baeb2",
+          "#82d4d8",
+          "#bdfcff"
+        ]
+      },
+      "q4": {
+        "role": "primary",
+        "displayName": "Goldgelb Q4",
+        "canonical": "oklch(80.4% 0.165 83)",
+        "tonalRamp": [
+          "#110a00",
+          "#302100",
+          "#533b01",
+          "#785704",
+          "#a07500",
+          "#c99404",
+          "#f8b816",
+          "#ffecca"
+        ]
+      },
+      "gl": {
+        "role": "primary",
+        "displayName": "Druckschwarz Grundlagen",
+        "canonical": "oklch(19.9% 0.005 248)",
+        "tonalRamp": [
+          "#141618",
+          "#2a2f33",
+          "#52595e",
+          "#868d92",
+          "#c7ccd0",
+          "#e1e4e6",
+          "#f1f3f4",
+          "#ffffff"
+        ]
+      },
+      "go": {
+        "role": "secondary",
+        "displayName": "Kontrollgrün",
+        "canonical": "oklch(47.7% 0.109 153)",
+        "tonalRamp": [
+          "#000f04",
+          "#012d14",
+          "#034d27",
+          "#1c6f3f",
+          "#42905e",
+          "#65b27e",
+          "#8bd9a3",
+          "#c6ffd6"
+        ]
+      },
+      "go-tint": {
+        "role": "secondary",
+        "displayName": "Kontrollgrün hell",
+        "canonical": "oklch(95.0% 0.017 157)",
+        "tonalRamp": [
+          "#060d08",
+          "#1e2721",
+          "#39423c",
+          "#56615a",
+          "#768079",
+          "#97a29a",
+          "#bcc7c0",
+          "#e6f2ea"
+        ]
+      },
+      "go-deep": {
+        "role": "secondary",
+        "displayName": "Kontrollgrün tief",
+        "canonical": "oklch(34.7% 0.076 154)",
+        "tonalRamp": [
+          "#000f05",
+          "#012d15",
+          "#174b2d",
+          "#376a4a",
+          "#578b69",
+          "#78ad89",
+          "#9dd3ae",
+          "#c7fed8"
+        ]
+      },
+      "stop": {
+        "role": "secondary",
+        "displayName": "Warnrot",
+        "canonical": "oklch(50.1% 0.178 29)",
+        "tonalRamp": [
+          "#1f0000",
+          "#4b0001",
+          "#7c0203",
+          "#ac1d17",
+          "#d2463a",
+          "#f96a5b",
+          "#ffab9f",
+          "#ffe9e5"
+        ]
+      },
+      "stop-tint": {
+        "role": "secondary",
+        "displayName": "Warnrot hell",
+        "canonical": "oklch(94.8% 0.020 25)",
+        "tonalRamp": [
+          "#130807",
+          "#2d201f",
+          "#4a3c3a",
+          "#695a58",
+          "#897977",
+          "#ab9a98",
+          "#d1bfbe",
+          "#fceae8"
+        ]
+      },
+      "stop-deep": {
+        "role": "secondary",
+        "displayName": "Warnrot tief",
+        "canonical": "oklch(38.2% 0.132 29)",
+        "tonalRamp": [
+          "#1e0000",
+          "#4b0101",
+          "#761610",
+          "#9a3930",
+          "#bf5a4e",
+          "#e57c6f",
+          "#feac9f",
+          "#fee9e6"
+        ]
+      },
+      "blueback": {
+        "role": "tertiary",
+        "displayName": "Blueback-Graublau",
+        "canonical": "oklch(75.2% 0.032 247)",
+        "tonalRamp": [
+          "#020c18",
+          "#172633",
+          "#324250",
+          "#4f606f",
+          "#6e7f8f",
+          "#8fa1b1",
+          "#b4c7d8",
+          "#e2f0fe"
+        ]
+      },
+      "walnut": {
+        "role": "tertiary",
+        "displayName": "Nussbaum",
+        "canonical": "oklch(27.6% 0.047 44)",
+        "tonalRamp": [
+          "#190500",
+          "#371c10",
+          "#55382b",
+          "#755548",
+          "#967567",
+          "#b89687",
+          "#dfbbac",
+          "#feeae1"
+        ]
+      },
+      "card-stock": {
+        "role": "tertiary",
+        "displayName": "Kartenkarton",
+        "canonical": "oklch(99.4% 0.007 89)",
+        "tonalRamp": [
+          "#0c0b08",
+          "#252420",
+          "#41403c",
+          "#5f5d59",
+          "#7f7d79",
+          "#a09e9a",
+          "#c6c4bf",
+          "#f0eee9"
+        ]
+      },
+      "card-edge": {
+        "role": "tertiary",
+        "displayName": "Kartenkante",
+        "canonical": "oklch(86.2% 0.022 86)",
+        "tonalRamp": [
+          "#0f0a03",
+          "#292318",
+          "#453f33",
+          "#635d50",
+          "#837d6f",
+          "#a49e8f",
+          "#cac3b5",
+          "#f5eede"
+        ]
+      },
+      "def-stripe": {
+        "role": "tertiary",
+        "displayName": "Beschreibungsband",
+        "canonical": "oklch(61.4% 0.047 250)",
+        "tonalRamp": [
+          "#000c1c",
+          "#11253a",
+          "#2c4258",
+          "#496078",
+          "#688099",
+          "#89a1bb",
+          "#aec7e2",
+          "#e3f0fe"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Wortmarke",
+        "purpose": "Nur die Wortmarke „Feibitur“ auf Start- und Passwortseite; Versalien."
+      },
+      "headline": {
+        "displayName": "Seitentitel",
+        "purpose": "Titel der Fachwelt und der Lerntools; Versalien."
+      },
+      "poster-number": {
+        "displayName": "Poster-Nummer",
+        "purpose": "Unterthemen-Nummer im Themenplakat; kleinere Stufen für Halbjahresplakat, Mast-Schild, Aufgabennummer."
+      },
+      "headline-poster": {
+        "displayName": "Plakattitel",
+        "purpose": "Titel des Unterthemas über die volle Plakatbreite; Versalien, Silbentrennung."
+      },
+      "title-poster": {
+        "displayName": "Bogentitel Plakat",
+        "purpose": "Abschnittstitel auf Bögen (Anleitung, Glossar, Kann-Listen); Versalien."
+      },
+      "title": {
+        "displayName": "Bogentitel",
+        "purpose": "Überschrift eines Inhaltsbogens in gemischter Schreibung."
+      },
+      "body": {
+        "displayName": "Lesetext",
+        "purpose": "Alles, was gelesen wird; höchstens 68ch, Silbentrennung an."
+      },
+      "body-ui": {
+        "displayName": "Bedientext",
+        "purpose": "Bedienung, Tabellen, Chat."
+      },
+      "button": {
+        "displayName": "Knopf",
+        "purpose": "Alle Knöpfe und das Kurswahl-Segment."
+      },
+      "section-tab": {
+        "displayName": "Bereichsschalter",
+        "purpose": "Fachbegriffe · Inhalte · Übungsaufgaben; Versalien."
+      },
+      "label": {
+        "displayName": "Abzeichen",
+        "purpose": "Abzeichen und Bogen-Art, immer mit 1,5px-Rahmen; Versalien."
+      },
+      "stamp": {
+        "displayName": "Stempel",
+        "purpose": "Störer „Nur LK“, Streifen „Erledigt“, Memory-Serie; Versalien."
+      }
+    },
+    "shadows": [
+      {
+        "name": "kleister",
+        "value": "0 1px 1px rgba(20,22,24,.08), 0 8px 18px -10px rgba(20,22,24,.35)",
+        "purpose": "Jeder Bogen, jedes Plakat, Schild und Zettel an der Wand (--sheet-shadow)."
+      },
+      {
+        "name": "angehoben",
+        "value": "0 14px 26px -12px rgba(20,22,24,.55)",
+        "purpose": "Nur das aktive Halbjahresplakat, mit translateY(-10px)."
+      },
+      {
+        "name": "karteikarte",
+        "value": "0 1px 1px rgba(20,22,24,.1), 0 18px 34px -16px rgba(20,22,24,.55)",
+        "purpose": "Wendbare Lernkartei-Karte."
+      },
+      {
+        "name": "stempel",
+        "value": "0 2px 6px rgba(20,22,24,.3)",
+        "purpose": "Störer und Erledigt-Streifen auf dem Bogen."
+      },
+      {
+        "name": "fahne",
+        "value": "0 2px 4px rgba(20,22,24,.25)",
+        "purpose": "Zuletzt-Fähnchen am Mast-Schild."
+      },
+      {
+        "name": "kartenstaerke",
+        "value": "0 1px 0 #e6e1d6, 0 2px 0 #d8d1c2, 0 3px 0 #c9c1b0, 0 12px 18px -8px rgba(0,0,0,.7)",
+        "purpose": "Memory-Vorderseiten am Holztisch."
+      },
+      {
+        "name": "kartenruecken",
+        "value": "inset 0 0 0 5px #fff, inset 0 0 0 6px rgba(20,22,24,.18), 0 1px 0 #6d8193, 0 2px 0 #5e7183, 0 3px 0 #50606f, 0 12px 18px -8px rgba(0,0,0,.7)",
+        "purpose": "Memory-Rücken mit weißem Innenrahmen und blaugrauer Kante."
+      },
+      {
+        "name": "spielbogen",
+        "value": "0 2px 0 #e6e1d6, 0 4px 0 #d8d1c2, 0 26px 50px -18px rgba(0,0,0,.75)",
+        "purpose": "Einstellungen und Siegerehrung auf dem Holztisch."
+      }
+    ],
+    "motion": [
+      {
+        "name": "t-paste",
+        "value": "380ms",
+        "purpose": "Dauer für alles Klebende (Themenplakat ankleben)."
+      },
+      {
+        "name": "ease-paste",
+        "value": "cubic-bezier(.2, 1.3, .4, 1)",
+        "purpose": "Kleben mit leichtem Überschwingen; auch Punkt-Bump und Serien-Stempel im Memory."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Rückmeldungen 150–220ms (Hover-Lift, Druck scale .97–.985 in 160ms, Chevrons 200ms)."
+      },
+      {
+        "name": "ease-io",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "Wenden: Karteikarte 520ms, Memory-Karte 460ms, Paarflug 640ms."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Ankleben, Wenden, Übergänge und Konfetti entfallen."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-mast",
+        "value": "1100px"
+      },
+      {
+        "name": "chat-unten",
+        "value": "1024px"
+      },
+      {
+        "name": "mobil",
+        "value": "860px"
+      },
+      {
+        "name": "schmal",
+        "value": "760px"
+      },
+      {
+        "name": "memory-mobil",
+        "value": "640px"
+      },
+      {
+        "name": "klein",
+        "value": "560px"
+      },
+      {
+        "name": "sehr-klein",
+        "value": "360px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primärknopf",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Druckschwarzer Hauptknopf (Weiter, Karten austeilen, Revanche).",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Weiter</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: .55rem 1.1rem; border: 2px solid var(--ink); border-radius: 2px; background: var(--paper); color: var(--ink); cursor: pointer; font: 700 .95rem/1.15 var(--ui); font-stretch: 92%; letter-spacing: .01em; transition: transform 160ms var(--ease-out), background-color 150ms ease; } .ds-btn-primary { background: var(--ink); color: #fff; } .ds-btn-primary:hover { background: var(--g6); } .ds-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; } .ds-btn:active { transform: scale(.97); }"
+    },
+    {
+      "name": "Sekundärknopf",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Weißer Knopf mit Druckschwarz-Rahmen.",
+      "html": "<button class=\"ds-btn2\">Neue Einstellungen</button>",
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .55rem 1.1rem; border: 2px solid var(--ink); border-radius: 2px; background: var(--paper); color: var(--ink); cursor: pointer; font: 700 .95rem/1.15 var(--ui); font-stretch: 92%; letter-spacing: .01em; transition: transform 160ms var(--ease-out), background-color 150ms ease; } .ds-btn2:hover { background: var(--g1); } .ds-btn2:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; } .ds-btn2:active { transform: scale(.97); }"
+    },
+    {
+      "name": "Korrekturdatei-Knopf",
+      "kind": "button",
+      "refersTo": "button-korrektur",
+      "description": "Der einzige grüne Knopf: Korrekturdatei als PDF herunterladen.",
+      "html": "<a class=\"ds-btn-green\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 4v11M7 10l5 5 5-5M5 20h14\"/></svg>Korrekturdatei herunterladen</a>",
+      "css": ".ds-btn-green { display: inline-flex; align-items: center; gap: .5rem; min-height: 50px; padding: .55rem 1.1rem; border: 2px solid var(--go); border-radius: 2px; background: var(--go); color: #fff; text-decoration: none; font: 700 .95rem/1.15 var(--ui); font-stretch: 92%; transition: transform 160ms var(--ease-out), background-color 150ms ease; } .ds-btn-green:hover { background: #155a32; } .ds-btn-green:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; } .ds-btn-green:active { transform: scale(.97); }"
+    },
+    {
+      "name": "Kurswahl-Segment",
+      "kind": "chip",
+      "refersTo": "kurswahl-segment",
+      "description": "GK/LK-Wahl im PoWi-Kopf.",
+      "html": "<div class=\"ds-seg\" role=\"group\" aria-label=\"Kurs wählen\"><button aria-pressed=\"false\">Grundkurs</button><button aria-pressed=\"true\">Leistungskurs</button></div>",
+      "css": ".ds-seg { display: inline-flex; border: 2px solid var(--ink); border-radius: 2px; background: var(--paper); overflow: hidden; } .ds-seg button { border: 0; background: transparent; padding: .5rem .95rem; min-height: 40px; cursor: pointer; font: 700 .9rem/1.1 var(--ui); font-stretch: 92%; color: var(--ink); } .ds-seg button + button { box-shadow: inset 2px 0 0 var(--ink); } .ds-seg button[aria-pressed=\"true\"] { background: var(--ink); color: #fff; } .ds-seg button:focus-visible { outline: 3px solid var(--q4); outline-offset: -3px; }"
+    },
+    {
+      "name": "Eingabefeld",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Weißes Feld mit Fugenrahmen, Fokus Druckschwarz plus goldgelber Halo.",
+      "html": "<input class=\"ds-input\" type=\"search\" placeholder=\"Fachbegriff suchen\">",
+      "css": ".ds-input { font: 400 1.05rem/1.4 var(--ui); color: var(--ink); padding: .75rem .9rem; border: 2px solid var(--g4); border-radius: 2px; background: var(--paper); transition: border-color 150ms ease; } .ds-input:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px var(--q4); }"
+    },
+    {
+      "name": "Kopfzeile",
+      "kind": "nav",
+      "refersTo": "kopfzeile",
+      "description": "Druckschwarze Kopfzeile mit Wortmarke und Lerntools-Knopf.",
+      "html": "<header class=\"ds-topbar\"><a class=\"ds-brand\" href=\"#\">Feibitur</a><nav><a class=\"ds-tb ds-tb-tools\" href=\"#\">Lerntools</a><a class=\"ds-tb\" href=\"#\">Startseite</a></nav></header>",
+      "css": ".ds-topbar { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .55rem 16px; background: var(--ink); color: #fff; } .ds-topbar nav { display: flex; gap: .45rem; } .ds-brand { font-family: var(--ui); font-stretch: var(--poster-stretch); font-weight: 850; text-transform: uppercase; line-height: .9; font-size: 1.75rem; color: #fff; text-decoration: none; } .ds-tb { display: inline-flex; align-items: center; min-height: 38px; padding: .35rem .8rem; border: 2px solid rgba(255,255,255,.55); border-radius: 2px; color: #fff; text-decoration: none; font: 700 .88rem/1.15 var(--ui); font-stretch: 92%; } .ds-tb:hover { background: rgba(255,255,255,.12); } .ds-tb-tools { background: var(--q4); color: var(--ink); border-color: var(--q4); } .ds-tb-tools:hover { background: #ffc61a; } .ds-topbar :focus-visible { outline: 3px solid var(--q4); outline-offset: 2px; }"
+    },
+    {
+      "name": "Halbjahres-Plakatbahn",
+      "kind": "nav",
+      "refersTo": "halbjahresplakat",
+      "description": "Fünf Plakate nebeneinander; das aktive ist vollfarbig und angehoben.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" style=\"--c: var(--gl)\" aria-selected=\"false\"><span class=\"ds-tnr\">G</span><span class=\"ds-tl\">Grundlagen</span></button><button class=\"ds-tab\" style=\"--c: var(--q1); --ci: #fff\" aria-selected=\"true\"><span class=\"ds-tnr\">Q1</span><span class=\"ds-tl\">Demokratie im politischen Mehrebenensystem</span></button><button class=\"ds-tab\" style=\"--c: var(--q2)\" aria-selected=\"false\"><span class=\"ds-tnr\">Q2</span><span class=\"ds-tl\">Wirtschaft und Wirtschaftspolitik in der sozialen Marktwirtschaft</span></button><button class=\"ds-tab\" style=\"--c: var(--q3)\" aria-selected=\"false\"><span class=\"ds-tnr\">Q3</span><span class=\"ds-tl\">Internationale Beziehungen im Zeitalter der Globalisierung</span></button><button class=\"ds-tab\" style=\"--c: var(--q4)\" aria-selected=\"false\"><span class=\"ds-tnr\">Q4</span><span class=\"ds-tl\">Gegenwart und Zukunft Europas in einer globalisierten Welt</span></button></div>",
+      "css": ".ds-tabs { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 10px; align-items: end; padding: 12px; background: var(--g2) var(--grain); } .ds-tab { display: flex; flex-direction: column; align-items: flex-start; gap: .35rem; min-height: 112px; padding: 1.15rem .9rem .9rem; text-align: left; cursor: pointer; border: 0; border-top: 12px solid var(--c); border-radius: 0; background: var(--paper); color: var(--ink); box-shadow: var(--sheet-shadow); transition: transform 220ms var(--ease-out); } .ds-tnr { font-family: var(--ui); font-stretch: var(--poster-stretch); font-weight: 850; text-transform: uppercase; line-height: .9; font-size: 2.3rem; } .ds-tl { font: 600 .86rem/1.25 var(--ui); font-stretch: 88%; color: var(--g6); } .ds-tab[aria-selected=\"true\"] { background: var(--c); color: var(--ci, #fff); transform: translateY(-10px); box-shadow: 0 14px 26px -12px rgba(20,22,24,.55); } .ds-tab[aria-selected=\"true\"] .ds-tl { color: inherit; } .ds-tab[aria-selected=\"false\"]:hover { transform: translateY(-4px); } .ds-tab:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }"
+    },
+    {
+      "name": "Mast-Schild",
+      "kind": "nav",
+      "refersTo": "mast-schild",
+      "description": "Unterthema als Schild, mit zwei Kabelbindern an den Laternenmast gebunden.",
+      "html": "<div class=\"ds-mast\"><button class=\"ds-schild\" aria-expanded=\"false\"><span class=\"ds-zuletzt\">Zuletzt hier</span><span class=\"ds-snr\">Q1.2</span><span class=\"ds-st\">Herausforderungen der Parteiendemokratie</span></button><button class=\"ds-schild\" aria-expanded=\"true\" style=\"--hj: var(--q1)\"><span class=\"ds-snr\">Q1.3</span><span class=\"ds-st\">Demokratie jenseits der Nationalstaaten – Europa entscheidet mit</span></button></div>",
+      "css": ".ds-mast { position: relative; padding: 14px 0 4px; background: var(--g2) var(--grain); } .ds-mast::before { content: \"\"; position: absolute; left: 12px; top: 0; bottom: 0; width: 8px; border-radius: 4px; background: linear-gradient(90deg, #8f9492, #c8ccca 45%, #7d8280); } .ds-schild { position: relative; display: block; width: calc(100% - 34px); margin: 0 0 12px 34px; padding: .75rem .85rem .8rem; text-align: left; cursor: pointer; border: 0; border-radius: 0; background: var(--paper); color: var(--ink); box-shadow: var(--sheet-shadow); transition: transform 200ms var(--ease-out); } .ds-schild::before, .ds-schild::after { content: \"\"; position: absolute; left: -30px; width: 40px; height: 7px; background: var(--ink); border-radius: 3px; } .ds-schild::before { top: 14px; } .ds-schild::after { bottom: 14px; } .ds-schild[aria-expanded=\"true\"] { background: var(--hj); color: #fff; } .ds-schild[aria-expanded=\"false\"]:hover { transform: translateX(3px); } .ds-schild:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; } .ds-snr { display: block; font-family: var(--ui); font-stretch: var(--poster-stretch); font-weight: 850; text-transform: uppercase; line-height: .9; font-size: 1.5rem; line-height: 1; margin-bottom: .2rem; } .ds-st { display: block; font: 500 .93rem/1.32 var(--ui); } .ds-zuletzt { position: absolute; top: -9px; right: 10px; background: var(--q4); color: var(--ink); font: 800 .68rem/1 var(--ui); font-stretch: 85%; text-transform: uppercase; letter-spacing: .05em; padding: .3rem .45rem; transform: rotate(2.5deg); box-shadow: 0 2px 4px rgba(20,22,24,.25); }"
+    },
+    {
+      "name": "Themenplakat",
+      "kind": "custom",
+      "refersTo": "themenplakat-kopf-q2",
+      "description": "Kopf des geöffneten Unterthemas in Halbjahresfarbe, mit Kabelbindern; klebt sich beim Öffnen an.",
+      "html": "<header class=\"ds-poster\"><span class=\"ds-tie ds-tie-l\"></span><span class=\"ds-tie ds-tie-r\"></span><div class=\"ds-prow\"><span class=\"ds-pnr\">Q2.1</span><span class=\"ds-pbadge\">Abi 2027: Schwerpunkt</span></div><h2 class=\"ds-ptitle\">Konjunkturanalyse und Konjunkturpolitik</h2></header>",
+      "css": ".ds-poster { position: relative; background: var(--q2); color: #fff; padding: 1.6rem 1.6rem 1.4rem; box-shadow: var(--sheet-shadow); animation: ds-paste var(--t-paste) var(--ease-paste) both; transform-origin: 50% 0; } @keyframes ds-paste { from { opacity: 0; transform: translateY(-14px) rotate(-1.4deg) scale(1.02); } 45% { opacity: 1; } to { opacity: 1; transform: none; } } @media (prefers-reduced-motion: reduce) { .ds-poster { animation: none; } } .ds-tie { position: absolute; top: -8px; width: 34px; height: 13px; background: var(--ink); border-radius: 3px; box-shadow: inset 0 -3px 0 rgba(255,255,255,.14); } .ds-tie-l { left: 12%; } .ds-tie-r { right: 12%; } .ds-prow { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; } .ds-pnr { font-family: var(--ui); font-stretch: var(--poster-stretch); font-weight: 850; text-transform: uppercase; line-height: .9; font-size: clamp(3.6rem, 9vw, 6.4rem); line-height: .8; } .ds-pbadge { font: 700 .78rem/1.25 var(--ui); font-stretch: 88%; text-transform: uppercase; letter-spacing: .04em; padding: .3rem .55rem; background: #fff; color: var(--q2); } .ds-ptitle { font-family: var(--ui); font-stretch: var(--poster-stretch); font-weight: 850; text-transform: uppercase; line-height: .9; margin: .55rem 0 0; font-size: clamp(2rem, 5.2vw, 4.6rem); hyphens: auto; }"
+    },
+    {
+      "name": "Bogen mit Störer",
+      "kind": "card",
+      "refersTo": "bogen",
+      "description": "Inhaltsbogen in ruhiger Serifenspalte; LK-Bögen tragen den diagonalen Störer.",
+      "html": "<section class=\"ds-bogen\"><span class=\"ds-stoerer\">Nur LK</span><header class=\"ds-bh\"><h3>Konjunkturzyklus</h3><span class=\"ds-kind\">Erklärung</span></header><p>Lesetext in Source Serif 4, höchstens 68 Zeichen pro Zeile, mit Silbentrennung. Beispieltext für die Darstellung eines Inhaltsbogens.</p></section>",
+      "css": ".ds-bogen { position: relative; overflow: hidden; background: var(--paper); color: var(--ink); box-shadow: var(--sheet-shadow); padding: 1.35rem 1.6rem 1.45rem; font: 400 1.0625rem/1.62 var(--read); hyphens: auto; } .ds-bogen p { max-width: 68ch; margin: .5rem 0; } .ds-bh { display: flex; align-items: baseline; gap: .5rem .8rem; flex-wrap: wrap; margin-bottom: .5rem; padding-right: 4.6rem; } .ds-bh h3 { flex: 1 1 18ch; margin: 0; font: 800 1.32rem/1.18 var(--ui); font-stretch: 90%; } .ds-kind { font: 700 .7rem/1 var(--ui); font-stretch: 88%; text-transform: uppercase; letter-spacing: .08em; padding: .28rem .45rem; border: 1.5px solid var(--g4); color: var(--g5); } .ds-stoerer { position: absolute; top: 16px; right: -46px; width: 170px; transform: rotate(45deg); background: var(--ink); color: #fff; text-align: center; font: 850 .82rem/1 var(--ui); font-stretch: 75%; text-transform: uppercase; letter-spacing: .08em; padding: .38rem 0 .34rem; box-shadow: 0 2px 6px rgba(20,22,24,.3); }"
+    },
+    {
+      "name": "Memory-Kartenrücken",
+      "kind": "custom",
+      "refersTo": "memory-karte-ruecken",
+      "description": "Verdeckte Memory-Karte auf dem Holztisch: Blueback mit Feibitur-Aufdruck und vier Q-Streifen.",
+      "html": "<div class=\"ds-tisch\"><button class=\"ds-mcard\" aria-label=\"verdeckte Karte\"><span class=\"ds-mprint\">Feibitur</span><span class=\"ds-mlogo\">F</span><span class=\"ds-mstripes\"><i></i><i></i><i></i><i></i></span></button></div>",
+      "css": ".ds-tisch { padding: 24px; background: #3b2014 radial-gradient(ellipse 62% 58% at 50% 34%, rgba(255,214,150,.30), rgba(0,0,0,0) 75%); display: flex; justify-content: center; } .ds-mcard { position: relative; width: 140px; aspect-ratio: 3 / 4; border: 0; border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; transform: rotate(-1.5deg); background: var(--grain), linear-gradient(160deg, #b2c1cf, #8fa3b6); box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 6px rgba(20,22,24,.18), 0 1px 0 #6d8193, 0 2px 0 #5e7183, 0 3px 0 #50606f, 0 12px 18px -8px rgba(0,0,0,.7); transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out); } .ds-mcard:hover { transform: rotate(-1.5deg) translateY(-5px); } .ds-mcard:focus-visible { outline: 3px solid var(--q4); outline-offset: 5px; } .ds-mcard:active { transform: rotate(-1.5deg) scale(.97); } .ds-mprint { position: absolute; top: 11px; left: 0; right: 0; text-align: center; font: 800 8.7px/1 var(--ui); font-stretch: 80%; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.85); } .ds-mlogo { font-family: var(--ui); font-stretch: var(--poster-stretch); font-weight: 850; text-transform: uppercase; line-height: .9; font-size: 61px; color: #fff; margin-bottom: 8%; } .ds-mstripes { position: absolute; left: 12px; right: 12px; bottom: 12px; height: 7px; display: grid; grid-template-columns: repeat(4, 1fr); } .ds-mstripes i:nth-child(1) { background: var(--q1); } .ds-mstripes i:nth-child(2) { background: var(--q2); } .ds-mstripes i:nth-child(3) { background: var(--q3); } .ds-mstripes i:nth-child(4) { background: var(--q4); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Die Plakatwand im Wahlkampf",
+    "overview": "Politik und Wirtschaft lernt man an der Plakatwand. Die Seite ist eine Straßenwand aus kühlem Betongrau mit feiner Kleister-Körnung, auf die strahlend weiße Bögen geklebt sind. Jedes Kurshalbjahr ist ein Plakat in eigener Farbe (Grundlagen Schwarz, Q1 Zinnober, Q2 Kobalt, Q3 Petrol, Q4 Goldgelb), jedes Unterthema öffnet als Themenplakat mit riesiger Nummer und Titel in Plakatschrift, festgezurrt mit Kabelbindern. Links steht der Laternenmast mit den Unterthemen-Schildern; darunter wird in einer ruhigen Serifenspalte gelesen. Zustände sind Zeichen auf der Wand: der diagonale Störer „Nur LK“, der Streifen „Erledigt“, das gelbe Fähnchen „Zuletzt hier“.\n\nDie Dichte ist die einer echten Wand: großflächig und laut in den Köpfen, still und weiß dort, wo gelesen wird. Plakatschrift (Archivo, extra-schmal, 850, Versalien) spricht kurz und groß; Source Serif 4 trägt jeden Satz, der gelesen werden muss. Verworfen sind das Standard-Lernapp-Raster (gleich große Icon-Kacheln, Pastell, Fortschrittsringe) und der Behörden-Look. Innerhalb der Fachwelt gibt es einen eigenen Raum: das Fachbegriffe-Memory spielt an einem warm beleuchteten Holztisch, auf dem dieselben Plakatfarben als Kartenrücken-Streifen wiederkehren.\n\nGeltungsbereich: Diese Datei beschreibt die PoWi-Welt „Plakatwand“ (Fachseite, Lerntools, Memory) und die fachübergreifenden Elemente Startseite, Kopfzeile, Passwortseite und Rechtsseiten, die heute in derselben Sprache gebaut sind. Jedes künftige Fach bekommt eine **eigene visuelle Welt**; ev. Religion übernimmt weder Halbjahresfarben noch Mast, Störer, Kabelbinder oder Holztisch. Was an Startseite und Kopfzeile fachneutral bleibt, wird festgelegt, wenn die zweite Welt entsteht. Bewusste Abweichungen vom Richtungsvertrag: Die Kurswahl GK/LK sitzt im PoWi-Kopf statt in der schwarzen Kopfzeile; der Holztisch ist ein CC0-Foto (Poly Haven „Wood Table 001“) statt einer generierten Textur; die Litfaßsäule wird (noch) nicht als Motiv genutzt.",
+    "keyCharacteristics": [
+      "Betongrau-Wand mit Körnung als Grund, weiße Bögen ohne Rundung als einzige Lesefläche.",
+      "Fünf Halbjahresfarben als Orientierungscode, nie als Dekor; sie fließen über ein einziges Token-Paar (`--hj` / `--hj-ink`).",
+      "Zwei Stimmen: Plakatschrift für Nummern und Titel, Source Serif 4 für alles Lesbare (höchstens 68 Zeichen).",
+      "Zustand als Zeichen mit Wort: Störer, Erledigt-Streifen, Zuletzt-Fähnchen.",
+      "Kabelbinder-Laschen und Laternenmast als wiederkehrende Signaturen.",
+      "Bewegung heißt Kleben: 380 ms mit leichtem Überschwingen, sonst kurze, ruhige Rückmeldung.",
+      "Alles selbst gehostet: Schriften als OFL-Dateien im Repo, Bilder mit Herkunftsnachweis."
+    ],
+    "rules": [
+      {
+        "name": "The Halbjahr-Code Rule",
+        "body": "Eine Farbfläche in Halbjahresfarbe heißt immer „hier bist du“: aktives Halbjahresplakat, aktives Mast-Schild, Themenplakat-Kopf, Kopfband der Karteikarte, Schrittziffern. Sie kommt ausschließlich über `data-hj` → `--hj` / `--hj-ink`; Q4 trägt Druckschwarz, alle anderen Weiß.",
+        "section": "colors"
+      },
+      {
+        "name": "The Vierer Rule",
+        "body": "Wo Feibitur als Ganzes auftritt (Favicon, Passwortbogen, PoWi-Karte der Startseite, Memory-Kartenrücken, Konfetti), stehen die Halbjahresfarben gemeinsam in fester Reihenfolge Q1 · Q2 · Q3 · Q4, wo das ganze Kursraster gemeint ist mit Grundlagen-Schwarz davor. Keine einzelne Halbjahresfarbe wird zur Markenfarbe; das wahrt die politische Neutralität.",
+        "section": "colors"
+      },
+      {
+        "name": "The Betongrau-Leiter Rule",
+        "body": "Text, Flächen und Linien nehmen Neutrale nur aus `paper`, `g1`–`g6`, `ink`. Materialdarstellungen (Mastmetall, Holz, Kartenkante) sind keine Neutralen und verlassen ihr Objekt nicht.",
+        "section": "colors"
+      },
+      {
+        "name": "The Markierer Rule",
+        "body": "Goldgelb ist auch der Textmarker der Wand: Fokusring auf dunklem Grund, Textauswahl, Fokus-Halo der Eingabefelder, Fähnchen „Zuletzt hier“, Zettel „Weiter, wo du aufgehört hast“, Abitur-Aushang, Lerntools-Knopf. Als Schriftfarbe nur auf Druckschwarz oder dem Holztisch, nie auf Weiß.",
+        "section": "colors"
+      },
+      {
+        "name": "The Plakatschrift Rule",
+        "body": "Archivo 66 % / 850 / Versalien / Durchschuss ≤ 0.9 gilt für Nummern, Titel, Wortmarke und Stempel; nie für Sätze, die gelesen werden müssen.",
+        "section": "typography"
+      },
+      {
+        "name": "The Ruhige-Spalte Rule",
+        "body": "Alles, was gelesen wird, steht in Source Serif 4 auf Weiß, höchstens 68 Zeichen breit, ohne Bewegung und ohne Schräglage.",
+        "section": "typography"
+      },
+      {
+        "name": "The Kleister Rule",
+        "body": "An der Wand klebt alles flach mit demselben Klebeschatten; nur das aktive Halbjahresplakat hebt sich ab. Knöpfe, Felder und Segmente bekommen Rahmen statt Schatten.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** die Halbjahresfarbe nur über `data-hj` → `--hj` / `--hj-ink` setzen; Q4 Goldgelb trägt Druckschwarz, alle anderen Halbjahresfarben Weiß.",
+      "**Do** jeden Inhaltsabschnitt als eigenen weißen Bogen kleben (`--paper`, Ecken 0, `--sheet-shadow`) und zwischen den Bögen die Betongrau-Wand sichtbar lassen (mindestens 10px, im Lesefluss 1.1rem).",
+      "**Do** Nummern, Titel und Stempel in Plakatschrift setzen (Archivo, `--poster-stretch` 66 %, 850, Versalien, Durchschuss 0.8–0.9) und alles Lesbare in Source Serif 4 (1.0625rem / 1.62, höchstens 68ch).",
+      "**Do** jeden Zustand mit Zeichen und Wort markieren: Störer „Nur LK“, Streifen „Erledigt“, Fähnchen „Zuletzt hier“, Halbjahreskennung im Plakat.",
+      "**Do** für alles Klebende `--t-paste` (380ms) mit `--ease-paste` nutzen, für Rückmeldungen 150–220ms `--ease-out`, für Wenden `--ease-io`, und unter `prefers-reduced-motion` darauf verzichten.",
+      "**Do** Bedienelemente mindestens 44px hoch, fast eckig (2px) und mit 2px Druckschwarz-Rahmen bauen.",
+      "**Do** jedes Inhalts-Schaubild durch `plakat_svg` schicken (Archivo, eckige Kästen, Weltfarben); Aufgabenmaterialien bleiben im Original.",
+      "**Do** Schriften und Bilder nur aus dem Repo laden (`assets/fonts`, `assets/img`) und neben jedes Rasterbild eine Herkunftsdatei (`*.json`) legen."
+    ],
+    "donts": [
+      "**Don't** Raster aus gleich großen Icon-Kacheln, Pastellflächen oder Fortschrittsringe bauen; Lerntools stehen als Zeilen auf einem Bogen.",
+      "**Don't** eine einzelne Halbjahresfarbe zur Markenfarbe machen; wo Feibitur als Ganzes erscheint, stehen alle Halbjahresfarben gemeinsam.",
+      "**Don't** Grautöne außerhalb der Betongrau-Leiter für Text, Flächen oder Linien verwenden; `g4` ist die hellste Linie, Text beginnt bei `g5`.",
+      "**Don't** Papier runden: Bögen, Plakate, Schilder und Tabellen haben Ecken 0; Rundung gehört nur Gegenständen (Kabelbinder 3px, Memory-Karten 7px).",
+      "**Don't** Lesetexte, Tabellen oder Aufgaben schräg stellen; Drehung gibt es nur für einzeln aufgeklebte Objekte (bis 2.5°) und Stempel (−4°).",
+      "**Don't** Spitzmarken oder Etiketten über Überschriften oder auf Memory-Kartenflächen setzen; Begriff und Beschreibung unterscheiden sich durch Kopfband und Schrift.",
+      "**Don't** Goldgelb als Schriftfarbe auf Weiß einsetzen.",
+      "**Don't** die Plakatwand in ein anderes Fach übernehmen; ev. Religion bekommt eine eigene Welt."
+    ]
+  }
+}
