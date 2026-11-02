@@ -34,7 +34,7 @@ SVG_TEUFELSKREIS = """<svg viewBox='0 0 760 430' xmlns='http://www.w3.org/2000/s
 <text x='195' y='358' font-weight='700' fill='#14213d'>Innere Verstärker (endogen)</text>
 <text x='195' y='378'>Korruption, Konflikte, Ungleichheit, schwache Institutionen</text>
 <text x='565' y='358' font-weight='700' fill='#14213d'>Äußere Verstärker (exogen)</text>
-<text x='565' y='378'>Preisschwankungen, Schulden, Handelshemmnisse, Klimaschäden</text>
+<text x='565' y='378'>Preisschwankungen, Schulden, Zölle, Klimaschäden</text>
 </g>
 <text x='380' y='420' text-anchor='middle' font-size='12' fill='#555'>Ausbrechen ist möglich – z. B. durch Bildung, Investitionen, gute Institutionen und Zugang zu Märkten.</text>
 </svg>"""
