@@ -98,7 +98,7 @@ MATERIALIEN = [
         "id": "m2",
         "titel": "M2: Haushaltsdefizite und Staatsschulden ausgewählter EU-Staaten 2024 und 2025 (in % des BIP)",
         "typ": "tabelle",
-        "kopf": ["Staat", "Finanzierungssaldo 2024", "Finanzierungssaldo 2025", "Schuldenstand 2024", "Schuldenstand 2025", "Defizitverfahren (Stand: Juli 2026)"],
+        "kopf": ["Staat", "Saldo 2024", "Saldo 2025", "Schulden 2024", "Schulden 2025", "Defizitverfahren (Stand: Juli 2026)"],
         "zeilen": [
             ["Deutschland", "−2,7", "−2,9", "61,4", "62,8", "nein"],
             ["Frankreich", "−5,8", "−5,1", "112,6", "115,7", "ja (seit 2024)"],
@@ -115,7 +115,7 @@ MATERIALIEN = [
             ["EU (27 Staaten)", "−3,1", "−3,1", "80,3", "81,5", "–"],
             ["Referenzwerte des Stabilitäts- und Wachstumspakts", "−3,0", "−3,0", "60,0", "60,0", "–"],
         ],
-        "quelle": "Eurostat, Euro-Indikatoren vom 21. Oktober 2026 (Daten der zweiten Meldung 2026, gerundet). Finanzierungssaldo: negativer Wert = Defizit, positiver Wert = Überschuss. Euroraum ohne das 2026 beigetretene Bulgarien. Defizitverfahren: Beschlüsse des Rates der EU vom 26.07.2024, 08.07.2025 und 20.01.2026; außerdem liefen im Juli 2026 Verfahren gegen Bulgarien, Rumänien, die Slowakei und Ungarn, das Verfahren gegen Malta wurde im Juni 2026 eingestellt.",
+        "quelle": "Eurostat, Euro-Indikatoren vom 21. Oktober 2026 (Daten der zweiten Meldung 2026, gerundet). Saldo = Finanzierungssaldo des Staates (negativer Wert = Defizit, positiver Wert = Überschuss); Schulden = Bruttoschuldenstand des Staates. Euroraum ohne das 2026 beigetretene Bulgarien. Defizitverfahren: Beschlüsse des Rates der EU vom 26.07.2024, 08.07.2025 und 20.01.2026; außerdem liefen im Juli 2026 Verfahren gegen Bulgarien, Rumänien, die Slowakei und Ungarn, das Verfahren gegen Malta wurde im Juni 2026 eingestellt.",
     },
     {
         "id": "m3",
