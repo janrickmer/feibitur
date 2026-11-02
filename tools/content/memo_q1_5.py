@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+"""Memory-Beschreibungen zu Q1.5 (ohne den Fachbegriff selbst)."""
+MEMO = {
+    "Gemeinwohl": "Das, was der gesamten Gesellschaft dient, im Unterschied zu Einzel- oder Gruppeninteressen",
+    "Gemeinwohl a priori": "Vorstellung, dass das Beste für alle objektiv vorgegeben ist und erkannt werden kann (z. B. Rousseau)",
+    "Gemeinwohl a posteriori": "Vorstellung, dass das Beste für alle erst nachträglich aus einem fairen Interessenausgleich entsteht (Fraenkel)",
+    "Interessengruppe": "Verband wie Gewerkschaft, Arbeitgeber- oder Berufsverband, der die Anliegen seiner Mitglieder gegenüber der Politik vertritt",
+    "Lobbyismus": "Gezielte direkte Einflussnahme von Interessenvertretern auf Abgeordnete, Ministerien und Gesetzgebung",
+    "Lobbyregister": "Öffentliches Verzeichnis beim Bundestag, in das sich Interessenvertreter seit 2022 eintragen müssen",
+    "Drehtüreffekt": "Wechsel von Politikern in Lobbyjobs der Wirtschaft oder umgekehrt, wobei Insiderwissen und Kontakte mitgenommen werden",
+    "Pluralismus": "Vielfalt gleichberechtigter Interessen, Meinungen und Gruppen in einer Gesellschaft",
+    "Organisationsfähigkeit": "Vermögen eines Interesses, Mitglieder und Ressourcen zu gewinnen und sich wirksam zusammenzuschließen (Olson)",
+    "Konfliktfähigkeit": "Möglichkeit einer Gruppe, glaubhaft mit Leistungsverweigerung wie Streik zu drohen und so Druck auszuüben (Offe)",
+    "Trittbrettfahrerproblem": "Nichtmitglieder profitieren von den Erfolgen einer Gruppe, etwa einer Gewerkschaft, ohne selbst etwas beizutragen",
+    "Neokorporatismus": "Enge, institutionalisierte Zusammenarbeit von Staat und großen Verbänden, z. B. Arbeitgebern und Gewerkschaften",
+    "NGO": "Zivilgesellschaftliche, vom Staat unabhängige und nicht gewinnorientierte Organisation, z. B. Greenpeace oder Amnesty International",
+    "Klientelismus": "Politik, die gezielt die Interessen der eigenen Unterstützergruppen bedient statt das Gemeinwohl",
+    "Leistungsgerechtigkeit": "Grundsatz: Wer mehr arbeitet oder mehr Verantwortung trägt, soll auch mehr Einkommen bekommen",
+    "Bedarfsgerechtigkeit": "Grundsatz: Jeder soll bekommen, was er zum Leben braucht, unabhängig von seiner Arbeit, z. B. über Grundsicherung",
+    "Chancengerechtigkeit": "Grundsatz: Alle sollen unabhängig von ihrer Herkunft gleiche Startbedingungen haben, z. B. durch kostenlose Bildung",
+    "Verteilungsgerechtigkeit": "Frage, wer in einer Gesellschaft wie viel Einkommen und Vermögen bekommt und welche Lasten trägt, z. B. über Steuern",
+    "Generationengerechtigkeit": "Fairer Ausgleich zwischen heute Lebenden und künftigen Jahrgängen, z. B. bei Staatsschulden, Rente und Klima",
+    "Schleier des Nichtwissens": "Gedankenexperiment von John Rawls: Gerechte Regeln wählt, wer seine eigene künftige Stellung in der Gesellschaft nicht kennt",
+    "Sozialstaatsprinzip": "Verfassungsauftrag (Art. 20 Abs. 1 GG), ein menschenwürdiges Existenzminimum und gesellschaftlichen Ausgleich zu sichern",
+}

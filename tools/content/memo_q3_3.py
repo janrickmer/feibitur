@@ -13,7 +13,7 @@ MEMO = {
     "Bilaterale EZ": "Förderung ärmerer Länder, die ein Geberstaat direkt mit einem einzelnen Partnerland vereinbart, z. B. über KfW und GIZ",
     "Multilaterale EZ": "Förderung ärmerer Länder über internationale Organisationen wie Weltbank, UN-Programme oder EU, in die Staaten einzahlen",
     "ODA-Quote": "Anteil der staatlichen Entwicklungsgelder am Bruttonationaleinkommen eines Geberlandes; UN-Zielmarke: 0,7 %",
-    "Weltbank": "Internationale Finanzinstitution, die Entwicklungs- und Schwellenländern Kredite, Zuschüsse und Beratung zur Armutsbekämpfung gewährt",
+    "Weltbank": "Internationale Finanzinstitution, die Entwicklungs- und Schwellenländern Kredite, Zuschüsse und Beratung gegen Armut gewährt",
     "Internationaler Währungsfonds (IWF)": "Weltweite Organisation, die Staaten in Zahlungsbilanzkrisen Kredite gegen Reformauflagen gewährt (Konditionalität)",
     "Nichtregierungsorganisation (NGO)": "Private, gemeinnützige Vereinigung der Zivilgesellschaft wie Oxfam oder Misereor, die Projekte finanziert und Lobbyarbeit betreibt",
     "Fairer Handel": "Bezugsmodell mit Mindestpreisen, Prämien und besseren Arbeitsbedingungen für Kleinbauern im globalen Süden, erkennbar an Siegeln",
@@ -28,5 +28,5 @@ MEMO = {
     "Dependenztheorie": "Erklärungsansatz: Unterentwicklung ist Folge von Kolonialismus und ungleichem Tausch zwischen Peripherie und Zentren",
     "Endogene und exogene Faktoren": "Innere (z. B. Korruption, Bildung) und äußere (z. B. Weltmarkt, Kolonialgeschichte) Ursachen von Unterentwicklung",
     "Ressourcenfluch": "Paradox, dass sich rohstoffreiche Länder oft schlechter entwickeln als rohstoffarme",
-    "Teufelskreis der Armut": "Modell: Niedriges Einkommen führt zu wenig Ersparnis, wenig Investitionen, geringer Produktivität – und wieder zu niedrigem Einkommen",
+    "Teufelskreis der Armut": "Modell: Niedriges Einkommen bringt wenig Ersparnis, Investitionen und Produktivität – und damit wieder niedriges Einkommen",
 }
