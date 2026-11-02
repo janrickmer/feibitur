@@ -53,7 +53,8 @@ NAVY = colors.HexColor("#14213d")
 ACCENT = colors.HexColor("#b5302a")
 GREY = colors.HexColor("#555555")
 
-TOPIC_MODULES = ["g1", "g2", "g3", "q1_1", "q1_2", "q1_3", "q1_4", "q1_5"]
+TOPIC_MODULES = ["g1", "g2", "g3", "q1_1", "q1_2", "q1_3", "q1_4", "q1_5",
+                 "q2_1", "q2_2", "q2_3", "q2_4", "q2_5", "q3_1", "q3_2", "q3_3", "q3_4", "q3_5"]
 
 
 def load_topic(modname):
@@ -374,5 +375,164 @@ def main():
     print("OK: %d Themen mit Inhalt, %d Korrekturdateien" % (len(has_content), n_pdf))
 
 
+def _afb_range(r):
+    order = ["I", "II", "III"]
+    parts = r.replace("–", "-").split("-")
+    a, b = order.index(parts[0]), order.index(parts[-1])
+    return order[a:b + 1]
+
+
+def check(mods):
+    """Prüfmodus: python3 tools/build.py --check q2_1 q2_2
+    Prüft Format und Vollständigkeit einzelner Unterthemen und rendert deren
+    Korrekturdateien testweise in einen temporären Ordner (data/ bleibt unverändert)."""
+    import tempfile
+    import xml.etree.ElementTree as ET
+    from html.parser import HTMLParser
+
+    class TagCheck(HTMLParser):
+        VOID = {"br", "img", "hr", "input", "meta", "link"}
+
+        def __init__(self):
+            super().__init__()
+            self.stack, self.errors = [], []
+
+        def handle_starttag(self, tag, attrs):
+            if tag not in self.VOID:
+                self.stack.append(tag)
+
+        def handle_endtag(self, tag):
+            if tag in self.VOID:
+                return
+            if not self.stack or self.stack[-1] != tag:
+                self.errors.append("unerwartetes </%s> (offen: %s)" % (tag, self.stack[-3:]))
+            else:
+                self.stack.pop()
+
+    def html_ok(where, html):
+        t = TagCheck()
+        t.feed(html)
+        t.close()
+        errs = t.errors + (["nicht geschlossen: %s" % t.stack] if t.stack else [])
+        for e in errs:
+            problems.append("%s: HTML %s" % (where, e))
+
+    def svg_ok(where, svg):
+        try:
+            ET.fromstring(svg)
+        except ET.ParseError as e:
+            problems.append("%s: SVG ist kein gültiges XML (%s)" % (where, e))
+
+    topics_meta = {t["id"]: t for tab in site.TABS for t in tab["themen"]}
+    tmp = tempfile.mkdtemp(prefix="feibitur-check-")
+    ok_all = True
+    for modname in mods:
+        problems, warnings = [], []
+        topic = load_topic(modname)
+        if topic is None:
+            print("FEHLT:", modname)
+            ok_all = False
+            continue
+        tid = topic.get("id")
+        if tid not in topics_meta:
+            problems.append("unbekannte id %r" % tid)
+            print(modname, problems)
+            ok_all = False
+            continue
+        meta = topics_meta[tid]
+        names = [b["b"] for b in topic["begriffe"]]
+        if len(names) != len(set(names)):
+            problems.append("doppelte Begriffe")
+        for b in topic["begriffe"]:
+            if not b.get("kurz") or not b.get("lang"):
+                problems.append("Begriff ohne kurz/lang: " + b.get("b", "?"))
+            html_ok("Begriff " + b["b"], b.get("lang", ""))
+        for i, blk in enumerate(topic["inhalte"]):
+            where = "Inhalt %d (%s)" % (i + 1, blk.get("titel", ""))
+            if blk["t"] == "svg":
+                svg_ok(where, blk["svg"])
+            elif blk["t"] == "table":
+                if not blk.get("kopf") or not blk.get("zeilen"):
+                    problems.append(where + ": Tabelle ohne kopf/zeilen")
+                for z in blk["zeilen"]:
+                    if len(z) != len(blk["kopf"]):
+                        problems.append(where + ": Zeilenlänge passt nicht zum Kopf")
+                    for c in z:
+                        html_ok(where, c)
+            else:
+                html_ok(where, blk.get("html", ""))
+        afile = os.path.join(CONTENT, modname + "_aufgaben.py")
+        if not os.path.exists(afile):
+            problems.append("Aufgabendatei fehlt: " + afile)
+        else:
+            am = _load(afile, "chk_" + modname)
+            mats = {m["id"]: m for m in am.MATERIALIEN}
+            for m in am.MATERIALIEN:
+                if m.get("typ") == "bild":
+                    svg_ok("Material " + m["id"], m["svg"])
+                    if not m.get("beschreibung"):
+                        problems.append("Material %s: Bild ohne beschreibung" % m["id"])
+                elif m.get("typ") == "tabelle":
+                    for z in m["zeilen"]:
+                        if len(z) != len(m["kopf"]):
+                            problems.append("Material %s: Zeilenlänge passt nicht zum Kopf" % m["id"])
+                else:
+                    for a_ in m["absaetze"]:
+                        html_ok("Material " + m["id"], a_)
+                if not m.get("quelle"):
+                    problems.append("Material %s ohne quelle" % m["id"])
+            counts = {"I": 0, "II": 0, "III": 0}
+            ids = set()
+            nr = {"I": 0, "II": 0, "III": 0}
+            for t in am.AUFGABEN:
+                if t["id"] in ids:
+                    problems.append("doppelte Aufgaben-ID " + t["id"])
+                ids.add(t["id"])
+                try:
+                    k = operator_key(t["operator"])
+                except KeyError as e:
+                    problems.append(str(e))
+                    continue
+                if t["afb"] not in _afb_range(site.OPERATOREN[k]["afb"]):
+                    warnings.append("%s: Operator '%s' (AFB %s) passt nicht zu AFB %s" % (t["id"], k, site.OPERATOREN[k]["afb"], t["afb"]))
+                if not t.get("lk"):
+                    counts[t["afb"]] += 1
+                for mid in t.get("material", []):
+                    if mid not in mats:
+                        problems.append("%s: Material %s fehlt" % (t["id"], mid))
+                for key in ("loesung", "bewertung"):
+                    if key not in t:
+                        problems.append(t["id"] + ": " + key + " fehlt")
+                if not t.get("loesung", {}).get("punkte"):
+                    problems.append(t["id"] + ": loesung.punkte leer")
+                if not (t.get("bewertung", {}).get("ausreichend") and t.get("bewertung", {}).get("gut")):
+                    problems.append(t["id"] + ": bewertung unvollständig")
+                html_ok(t["id"] + " text", t["text"])
+            for a_, c in counts.items():
+                if c < 3:
+                    problems.append("AFB %s: nur %d Aufgaben (ohne LK-Aufgaben), mindestens 3 nötig" % (a_, c))
+            if not problems:
+                for afb in ("I", "II", "III"):
+                    for t in [x for x in am.AUFGABEN if x["afb"] == afb]:
+                        nr[afb] += 1
+                        try:
+                            build_pdf(meta, getattr(am, "BEZUG", ""), t, "%s.%d" % (afb, nr[afb]),
+                                      [mats[m] for m in t.get("material", [])], os.path.join(tmp, t["id"] + ".pdf"))
+                        except Exception as e:  # noqa: BLE001
+                            problems.append("%s: PDF-Fehler %s" % (t["id"], e))
+        status = "OK" if not problems else "FEHLER"
+        ok_all = ok_all and not problems
+        print("[%s] %s: %d Begriffe, %d Inhaltsblöcke" % (status, modname, len(topic["begriffe"]), len(topic["inhalte"])))
+        for p_ in problems:
+            print("   FEHLER:", p_)
+        for w_ in warnings:
+            print("   Hinweis:", w_)
+    print("PDF-Testausgabe:", tmp)
+    return ok_all
+
+
 if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 2 and sys.argv[1] == "--check":
+        sys.exit(0 if check(sys.argv[2:]) else 1)
     main()
