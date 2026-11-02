@@ -462,7 +462,10 @@
      },
      "erlass": true,
      "erlass_hinweis": "Laut Erlass 2027 bei den Kontroversen „insbesondere Inflation sowie Staatsverschuldung“.",
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q2-2",
@@ -483,7 +486,10 @@
      },
      "erlass": true,
      "erlass_hinweis": "Laut Erlass 2027 ist die Soziale Marktwirtschaft in Abgrenzung zu anderen Wirtschaftsordnungen nur im LK Schwerpunkt.",
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q2-3",
@@ -502,7 +508,10 @@
       ]
      },
      "erlass": false,
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q2-4",
@@ -524,7 +533,10 @@
      },
      "erlass": true,
      "erlass_hinweis": "Laut Erlass 2027: Fachkräftemangel betont, Gerechtigkeitsbegriffe auch im GK; Einkommens- und Vermögensverteilung nur im LK; Arbeitslosigkeit (Formen/Ursachen) gestrichen.",
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q2-5",
@@ -542,7 +554,10 @@
       ]
      },
      "erlass": false,
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     }
    ]
   },
@@ -567,7 +582,10 @@
      },
      "erlass": true,
      "erlass_hinweis": "Laut Erlass 2027 bei den Konfliktarten zusätzlich „hybride Kriegsführung“.",
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q3-2",
@@ -585,7 +603,10 @@
      },
      "erlass": true,
      "erlass_hinweis": "Laut Erlass 2027 ist die WTO-Kontroverse auch im GK Schwerpunkt; Porter-Modell und Währungssysteme sind gestrichen.",
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q3-3",
@@ -602,7 +623,10 @@
       ]
      },
      "erlass": false,
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q3-4",
@@ -621,7 +645,10 @@
       ]
      },
      "erlass": false,
-     "content": null
+     "content": {
+      "begriffe": 28,
+      "aufgaben": 11
+     }
     },
     {
      "id": "q3-5",
@@ -638,7 +665,10 @@
       ]
      },
      "erlass": false,
-     "content": null
+     "content": {
+      "begriffe": 27,
+      "aufgaben": 11
+     }
     }
    ]
   },
