@@ -79,7 +79,7 @@
   function shell(title, sub, inner, slug) {
     document.title = title + " – Feibitur";
     F.app.innerHTML = F.topbar((slug ? '<a class="btn btn-small btn-tools" href="#/lerntools">' + I.tools + "<span>Alle Lerntools</span></a>" : "") + '<a class="btn btn-small" href="#/powi">Politik und Wirtschaft</a>') +
-      '<div class="flagline"></div><section class="tools-hero"><h1>' + esc(title) + "</h1>" + (sub ? "<p>" + sub + "</p>" : "") + "</section>" +
+      '<section class="tools-hero"><div class="tools-hero-in"><h1>' + esc(title) + "</h1>" + (sub ? "<p>" + sub + "</p>" : "") + "</div></section>" +
       '<main class="tools-main" id="tools-main">' + inner + "</main>" + F.footer();
     window.scrollTo(0, 0);
     return $("#tools-main");
@@ -90,7 +90,7 @@
     TOOLS.forEach(function (t) { if (groups.indexOf(t.g) < 0) groups.push(t.g); });
     var html = groups.map(function (g) {
       return '<section class="tool-group"><h2>' + esc(g) + '</h2><div class="tool-grid">' + TOOLS.filter(function (t) { return t.g === g; }).map(function (t) {
-        return '<a class="tool-card" href="#/lerntools/' + t.slug + '"><span class="tool-title">' + esc(t.t) + '</span><span class="tool-desc">' + esc(t.d) + "</span></a>";
+        return '<a class="tool-card" href="#/lerntools/' + t.slug + '"><span class="tool-title">' + esc(t.t) + '</span><span class="tool-desc">' + esc(t.d) + "</span>" + I.arrow + "</a>";
       }).join("") + "</div></section>";
     }).join("");
     shell("Lerntools", "Werkzeuge für dein Selbstlernen in Politik und Wirtschaft. Alles läuft in deinem Browser – dein Lernstand wird nur auf deinem Gerät gespeichert.", html);

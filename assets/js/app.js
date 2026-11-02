@@ -38,6 +38,9 @@
     chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
     columns: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M8 26 32 10l24 16z"/><path d="M12 26v24M22 26v24M32 26v24M42 26v24M52 26v24"/><path d="M6 54h52"/></svg>',
     cross: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M32 8v48M18 22h28"/></svg>',
+    arrow: '<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
     dome: '<svg viewBox="0 0 200 120" fill="none" stroke="#fff" stroke-width="3" aria-hidden="true"><path d="M30 110h140M40 110V70h120v40M55 70V50h90v20"/><path d="M60 50a40 40 0 0 1 80 0"/><path d="M80 50a20 40 0 0 1 40 0M100 10v40M70 22c20 10 40 10 60 0"/></svg>'
   };
 
@@ -82,7 +85,7 @@
   }
 
   function topbar(extra) {
-    return '<header class="topbar"><a class="brand" href="#/">Feibitur</a><nav>' + (extra || "") + '</nav></header>';
+    return '<header class="topbar"><a class="brand" href="#/" aria-label="Feibitur – zur Startseite">Feibitur</a><nav>' + (extra || "") + '</nav></header>';
   }
   // Kurswahl: "GK", "LK" oder null (noch nicht gewählt -> alles anzeigen)
   function kursWahl() { var k = store("kurs"); return k === "GK" || k === "LK" ? k : null; }
@@ -102,6 +105,9 @@
     });
   }
   function toolsBtn() { return '<a class="btn btn-small btn-tools" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a>"; }
+  var SEC_NAME = { begriffe: "Fachbegriffe", inhalte: "Inhalte", aufgaben: "Übungsaufgaben" };
+  function hjShort(t) { return t.id === "grundlagen" ? "G" : t.kurz; }
+  function hjName(t) { return String(t.titel).replace(/^Q\d:\s*/, ""); }
   function footer() {
     return '<footer class="site-foot"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · Feibitur speichert deinen Lernstand nur in deinem Browser.</footer>';
   }
@@ -109,12 +115,15 @@
   // ---------------------------------------------------------------- Startseite
   function renderHome() {
     document.title = "Feibitur";
-    app.innerHTML = '<div class="home"><div class="flagline"></div><header class="home-head"><div class="brand">Feibitur</div><p>Deine Vorbereitung auf das Landesabitur</p></header>' +
+    var z = store("zuletzt"), zm = z && TOPIC_META[z.topic];
+    var weiter = zm ? '<a class="weiter" href="#/powi/' + z.tab + "/" + z.topic + "/" + z.sec + '"><span>Weiter, wo du aufgehört hast:</span> <b>' + esc(zm.nr) + " · " + esc(SEC_NAME[z.sec] || "") + "</b>" + ICON.arrow + "</a>" : "";
+    app.innerHTML = '<div class="home"><header class="home-head"><h1 class="wordmark">Feibitur</h1><p>Deine Vorbereitung auf das Landesabitur</p></header>' +
       '<main class="home-choices">' +
-      '<button class="choice choice-powi" data-go="powi">' + ICON.columns + '<span class="choice-title">Politik und Wirtschaft</span><span class="choice-sub">Fachbegriffe, Inhalte und Übungsaufgaben für Q1–Q4</span></button>' +
-      '<button class="choice choice-rel" data-go="religion">' + ICON.cross + '<span class="choice-title">ev. Religion</span><span class="choice-sub">Evangelische Religion</span></button>' +
-      '<button class="choice choice-tools" data-go="lerntools">' + ICON.tools + '<span class="choice-title">Lerntools</span><span class="choice-sub">Lernplan, Fortschritt, Operatoren-Trainer, Abi-Simulation und mehr (Politik und Wirtschaft)</span></button>' +
-      '</main>' + footer() + '</div>';
+      '<button class="choice choice-powi" data-go="powi"><span class="choice-title">Politik und Wirtschaft</span><span class="choice-sub">Fachbegriffe, Inhalte und Übungsaufgaben für Q1–Q4</span>' +
+      '<span class="hj-strip" aria-hidden="true"><i data-hj="grundlagen">G</i><i data-hj="q1">Q1</i><i data-hj="q2">Q2</i><i data-hj="q3">Q3</i><i data-hj="q4">Q4</i></span></button>' +
+      '<button class="choice choice-tools" data-go="lerntools"><span class="choice-title">Lerntools</span><span class="choice-sub">Lernplan, Fortschritt, Operatoren-Trainer, Abi-Simulation und mehr (Politik und Wirtschaft)</span></button>' +
+      '<button class="choice choice-rel" data-go="religion"><span class="choice-title">ev. Religion</span><span class="choice-sub">Noch keine Inhalte</span></button>' +
+      weiter + '</main>' + footer() + '</div>';
     $all("[data-go]", app).forEach(function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
     window.scrollTo(0, 0);
   }
@@ -122,7 +131,7 @@
   // ---------------------------------------------------------------- Religion
   function renderReligion() {
     document.title = "ev. Religion – Feibitur";
-    app.innerHTML = topbar('<a class="btn btn-small" href="#/">Zur Startseite</a>') + '<section class="rel-hero"><h1>Evangelische Religion</h1></section>' +
+    app.innerHTML = topbar('<a class="btn btn-small" href="#/">Startseite</a>') + '<section class="rel-hero"><h1>Evangelische Religion</h1></section>' +
       '<main class="rel-body"><div class="placeholder"><h2>Noch keine Inhalte</h2><p>Für evangelische Religion wurden bisher noch keine Inhalte eingepflegt. Schau bald wieder vorbei!</p></div></main>' + footer();
     window.scrollTo(0, 0);
   }
@@ -135,7 +144,9 @@
         return '<h4>' + g.tf + '</h4><ul>' + g.punkte.map(function (p) { return "<li>" + p + "</li>"; }).join("") + "</ul>";
       }).join("") + "</div>";
     }
-    var open = store("hinweisZu") ? "" : " open";
+    // Beim ersten Besuch offen, danach geschlossen – außer man hat ihn zuletzt selbst geöffnet gelassen
+    var open = !store("hinweisGesehen") || store("hinweisZu") === false ? " open" : "";
+    store("hinweisGesehen", true);
     return '<div class="abi-wrap"><details class="abi" id="abi"' + open + '><summary>' + h.titel + ' ' + ICON.chev + '</summary><div class="abi-body">' +
       '<ul>' + h.allgemein.map(function (p) { return "<li>" + p + "</li>"; }).join("") + '</ul>' +
       (kursWahl() === "GK" ? '<div class="abi-cols abi-one">' + col(h.grundkurs, "gk", "Wichtig für den Grundkurs") + "</div>" :
@@ -149,18 +160,24 @@
     var tab = SITE.tabs.filter(function (t) { return t.id === tabId; })[0] || SITE.tabs[0];
     var existing = $("#powi-root");
     if (!existing) {
-      app.innerHTML = topbar(toolsBtn() + '<a class="btn btn-small" href="#/">Zur Startseite</a>') + '<div class="flagline"></div>' +
-        '<div id="powi-root"><section class="powi-hero">' + ICON.dome.replace("<svg", '<svg class="dome"') + '<h1>Politik und Wirtschaft</h1><p>Vorbereitung auf das Landesabitur 2027 in Hessen</p>' +
-        kursSwitchHTML() + '<a class="btn btn-tools-hero" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a></section>" +
+      app.innerHTML = topbar(toolsBtn() + '<a class="btn btn-small" href="#/">Startseite</a>') +
+        '<div id="powi-root"><section class="powi-hero"><div class="powi-hero-in"><h1>Politik und Wirtschaft</h1><p>Vorbereitung auf das Landesabitur 2027 in Hessen</p></div>' +
+        kursSwitchHTML() + "</section>" +
         renderHinweis() + '<div class="tabs-wrap"><div class="tabs" role="tablist" aria-label="Kurshalbjahre"></div></div><div id="tabpanel"></div></div>' + footer();
       $("#abi").addEventListener("toggle", function (e) { store("hinweisZu", !e.target.open); });
       bindKursWahl(app);
       preloadGlossar();
     }
+    $("#powi-root").setAttribute("data-hj", tab.id);
     var tabsEl = $(".tabs");
     tabsEl.innerHTML = SITE.tabs.map(function (t) {
-      return '<button class="tab" role="tab" aria-selected="' + (t.id === tab.id) + '" data-tab="' + t.id + '"><span class="tab-long">' + esc(t.titel) + '</span><span class="tab-short">' + esc(t.kurz) + "</span></button>";
+      return '<button class="tab" role="tab" data-hj="' + t.id + '" aria-selected="' + (t.id === tab.id) + '" data-tab="' + t.id + '"><span class="tab-nr">' + esc(hjShort(t)) + '</span><span class="tab-long">' + esc(hjName(t)) + "</span></button>";
     }).join("");
+    var sel = $(".tab[aria-selected=true]", tabsEl);
+    if (sel && tabsEl.scrollWidth > tabsEl.clientWidth) tabsEl.scrollLeft = Math.max(0, sel.offsetLeft - 16);
+    var valid = topicId && TOPIC_META[topicId];
+    if (valid) store("zuletzt", { tab: tab.id, topic: topicId, sec: TOPIC_META[topicId].methode ? "inhalte" : section });
+    var z = store("zuletzt") || {};
     $all(".tab", tabsEl).forEach(function (b) { b.addEventListener("click", function () { go("powi/" + b.getAttribute("data-tab")); }); });
 
     var panel = $("#tabpanel");
@@ -169,10 +186,11 @@
       if (t.methode) badges += '<span class="badge badge-abi">für alle Aufgaben wichtig</span>';
       else if (t.erlass) badges += '<span class="badge badge-abi">Abi 2027: Schwerpunkt</span>';
       else badges += '<span class="badge badge-noabi">kein Schwerpunkt 2027</span>';
-      if (t.content) badges += '<span class="badge badge-content">Inhalte verfügbar</span>';
-      return '<button class="topic-btn" data-topic="' + t.id + '" aria-expanded="' + (t.id === topicId) + '"><span class="topic-nr">' + esc(t.nr) + '</span><span class="topic-title">' + esc(t.titel) + '</span><div class="badges">' + badges + "</div></button>";
+      if (!t.content) badges += '<span class="badge badge-noabi">noch ohne Inhalte</span>';
+      var flag = z.topic === t.id && t.id !== topicId ? '<span class="zuletzt">Zuletzt hier</span>' : "";
+      return '<button class="topic-btn" data-topic="' + t.id + '" aria-expanded="' + (t.id === topicId) + '">' + flag + '<span class="topic-nr">' + esc(t.nr) + '</span><span class="topic-title">' + esc(t.titel) + '</span><span class="badges">' + badges + "</span></button>";
     }).join("") + "</aside>";
-    panel.className = "tabpanel";
+    panel.className = "tabpanel" + (valid ? " has-topic" : "");
     panel.innerHTML = side + '<div class="stage" id="stage"></div>';
     $all(".topic-btn", panel).forEach(function (b) {
       b.addEventListener("click", function () {
@@ -184,13 +202,15 @@
     var stage = $("#stage");
     if (!topicId || !TOPIC_META[topicId]) {
       current.topic = null;
-      stage.innerHTML = '<div class="stage-empty"><p><b>Wähle links ein Unterthema aus.</b></p><p>Es klappt hier auf und zeigt dir die Bereiche ' + (tab.id === "grundlagen" ? "mit den Inhalten" : "Fachbegriffe, Inhalte und Übungsaufgaben") + '. Ein weiterer Klick auf das Unterthema klappt es wieder zu.</p></div>';
+      var zt = z.tab === tab.id && TOPIC_META[z.topic];
+      stage.innerHTML = '<div class="stage-empty"><p class="stage-big">Wähle ein Unterthema.</p><p>Es klappt hier als Plakat auf und zeigt dir ' + (tab.id === "grundlagen" ? "die Inhalte" : "die Bereiche Fachbegriffe, Inhalte und Übungsaufgaben") + '. Ein weiterer Klick auf das Unterthema klappt es wieder zu.</p>' +
+        (zt ? '<a class="btn btn-primary" href="#/powi/' + tab.id + "/" + z.topic + "/" + z.sec + '">Weiter bei ' + esc(zt.nr) + " · " + esc(SEC_NAME[z.sec] || "") + ICON.arrow + "</a>" : "") + "</div>";
       return;
     }
     var isNew = current.topic !== topicId;
     current.topic = topicId;
     renderTopic(stage, tab, TOPIC_META[topicId], section);
-    if (!isNew) { var tp = $(".topic-panel", stage); if (tp) tp.style.animation = "none"; }
+    if (isNew) { var tp = $(".topic-panel", stage); if (tp) tp.classList.add("paste"); }
     if (isNew) {
       var r = stage.getBoundingClientRect();
       if (r.top < 0 || r.top > window.innerHeight * 0.5) stage.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -210,7 +230,8 @@
       secs = [secs[1]];
       section = "inhalte";
     }
-    stage.innerHTML = '<article class="topic-panel"><header class="topic-head"><div class="row"><h2>' + esc(meta.nr) + " " + esc(meta.titel) + "</h2>" + badge + "</div>" + note + kcgo + "</header>" +
+    stage.innerHTML = '<article class="topic-panel"><header class="topic-head"><span class="tie tie-l" aria-hidden="true"></span><span class="tie tie-r" aria-hidden="true"></span>' +
+      '<div class="row"><span class="poster-nr" aria-hidden="true">' + esc(meta.nr) + "</span>" + badge + '</div><h2><span class="visually-hidden">' + esc(meta.nr) + " </span>" + esc(meta.titel) + "</h2>" + note + kcgo + "</header>" +
       '<div class="sections" role="tablist" style="grid-template-columns:repeat(' + secs.length + ',1fr)">' + secs.map(function (s) {
         return '<button class="sec-btn" role="tab" aria-selected="' + (s[0] === section) + '" data-sec="' + s[0] + '">' + s[1] + "<span>" + s[2] + "</span></button>";
       }).join("") + '</div><div class="sec-body" id="sec-body"><p class="muted">Lade Inhalte …</p></div></article>';
@@ -351,108 +372,281 @@
   }
   function openMemory(terms, titel) {
     if (terms.length < 4) { alert("Für ein Memory werden mindestens 4 Fachbegriffe benötigt."); return; }
+    var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var EASE_OUT = "cubic-bezier(0.23, 1, 0.32, 1)", EASE_IO = "cubic-bezier(0.77, 0, 0.175, 1)";
     var ov = document.createElement("div");
     ov.className = "memory-overlay";
     ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "Fachbegriffe-Memory");
     document.body.appendChild(ov); document.body.classList.add("no-scroll");
-    var G = null, lastFocus = document.activeElement;
+    var G = null, timers = [], raf = 0, lastFocus = document.activeElement, prefs = { names: ["Spieler 1", "Spieler 2"], n: 0 };
+    function later(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; if (raf) cancelAnimationFrame(raf); raf = 0; }
     function close() {
       if (G && !G.over && G.found > 0 && !confirm("Spiel wirklich beenden?")) return;
-      ov.remove(); document.body.classList.remove("no-scroll"); document.removeEventListener("keydown", onKey);
+      clearTimers();
+      ov.remove(); document.body.classList.remove("no-scroll");
+      document.removeEventListener("keydown", onKey); window.removeEventListener("resize", onResize);
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
     function onKey(e) { if (e.key === "Escape") { var z = $(".m-zoom", ov); if (z) z.remove(); else close(); } }
-    document.addEventListener("keydown", onKey);
+    function onResize() { if (G && !G.over) fit(); }
+    document.addEventListener("keydown", onKey); window.addEventListener("resize", onResize);
     var maxPairs = Math.min(12, terms.length);
+    var LAMP = '<div class="m-lamp" aria-hidden="true"></div>';
+    var X = '<button class="m-x" aria-label="Memory schließen">' + ICON.close + "</button>";
+
+    // ------------------------------------------------ Einstellungen
     function setup() {
+      clearTimers(); G = null;
       var opts = [4, 6, 8, 10, 12].filter(function (n) { return n <= maxPairs; });
-      var def = opts.indexOf(8) >= 0 ? 8 : opts[opts.length - 1];
-      ov.innerHTML = '<div class="m-table m-setup"><div class="m-setup-card"><button class="m-x" aria-label="Schließen">×</button><h2>Fachbegriffe-Memory</h2><p class="muted">' + esc(titel) + "</p>" +
-        "<p>Deckt abwechselnd zwei Karten auf. Ein Paar besteht aus einem <b>Fachbegriff</b> und seiner <b>Beschreibung</b>. Wer ein Paar findet, bekommt einen Punkt und ist noch einmal dran. Ein erneuter Klick auf eine aufgedeckte Karte vergrößert sie.</p>" +
-        '<label class="bk-f"><span>Name Spieler/in 1</span><input id="m-n1" value="Spieler 1" maxlength="20"></label>' +
-        '<label class="bk-f"><span>Name Spieler/in 2</span><input id="m-n2" value="Spieler 2" maxlength="20"></label>' +
-        '<label class="bk-f"><span>Anzahl Paare</span><select id="m-pairs">' + opts.map(function (n) { return '<option value="' + n + '"' + (n === def ? " selected" : "") + ">" + n + " Paare (" + 2 * n + " Karten)</option>"; }).join("") + "</select></label>" +
-        '<p class="muted small">Die Namen werden nicht gespeichert.</p><button class="btn btn-primary" id="m-start">Spiel starten</button></div></div>';
+      var def = prefs.n && opts.indexOf(prefs.n) >= 0 ? prefs.n : (opts.indexOf(8) >= 0 ? 8 : opts[opts.length - 1]);
+      ov.innerHTML = '<div class="m-table">' + LAMP + '<div class="m-setup">' + X +
+        '<form class="m-sheet" id="m-form" autocomplete="off"><h2>Fachbegriffe-Memory</h2><p class="m-topic">' + esc(titel) + "</p>" +
+        '<ol class="m-rules"><li>Deckt abwechselnd zwei Karten auf: einen <b>Fachbegriff</b> und seine <b>Beschreibung</b>.</li>' +
+        "<li>Passen sie zusammen, gibt es einen Punkt – und du bist gleich noch einmal dran.</li>" +
+        "<li>Kein Paar? Dann tippt ihr auf „Nächster Spieler“. Aufgedeckte Karten vergrößerst du mit einem weiteren Tipp.</li></ol>" +
+        '<div class="m-names"><label class="m-nameplate"><span>Spieler/in 1</span><input id="m-n1" value="' + esc(prefs.names[0]) + '" maxlength="20" required></label>' +
+        '<span class="m-vs" aria-hidden="true">gegen</span><label class="m-nameplate"><span>Spieler/in 2</span><input id="m-n2" value="' + esc(prefs.names[1]) + '" maxlength="20" required></label></div>' +
+        '<fieldset class="m-pairs"><legend>Wie viele Paare liegen auf dem Tisch?</legend>' + opts.map(function (n) {
+          return '<label><input type="radio" name="m-pairs" value="' + n + '"' + (n === def ? " checked" : "") + "><span>" + n + "</span></label>";
+        }).join("") + "</fieldset>" +
+        '<p class="m-privacy">Die Namen werden nicht gespeichert.</p><button class="btn btn-primary m-go" id="m-start" type="submit">Karten austeilen</button></form></div></div>';
       $(".m-x", ov).addEventListener("click", close);
-      $("#m-start", ov).addEventListener("click", function () {
-        start([$("#m-n1", ov).value.trim() || "Spieler 1", $("#m-n2", ov).value.trim() || "Spieler 2"], +$("#m-pairs", ov).value);
+      $("#m-form", ov).addEventListener("submit", function (e) {
+        e.preventDefault();
+        var n = +(($("input[name=m-pairs]:checked", ov) || {}).value || def);
+        start([$("#m-n1", ov).value.trim() || "Spieler 1", $("#m-n2", ov).value.trim() || "Spieler 2"], n, 0);
       });
       $("#m-start", ov).focus();
     }
-    function start(names, n) {
+
+    // ------------------------------------------------ Spiel
+    function start(names, n, first) {
+      clearTimers();
+      prefs.names = names; prefs.n = n;
       var pick = shuffle(terms).slice(0, n), deck = [];
       pick.forEach(function (t, i) {
-        deck.push({ pair: i, kind: "b", text: t.b });
-        deck.push({ pair: i, kind: "d", text: memoText(t) });
+        var kurz = String(t.kurz || "").replace(/<[^>]+>/g, "");
+        deck.push({ pair: i, kind: "b", text: t.b, term: t.b, kurz: kurz });
+        deck.push({ pair: i, kind: "d", text: memoText(t), term: t.b, kurz: kurz });
       });
-      deck = shuffle(deck).map(function (c, i) { c.id = i; c.rot = (Math.random() * 7 - 3.5).toFixed(1); c.state = "down"; return c; });
-      G = { names: names, deck: deck, n: n, player: 0, scores: [0, 0], piles: [[], []], open: [], phase: "pick1", found: 0, over: false };
-      render();
+      deck = shuffle(deck).map(function (c, i) { c.id = i; c.rot = +(Math.random() * 5 - 2.5).toFixed(1); c.state = "down"; return c; });
+      G = { names: names, deck: deck, n: n, player: first, first: first, scores: [0, 0], piles: [[], []], open: [], phase: "deal", found: 0, over: false,
+        moves: 0, misses: [0, 0], run: [0, 0], best: [0, 0] };
+      board();
+      deal();
+    }
+    function plate(i) {
+      return '<div class="m-player" data-p="' + i + '"><span class="m-pile" aria-hidden="true"></span><span class="m-who"><span class="m-name">' + esc(G.names[i]) + '</span><span class="m-turn">ist dran</span></span>' +
+        '<span class="m-score" aria-label="Punkte">0</span><span class="m-streak" hidden></span></div>';
+    }
+    function board() {
+      ov.innerHTML = '<div class="m-table">' + LAMP +
+        '<header class="m-head">' + plate(0) + '<div class="m-mid"><div class="m-progress" aria-hidden="true"><span></span></div><div class="m-count"></div></div>' + plate(1) + X + "</header>" +
+        '<main class="m-felt"><div class="m-grid">' + G.deck.map(cardHTML).join("") + '</div><div class="m-deck" aria-hidden="true"></div></main>' +
+        '<footer class="m-foot"><div class="m-learn" hidden></div><div class="m-bar"><p class="m-msg" aria-live="polite"></p><button class="btn btn-primary m-nextbtn" id="m-next" hidden>Nächster Spieler</button></div></footer></div>';
+      $(".m-x", ov).addEventListener("click", close);
+      $("#m-next", ov).addEventListener("click", next);
+      $all(".m-card", ov).forEach(function (b) { b.addEventListener("click", function () { click(G.deck[+b.getAttribute("data-c")]); }); });
+      fit(); status();
     }
     function cardHTML(c) {
-      if (c.state === "gone") return '<div class="m-slot"></div>';
-      var up = c.state === "up";
-      return '<button class="m-card' + (up ? " up" : "") + (c.hit ? " hit" : "") + '" data-c="' + c.id + '" style="--rot:' + c.rot + 'deg" aria-label="' + (up ? (c.kind === "b" ? "Fachbegriff: " : "Beschreibung: ") + esc(c.text) + " – zum Vergrößern erneut klicken" : "verdeckte Karte") + '">' +
-        '<span class="m-inner"><span class="m-back"><span>F</span></span><span class="m-front ' + (c.kind === "b" ? "m-term" : "m-def") + '"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + "</span></span></span></button>";
+      return '<button class="m-card" data-c="' + c.id + '" style="--rot:' + c.rot + 'deg" aria-label="verdeckte Karte">' +
+        '<span class="m-inner"><span class="m-back"><span class="m-logo">F</span><span class="m-stripes"><i></i><i></i><i></i><i></i></span></span>' +
+        '<span class="m-front ' + (c.kind === "b" ? "m-term" : "m-def") + '"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + "</span></span></span></button>";
     }
-    function render(msg) {
+    function el(c) { return $('.m-card[data-c="' + c.id + '"]', ov); }
+    // Kartengröße so wählen, dass möglichst alle Karten ohne Scrollen auf den Tisch passen
+    function fit() {
+      var felt = $(".m-felt", ov), grid = $(".m-grid", ov);
+      if (!felt || !grid) return;
+      var W = felt.clientWidth - 24, H = felt.clientHeight - 24, N = G.deck.length, gap = W < 560 ? 8 : 16, best = null;
+      for (var cols = 2; cols <= N; cols++) {
+        var rows = Math.ceil(N / cols);
+        var w = Math.min((W - gap * (cols - 1)) / cols, ((H - gap * (rows - 1)) / rows) * 0.75);
+        if (!best || w > best.w) best = { cols: cols, w: w };
+      }
+      var minW = W < 560 ? 96 : 118;
+      if (best.w < minW) { // lieber scrollen als winzige Karten – dann die Breite voll nutzen
+        var c2 = Math.max(2, Math.floor((W + gap) / (minW + gap)));
+        best = { cols: c2, w: (W - gap * (c2 - 1)) / c2 };
+      }
+      best.w = Math.min(best.w, 190);
+      grid.style.setProperty("--cols", best.cols);
+      grid.style.setProperty("--cw", Math.floor(best.w) + "px");
+      grid.style.setProperty("--gap", gap + "px");
+      grid.classList.toggle("small", best.w < 128);
+    }
+    function status(msg) {
       var p = G.player;
-      ov.innerHTML = '<div class="m-table"><header class="m-head"><div class="m-players">' + [0, 1].map(function (i) {
-          return '<div class="m-player' + (i === p && !G.over ? " active" : "") + '"><span class="m-name">' + esc(G.names[i]) + '</span><span class="m-score">' + G.scores[i] + "</span></div>";
-        }).join("") + '</div><button class="m-x" aria-label="Spiel schließen">×</button></header>' +
-        '<div class="m-grid' + (G.n > 8 ? " many" : "") + '">' + G.deck.map(cardHTML).join("") + "</div>" +
-        '<footer class="m-foot"><div class="m-msg" aria-live="polite">' + (msg || (esc(G.names[p]) + " ist dran: " + (G.phase === "pick1" ? "Decke die erste Karte auf." : "Decke die zweite Karte auf."))) + "</div>" +
-        (G.phase === "reveal" ? '<button class="btn btn-primary" id="m-next">Nächster Spieler</button>' : "") + "</footer></div>";
-      $(".m-x", ov).addEventListener("click", close);
-      var nx = $("#m-next", ov);
-      if (nx) { nx.addEventListener("click", next); nx.focus(); }
-      $all(".m-card", ov).forEach(function (b) { b.addEventListener("click", function () { click(G.deck[+b.getAttribute("data-c")]); }); });
+      $all(".m-player", ov).forEach(function (pl, i) {
+        pl.classList.toggle("active", i === p && !G.over && G.phase !== "deal");
+        $(".m-score", pl).textContent = G.scores[i];
+        var st = $(".m-streak", pl);
+        st.hidden = G.run[i] < 2; st.textContent = "Serie ×" + G.run[i];
+      });
+      $(".m-progress span", ov).style.transform = "scaleX(" + (G.found / G.n) + ")";
+      $(".m-count", ov).textContent = G.found + " von " + G.n + " Paaren · Zug " + (G.moves + 1);
+      $(".m-msg", ov).innerHTML = msg || (G.phase === "deal" ? "Die Karten werden ausgeteilt …" :
+        "<b>" + esc(G.names[p]) + "</b> ist dran: " + (G.phase === "pick2" ? "Decke die zweite Karte auf." : "Decke eine Karte auf."));
+    }
+    function deal() {
+      var cards = $all(".m-card", ov), deck = $(".m-deck", ov);
+      if (reduce || !deck.animate) { G.phase = "pick1"; status(); return; }
+      var d = deck.getBoundingClientRect();
+      cards.forEach(function (b, i) {
+        var r = b.getBoundingClientRect(), c = G.deck[i];
+        var dx = d.left + d.width / 2 - (r.left + r.width / 2), dy = d.top + d.height / 2 - (r.top + r.height / 2);
+        b.animate([
+          { transform: "translate(" + dx + "px," + dy + "px) rotate(" + (c.rot * 4) + "deg) scale(.86)", opacity: 0 },
+          { opacity: 1, offset: 0.15 },
+          { transform: "rotate(" + c.rot + "deg)", opacity: 1 }
+        ], { duration: 520, delay: i * 45, easing: EASE_OUT, fill: "backwards" });
+      });
+      later(function () { if (G && G.phase === "deal") { G.phase = "pick1"; status(); } }, 520 + cards.length * 45);
+    }
+    function flip(c, up) {
+      c.state = up ? "up" : "down";
+      var b = el(c); if (!b) return;
+      b.classList.toggle("up", up);
+      b.setAttribute("aria-label", up ? (c.kind === "b" ? "Fachbegriff: " : "Beschreibung: ") + c.text + " – zum Vergrößern erneut antippen" : "verdeckte Karte");
     }
     function zoom(c) {
       var z = document.createElement("div");
       z.className = "m-zoom";
-      z.innerHTML = '<div class="m-zoom-card ' + (c.kind === "b" ? "m-term" : "m-def") + '"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + '</span><span class="muted small">Zum Schließen tippen</span></div>';
+      z.innerHTML = '<div class="m-zoom-card ' + (c.kind === "b" ? "m-term" : "m-def") + '" role="document"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + '</span><span class="m-hint">Zum Schließen tippen</span></div>';
       z.addEventListener("click", function () { z.remove(); });
       ov.appendChild(z);
     }
+    function learn(c) {
+      var l = $(".m-learn", ov);
+      l.innerHTML = '<span class="m-learn-k">Gut gemerkt?</span><b>' + esc(c.term) + "</b>" + (c.kurz ? " – " + esc(c.kurz) : "");
+      l.hidden = false;
+      l.classList.remove("in"); void l.offsetWidth; l.classList.add("in");
+    }
     function click(c) {
-      if (G.over || c.state === "gone") return;
+      if (!G || G.over || c.state === "gone") return;
       if (c.state === "up") { zoom(c); return; }
-      if (G.phase === "pick1") { c.state = "up"; G.open = [c]; G.phase = "pick2"; render(); return; }
+      if (G.phase === "pick1") {
+        $(".m-learn", ov).hidden = true;
+        flip(c, true); G.open = [c]; G.phase = "pick2"; status(); return;
+      }
       if (G.phase !== "pick2") return;
-      c.state = "up"; G.open.push(c);
-      var a = G.open[0], b = G.open[1];
+      flip(c, true); G.open.push(c); G.moves++;
+      var a = G.open[0], b = G.open[1], p = G.player;
       if (a.pair === b.pair && a.kind !== b.kind) {
-        a.hit = b.hit = true; G.phase = "wait";
-        render("Richtig! " + esc(G.names[G.player]) + " bekommt das Paar und ist noch einmal dran.");
-        setTimeout(function () {
-          a.state = b.state = "gone"; a.hit = b.hit = false;
-          G.scores[G.player]++; G.found++;
-          G.piles[G.player].push(a.kind === "b" ? a.text : b.text);
-          G.open = []; G.phase = "pick1";
-          if (G.found === G.n) end(); else render();
-        }, 1300);
+        G.phase = "wait";
+        G.run[p]++; G.best[p] = Math.max(G.best[p], G.run[p]);
+        var serie = G.run[p] >= 2 ? " <span class=\"m-serie\">Serie ×" + G.run[p] + "!</span>" : "";
+        status("<b>Paar!</b> " + esc(G.names[p]) + " bekommt einen Punkt und ist noch einmal dran." + serie);
+        learn(a);
+        later(function () { el(a).classList.add("hit"); el(b).classList.add("hit"); }, reduce ? 0 : 380);
+        later(function () { collect([a, b], p); }, reduce ? 900 : 1500);
       } else {
-        G.phase = "reveal";
-        render("Kein Paar. Schau dir beide Karten an und klicke dann auf „Nächster Spieler“.");
+        G.phase = "reveal"; G.misses[p]++; G.run[p] = 0;
+        status("Kein Paar. Schaut euch beide Karten in Ruhe an – dann ist <b>" + esc(G.names[1 - p]) + "</b> dran.");
+        later(function () { [a, b].forEach(function (x) { var e = el(x); e.classList.remove("miss"); void e.offsetWidth; e.classList.add("miss"); }); }, reduce ? 0 : 420);
+        var nx = $("#m-next", ov); nx.hidden = false; nx.focus({ preventScroll: true });
       }
     }
-    function next() {
-      G.open.forEach(function (c) { c.state = "down"; });
-      G.open = []; G.player = 1 - G.player; G.phase = "pick1";
-      render();
+    // Gefundenes Paar fliegt auf den Stapel des Spielers
+    function collect(pair, p) {
+      var pile = $('.m-player[data-p="' + p + '"] .m-pile', ov), pr = pile.getBoundingClientRect(), done = 0;
+      function finish() {
+        if (++done < pair.length) return;
+        G.scores[p]++; G.found++;
+        G.piles[p].push(pair[0].term);
+        var mini = document.createElement("i");
+        mini.style.setProperty("--r", (Math.random() * 16 - 8).toFixed(1) + "deg");
+        pile.appendChild(mini);
+        var sc = $('.m-player[data-p="' + p + '"] .m-score', ov);
+        sc.classList.remove("bump"); void sc.offsetWidth; sc.classList.add("bump");
+        G.open = []; G.phase = "pick1"; status();
+        if (G.found === G.n) later(end, reduce ? 200 : 650);
+      }
+      pair.forEach(function (c, i) {
+        var b = el(c); c.state = "gone";
+        b.classList.remove("hit"); b.classList.add("gone"); b.disabled = true; b.setAttribute("aria-label", "Paar gefunden");
+        if (reduce || !b.animate) { finish(); return; }
+        var r = b.getBoundingClientRect();
+        var fly = document.createElement("div");
+        fly.className = "m-fly";
+        fly.style.cssText = "left:" + r.left + "px;top:" + r.top + "px;width:" + r.width + "px;height:" + r.height + "px";
+        fly.innerHTML = $(".m-front", b).outerHTML;
+        ov.appendChild(fly);
+        var dx = pr.left + pr.width / 2 - (r.left + r.width / 2), dy = pr.top + pr.height / 2 - (r.top + r.height / 2);
+        var s = Math.max(0.12, pr.height / r.height);
+        fly.animate([
+          { transform: "rotate(" + c.rot + "deg)", offset: 0 },
+          { transform: "translate(0,-14px) rotate(" + c.rot + "deg) scale(1.06)", offset: 0.18 },
+          { transform: "translate(" + dx + "px," + dy + "px) rotate(" + (i ? 14 : -10) + "deg) scale(" + s + ")" }
+        ], { duration: 640, delay: i * 70, easing: EASE_IO, fill: "forwards" }).onfinish = function () { fly.remove(); finish(); };
+      });
     }
+    function next() {
+      if (!G || G.phase !== "reveal") return;
+      G.open.forEach(function (c) { flip(c, false); var e = el(c); if (e) e.classList.remove("miss"); });
+      G.open = []; G.player = 1 - G.player; G.phase = "pick1";
+      $("#m-next", ov).hidden = true;
+      status();
+      var first = $(".m-card:not(.gone)", ov); if (first) first.focus({ preventScroll: true });
+    }
+
+    // ------------------------------------------------ Siegerehrung
     function end() {
-      G.over = true;
+      G.over = true; status("Alle Paare sind gefunden!");
       var s = G.scores, w = s[0] === s[1] ? -1 : (s[0] > s[1] ? 0 : 1);
-      ov.innerHTML = '<div class="m-table m-setup"><div class="m-setup-card m-end"><button class="m-x" aria-label="Schließen">×</button><div class="m-trophy" aria-hidden="true">' + (w < 0 ? "🤝" : "🏆") + "</div>" +
-        "<h2>" + (w < 0 ? "Unentschieden!" : "Herzlichen Glückwunsch, " + esc(G.names[w]) + "!") + "</h2>" +
-        "<p>" + (w < 0 ? "Ihr habt beide gleich viele Paare gefunden." : esc(G.names[w]) + " gewinnt das Fachbegriffe-Memory.") + "</p>" +
-        '<div class="m-final">' + [0, 1].map(function (i) { return '<div class="m-player' + (i === w ? " active" : "") + '"><span class="m-name">' + esc(G.names[i]) + '</span><span class="m-score">' + s[i] + '</span><span class="muted small">' + (G.piles[i].length ? G.piles[i].map(esc).join(", ") : "keine Paare") + "</span></div>"; }).join("") + "</div>" +
-        '<div class="tools-actions" style="justify-content:center"><button class="btn btn-primary" id="m-again">Nochmal spielen</button><button class="btn" id="m-close">Schließen</button></div></div></div>';
-      $(".m-x", ov).addEventListener("click", close);
-      $("#m-close", ov).addEventListener("click", close);
-      $("#m-again", ov).addEventListener("click", function () { start(G.names, G.n); });
+      var order = w === 1 ? [1, 0] : [0, 1];
+      function quote(i) { var t = s[i] + G.misses[i]; return t ? Math.round(100 * s[i] / t) + " %" : "–"; }
+      function step(i, place) {
+        return '<div class="m-step m-place-' + place + (w < 0 ? " m-tie" : "") + '"><span class="m-step-name">' + esc(G.names[i]) + '</span><span class="m-step-pairs">' + s[i] + (s[i] === 1 ? " Paar" : " Paare") + '</span><span class="m-step-block"><span>' + (w < 0 ? "1" : place) + "</span></span></div>";
+      }
+      var layer = document.createElement("div");
+      layer.className = "m-end-layer";
+      layer.innerHTML = '<canvas class="m-confetti" aria-hidden="true"></canvas><div class="m-end-scroll"><section class="m-sheet m-end" role="alertdialog" aria-labelledby="m-end-title">' + X +
+        '<h2 id="m-end-title">' + (w < 0 ? "Unentschieden!" : "Herzlichen Glückwunsch, " + esc(G.names[w]) + "!") + "</h2>" +
+        '<p class="m-end-sub">' + (w < 0 ? "Ihr habt beide gleich viele Paare gefunden." : esc(G.names[w]) + " gewinnt das Fachbegriffe-Memory mit " + s[w] + " zu " + s[1 - w] + ".") + "</p>" +
+        '<div class="m-podium">' + step(order[1], 2) + step(order[0], 1) + "</div>" +
+        '<table class="m-stats"><thead><tr><th scope="col"><span class="visually-hidden">Wert</span></th><th scope="col">' + esc(G.names[0]) + '</th><th scope="col">' + esc(G.names[1]) + "</th></tr></thead><tbody>" +
+        "<tr><th scope=\"row\">Gefundene Paare</th><td>" + s[0] + "</td><td>" + s[1] + "</td></tr>" +
+        "<tr><th scope=\"row\">Fehlversuche</th><td>" + G.misses[0] + "</td><td>" + G.misses[1] + "</td></tr>" +
+        "<tr><th scope=\"row\">Längste Serie</th><td>" + G.best[0] + "</td><td>" + G.best[1] + "</td></tr>" +
+        "<tr><th scope=\"row\">Trefferquote</th><td>" + quote(0) + "</td><td>" + quote(1) + "</td></tr></tbody></table>" +
+        '<details class="m-found"><summary>Gefundene Fachbegriffe ansehen</summary><div class="m-found-cols">' + [0, 1].map(function (i) {
+          return "<div><b>" + esc(G.names[i]) + "</b><ul>" + (G.piles[i].length ? G.piles[i].map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") : "<li>keine Paare</li>") + "</ul></div>";
+        }).join("") + "</div></details>" +
+        '<div class="m-end-actions"><button class="btn btn-primary" id="m-again">Revanche</button><button class="btn" id="m-setup">Neue Einstellungen</button><button class="btn" id="m-close">Schließen</button></div>' +
+        '<p class="m-privacy">Bei der Revanche beginnt ' + esc(G.names[1 - G.first]) + ".</p></section></div>";
+      $(".m-table", ov).appendChild(layer);
+      $(".m-x", layer).addEventListener("click", close);
+      $("#m-close", layer).addEventListener("click", close);
+      $("#m-setup", layer).addEventListener("click", setup);
+      $("#m-again", layer).addEventListener("click", function () { start(G.names, G.n, 1 - G.first); });
+      $("#m-again", layer).focus({ preventScroll: true });
+      if (!reduce) confetti($(".m-confetti", layer));
+    }
+    function confetti(cv) {
+      var ctx = cv.getContext && cv.getContext("2d"); if (!ctx) return;
+      var dpr = Math.min(2, window.devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
+      cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
+      var cols = ["#D23A1F", "#2340C8", "#0A6E72", "#F2B300", "#ffffff"], P = [], t0 = performance.now();
+      for (var i = 0, N = W < 600 ? 90 : 170; i < N; i++) {
+        var left = i % 2 === 0;
+        P.push({ x: left ? -10 : W + 10, y: H * (0.55 + Math.random() * 0.3), vx: (left ? 1 : -1) * (4 + Math.random() * 7), vy: -(9 + Math.random() * 8),
+          w: 6 + Math.random() * 7, h: 9 + Math.random() * 10, a: Math.random() * 6.28, va: (Math.random() - 0.5) * 0.3, c: cols[i % cols.length], d: Math.random() * 350 });
+      }
+      function frame(now) {
+        var t = now - t0; ctx.clearRect(0, 0, W, H); var alive = false;
+        P.forEach(function (p) {
+          if (t < p.d) { alive = true; return; }
+          p.vy += 0.32; p.vx *= 0.985; p.vy *= 0.985; p.x += p.vx; p.y += p.vy; p.a += p.va;
+          if (p.y < H + 30) alive = true;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.scale(1, Math.cos(p.a * 2));
+          ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+        });
+        if (alive && t < 6000 && cv.isConnected) raf = requestAnimationFrame(frame); else { ctx.clearRect(0, 0, W, H); raf = 0; }
+      }
+      raf = requestAnimationFrame(frame);
     }
     setup();
   }
@@ -507,7 +701,7 @@
   function wrapTables(html) { return String(html).replace(/<table>/g, '<div class="table-scroll"><table>').replace(/<\/table>/g, "</table></div>"); }
   var KIND = { "Erklärung": "k-erklaerung", "Fachtext": "k-fachtext", "Merke": "k-merke", "Beispiel": "k-beispiel", "Gesetzestext": "k-gesetz", "Grafik": "k-grafik", "Schaubild": "k-grafik" };
   function renderBlock(b) {
-    var lk = b.lk ? '<span class="badge badge-lk lk-tag">nur LK</span>' : "";
+    var lk = b.lk ? '<span class="stoerer lk-tag">Nur LK</span>' : "";
     var cls = "block" + (b.art === "Fachtext" ? " fachtext" : "") + (b.art === "Merke" ? " merke" : "") + (b.art === "Gesetzestext" ? " gesetz" : "") + (b.lk ? " lk" : "");
     var kind = '<span class="block-kind ' + (KIND[b.art] || "k-erklaerung") + '">' + esc(b.art) + "</span>";
     var inner = "";
@@ -516,7 +710,8 @@
       b.zeilen.map(function (z) { return "<tr>" + z.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" + (b.html || "");
     else inner = wrapTables(b.html);
     var sp = speechOn() ? '<button class="speak-btn" data-speak aria-label="Abschnitt vorlesen" title="Vorlesen">' + ICON.speaker + "</button>" : "";
-    return '<section class="' + cls + '">' + sp + lk + kind + (b.titel ? "<h3>" + b.titel + "</h3>" : "") + inner + (b.quelle ? '<p class="src">' + b.quelle + "</p>" : "") + "</section>";
+    var head = '<header class="block-head' + (b.titel ? "" : " bare") + '">' + (b.titel ? "<h3>" + b.titel + "</h3>" : "") + kind + sp + "</header>";
+    return '<section class="' + cls + '">' + lk + head + inner + (b.quelle ? '<p class="src">' + b.quelle + "</p>" : "") + "</section>";
   }
   function renderInhalte(body, meta, topic) {
     var blocks = topic ? topic.inhalte.filter(function (b) { return zeigeLK() || !b.lk; }) : [];
@@ -679,10 +874,10 @@
         html += '<article class="task2' + (done ? " is-done" : "") + '" id="task-' + a.id + '">' +
           '<button class="task2-head" aria-expanded="false" aria-controls="tb-' + a.id + '">' +
           '<span class="tnum">' + a.nr + '</span><span class="tmain"><span class="tops"><span class="op-badge">' + esc(a.operator) + "</span>" +
-          (a.lk ? '<span class="badge badge-lk">LK-Niveau</span>' : "") + refs + '<span class="done-badge">✓ bearbeitet</span></span><span class="ttext">' + a.text + "</span></span>" + ICON.chev + "</button>" +
+          (a.lk ? '<span class="badge badge-lk">LK-Niveau</span>' : "") + refs + '<span class="done-badge">bearbeitet</span></span><span class="ttext">' + a.text + "</span></span>" + ICON.chev + "</button>" +
           '<div class="task2-body" id="tb-' + a.id + '" hidden><label class="done-check"><input type="checkbox" data-done="' + a.id + '"' + (done ? " checked" : "") + "> Diese Aufgabe habe ich bearbeitet (für deinen Lernfortschritt)</label>" + '<div class="mat-top"><div class="op-box"><h4>Was verlangt der Operator? (Definition des Landes Hessen)</h4><dl><dt>' + esc(a.operator) +
           ' <span class="muted">(AFB ' + o.afb + ")</span></dt><dd>" + esc(o.def) + '</dd></dl><p class="src">' + esc(SITE.operatorenVorbemerkung) + "<br>Quelle: " + esc(SITE.operatorenQuelle) + "</p></div>" +
-          '<a class="btn btn-green" href="' + a.pdf + '" download>Korrekturdatei herunterladen</a></div><div class="mat-doc">' + mats + "</div></div></article>";
+          '<a class="btn btn-green" href="' + a.pdf + '" download>' + ICON.download + 'Korrekturdatei herunterladen</a></div><div class="mat-doc">' + mats + "</div></div></article>";
       });
       html += "</section>";
     });
