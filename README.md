@@ -15,11 +15,15 @@ Läuft kostenlos auf GitHub Pages unter <https://feibitur.janrickmer.de> – ohn
 | `tools/content/lerntools.py` | Inhalte der Lerntools (Kann-Listen, Operator-Prüffälle, Satzbausteine, Musterantworten) |
 | `tools/build.py` | erzeugt `data/` (inkl. `lerntools.json`, `vorschlaege.json`) und `korrektur/` (Einzelaufgaben und Abi-Simulations-Vorschläge); `--check <modul>` prüft einzelne Unterthemen; `FEIBITUR_SKIP=q4_1,…` lässt Module beim Build aus |
 | `tools/chat-worker/` | Cloudflare-Worker für den KI-Chatbot + Einrichtungsanleitung |
+| `tools/content/memo_*.py` | Beschreibungen für das Fachbegriffe-Memory (ohne den Begriff selbst); Prüfung mit `python3 tools/build.py --check-memo <modul>` |
+| `assets/css/style.css`, `assets/fonts/`, `assets/img/` | Gestaltung „Plakatwand“ (siehe `DESIGN.md`); Schriften Archivo und Source Serif 4 selbst gehostet (SIL OFL), Holztisch-Foto CC0 (Poly Haven) |
+| `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Produkt- und Designgrundlagen; `.impeccable/` wird nicht veröffentlicht |
+| `tools/deploy.sh` | veröffentlicht den aktuellen Stand auf `gh-pages` (ohne `.impeccable/`) |
 
 ## Inhalte ändern oder ergänzen
 1. Datei in `tools/content/` bearbeiten oder neue anlegen (Vorlagen: `q1_1.py` und `q1_1_aufgaben.py`) und das Modul in `TOPIC_MODULES` in `tools/build.py` eintragen. Jede Aufgabe erhält automatisch eine eigene Korrekturdatei; der Build bricht ab, wenn ein Anforderungsbereich weniger als drei Aufgaben hat.
 2. `pip install reportlab svglib` (einmalig), dann `python3 tools/build.py` ausführen.
-3. Änderungen committen und pushen.
+3. Änderungen committen und pushen, dann mit `sh tools/deploy.sh` veröffentlichen.
 
 ## Hinweise
 - Das Passwort ist eine einfache Zugangsschranke im Browser, kein echter Schutz: Der Quellcode (inkl. Inhalte) ist öffentlich.
