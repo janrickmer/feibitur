@@ -25,9 +25,9 @@ MEMO = {
     "Verfassungsbeschwerde": "Klage, mit der jede Person in Karlsruhe geltend machen kann, vom Staat in ihren Grundrechten verletzt zu sein",
     "Abstrakte Normenkontrolle": "Prüfung eines Gesetzes ohne Einzelfall durch das BVerfG auf Antrag von Bundes-, Landesregierung oder einem Viertel des Bundestages",
     "Konkrete Normenkontrolle": "Ein Gericht legt dem BVerfG ein Gesetz vor, das es in einem laufenden Fall für verfassungswidrig hält (Art. 100 GG)",
-    "Organstreitverfahren": "Klage beim BVerfG, in der etwa Bundestag, Regierung, Fraktionen oder Abgeordnete einen Konflikt über ihre Rechte und Pflichten klären",
+    "Organstreitverfahren": "Klage beim BVerfG, mit der z. B. Bundestag, Regierung, Fraktionen oder Abgeordnete einen Konflikt um ihre Rechte klären",
     "Judicial Activism": "Vorwurf, ein Verfassungsgericht greife zu stark in die Politik ein und handle wie ein Ersatzgesetzgeber",
     "Verfassungswirklichkeit": "Die tatsächliche politische Praxis im Unterschied zu dem, was der Text des GG vorsieht",
-    "Anwendungsvorrang des EU-Rechts": "Grundsatz: Kollidieren Unionsvorschriften mit deutschen Normen, gelten im Einzelfall die europäischen, die deutschen bleiben unbeachtet",
+    "Anwendungsvorrang des EU-Rechts": "Bei Kollision mit Unionsvorschriften bleiben deutsche Normen im Einzelfall unbeachtet; die europäischen setzen sich durch",
     "Richtlinie (EU)": "EU-Rechtsakt, der ein Ziel verbindlich vorgibt, das die Mitgliedstaaten fristgerecht in eigenes Recht umsetzen müssen",
 }

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Memory-Beschreibungen zu Q1.4 (ohne den Fachbegriff selbst)."""
 MEMO = {
-    "Öffentlichkeit": "Für alle zugänglicher Raum, in dem politische Themen sichtbar gemacht und diskutiert werden; Voraussetzung für die Kontrolle der Macht",
+    "Öffentlichkeit": "Für alle zugänglicher Raum, in dem politische Themen sichtbar gemacht und diskutiert werden; Voraussetzung für Machtkontrolle",
     "Massenmedien": "Presse, Rundfunk und Nachrichtenportale, die ein großes, verstreutes Publikum gleichzeitig erreichen",
     "Vierte Gewalt": "Beiname der Medien, die neben Legislative, Exekutive und Judikative als weitere Macht gelten, obwohl sie nicht staatlich sind",
     "Informationsfunktion": "Aufgabe der Medien, möglichst vollständig, sachlich und verständlich über Politik zu berichten",

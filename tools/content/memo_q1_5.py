@@ -13,7 +13,7 @@ MEMO = {
     "Konfliktfähigkeit": "Möglichkeit einer Gruppe, glaubhaft mit Leistungsverweigerung wie Streik zu drohen und so Druck auszuüben (Offe)",
     "Trittbrettfahrerproblem": "Nichtmitglieder profitieren von den Erfolgen einer Gruppe, etwa einer Gewerkschaft, ohne selbst etwas beizutragen",
     "Neokorporatismus": "Enge, institutionalisierte Zusammenarbeit von Staat und großen Verbänden, z. B. Arbeitgebern und Gewerkschaften",
-    "NGO": "Zivilgesellschaftliche, vom Staat unabhängige und nicht gewinnorientierte Organisation, z. B. Greenpeace oder Amnesty International",
+    "NGO": "Zivilgesellschaftliche, staatsunabhängige, nicht gewinnorientierte Organisation, z. B. Greenpeace oder Amnesty International",
     "Klientelismus": "Politik, die gezielt die Interessen der eigenen Unterstützergruppen bedient statt das Gemeinwohl",
     "Leistungsgerechtigkeit": "Grundsatz: Wer mehr arbeitet oder mehr Verantwortung trägt, soll auch mehr Einkommen bekommen",
     "Bedarfsgerechtigkeit": "Grundsatz: Jeder soll bekommen, was er zum Leben braucht, unabhängig von seiner Arbeit, z. B. über Grundsicherung",
