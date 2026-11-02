@@ -151,7 +151,7 @@
       b.addEventListener("click", function () {
         var id = b.getAttribute("data-topic");
         if (id === topicId) go("powi/" + tab.id); // erneuter Klick: zuklappen
-        else go("powi/" + tab.id + "/" + id + "/begriffe");
+        else go("powi/" + tab.id + "/" + id + "/" + (TOPIC_META[id].methode ? "inhalte" : "begriffe"));
       });
     });
     var stage = $("#stage");
@@ -179,8 +179,12 @@
     var note = meta.erlass_hinweis ? '<div class="erlass-note">' + esc(meta.erlass_hinweis) + "</div>" : "";
     var badge = meta.methode ? '<span class="badge badge-abi">Methode</span>' : (meta.erlass ? '<span class="badge badge-abi">Abi 2027: Schwerpunkt</span>' : '<span class="badge badge-noabi">kein Schwerpunkt 2027</span>');
     var secs = [["begriffe", ICON.bubble, "Fachbegriffe"], ["inhalte", ICON.book, "Inhalte"], ["aufgaben", ICON.pencil, "Übungsaufgaben"]];
+    if (meta.methode) { // Grundlagen: ohne Fachbegriffe
+      secs = secs.slice(1);
+      if (section === "begriffe") section = "inhalte";
+    }
     stage.innerHTML = '<article class="topic-panel"><header class="topic-head"><div class="row"><h2>' + esc(meta.nr) + " " + esc(meta.titel) + "</h2>" + badge + "</div>" + note + kcgo + "</header>" +
-      '<div class="sections" role="tablist">' + secs.map(function (s) {
+      '<div class="sections" role="tablist" style="grid-template-columns:repeat(' + secs.length + ',1fr)">' + secs.map(function (s) {
         return '<button class="sec-btn" role="tab" aria-selected="' + (s[0] === section) + '" data-sec="' + s[0] + '">' + s[1] + "<span>" + s[2] + "</span></button>";
       }).join("") + '</div><div class="sec-body" id="sec-body"><p class="muted">Lade Inhalte …</p></div></article>';
     $all(".sec-btn", stage).forEach(function (b) {
@@ -339,7 +343,7 @@
     var head = '<div class="chat-head"><b>KI-Tutor (Chatbot)</b><small>Fragen zum Thema ' + esc(meta.nr) + '</small></div>' +
       '<div class="chat-warn"><b>Wichtig:</b> Gib keine personenbezogenen Daten ein – also keinen Namen, keine Adresse, keine Schule, keine Kontaktdaten und nichts über Gesundheit, Religion oder Familie.</div>';
     if (!CHAT_ENDPOINT) {
-      el.innerHTML = head + '<div class="chat-consent"><p><b>Der Chatbot wird gerade eingerichtet</b> und ist noch nicht verfügbar.</p><p class="muted">Bis dahin: Nutze das Glossar unter „Fachbegriffe“ und die Erklärtexte links.</p></div>';
+      el.innerHTML = head + '<div class="chat-consent"><p><b>Der Chatbot wird gerade eingerichtet</b> und ist noch nicht verfügbar.</p><p class="muted">Bis dahin: Nutze die Erklärtexte links' + (meta.methode ? "" : " und das Glossar unter „Fachbegriffe“") + '.</p></div>';
       return;
     }
     if (!consent) {
@@ -431,5 +435,6 @@
     });
   }
 
+  ["g1", "g2", "g3"].forEach(function (id) { unstore("karten." + id); }); // alter Lernstand der früheren Grundlagen-Karteikarten
   initGate();
 })();

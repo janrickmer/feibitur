@@ -296,7 +296,7 @@
      "titel": "Wie analysiere ich vorliegendes Material tiefgründig?",
      "methode": true,
      "content": {
-      "begriffe": 18,
+      "begriffe": 0,
       "aufgaben": 1
      }
     },
@@ -306,7 +306,7 @@
      "titel": "Was gehört in ein Sachurteil?",
      "methode": true,
      "content": {
-      "begriffe": 14,
+      "begriffe": 0,
       "aufgaben": 1
      }
     },
@@ -316,7 +316,7 @@
      "titel": "Was gehört in ein Werturteil?",
      "methode": true,
      "content": {
-      "begriffe": 14,
+      "begriffe": 0,
       "aufgaben": 1
      }
     }
