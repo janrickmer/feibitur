@@ -280,3 +280,19 @@ TABS = [
          "erlass": True},
     ]},
 ]
+
+# Korrekturen der automatischen Einordnung „Fachbegriff nur für den Leistungskurs“ (build.py: lk_only_term).
+# True = nur LK, False = für GK und LK. Geprüft gegen Kerncurriculum und Abiturerlass 2027.
+LK_BEGRIFFE_KORREKTUR = {
+    "q1-1": {"Gewaltenverschränkung": False, "Vermittlungsausschuss": False},
+    "q1-4": {"Öffentlich-rechtlicher Rundfunk": False},
+    "q2-1": {"Keynesianismus": False},
+    "q2-3": {"Inflationsziel": False, "Verbot der monetären Staatsfinanzierung": False},
+    "q2-4": {"Mindestlohnkommission": False},
+    # Q4.1: Integrationstheorien stehen im KCGO nur auf erhöhtem Niveau.
+    "q4-1": {"Neofunktionalismus": True, "Spillover": True, "Supranationalismus (Integrationstheorie)": True,
+             "Realistischer Intergouvernementalismus": True, "Liberaler Intergouvernementalismus": True,
+             "Postfunktionalismus": True},
+    # Q4.3: Beziehungen zu USA, China, Russland stehen im KCGO nur auf erhöhtem Niveau.
+    "q4-3": {"Transatlantische Beziehungen": True, "Wirtschaftliche Sicherheit (De-Risking)": True},
+}

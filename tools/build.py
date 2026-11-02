@@ -297,6 +297,55 @@ def build_pdf(topic_meta, bezug, t, nummer, mats, path):
     doc.build(story, onFirstPage=deco, onLaterPages=deco)
 
 
+def _plain(x):
+    return " " + re.sub(r"\s+", " ", strip_tags(x)).lower() + " "
+
+
+# Schaubilder der Inhalte an die Plakatwelt anpassen (Farben, Schrift, eckige Kästen).
+# Materialien (Karikaturen, Tabellen in Aufgaben) bleiben unverändert.
+SVG_FARBEN = {
+    "#14213d": "#141618", "#22355e": "#2a2f33", "#333": "#2a2f33", "#3a2a00": "#141618", "#6a4b00": "#141618",
+    "#555": "#52595e", "#666": "#52595e", "#777": "#52595e", "#888": "#52595e",
+    "#eef2fb": "#f1f3f4", "#e3e3e3": "#f1f3f4", "#dfe6f7": "#e1e4e6",
+    "#b5302a": "#d23a1f", "#d9a400": "#f2b300", "#ffd75e": "#f2b300", "#fff7e0": "#fff1c2",
+    "#6d86c0": "#2340c8", "#5b77b5": "#2340c8", "#3b5592": "#2340c8",
+}
+def plakat_svg(svg):
+    def farbe(m):
+        return SVG_FARBEN.get(m.group(0).lower(), m.group(0))
+    svg = re.sub(r"#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b", farbe, svg)
+    svg = re.sub(r"font-family=(['\"])system-ui[^'\"]*\1", "font-family='Archivo, Arial, sans-serif'", svg)
+    svg = re.sub(r"(<rect\b[^>]*?)\s(rx|ry)=(['\"])[0-9.]+\3", r"\1 \2='0'", svg)
+    svg = re.sub(r"(<rect\b[^>]*?)\s(rx|ry)=(['\"])[0-9.]+\3", r"\1 \2='0'", svg)
+    return svg
+def plakat_inhalte(inhalte):
+    out = []
+    for blk in inhalte:
+        if blk.get("t") == "svg":
+            blk = dict(blk); blk["svg"] = plakat_svg(blk["svg"])
+        out.append(blk)
+    return out
+
+def lk_only_term(name, topic, meta):
+    """Ein Begriff gilt als LK-Begriff, wenn er nur in LK-Inhaltsblöcken bzw. LK-Stichworten
+    des Kerncurriculums vorkommt, aber in keinem Inhaltsblock bzw. Stichwort für beide Kurse."""
+    pat = re.sub(r"\s*\(.*?\)\s*", " ", name).strip().lower()
+    if len(pat) < 4:
+        return False
+    gk, lk = [], []
+    for blk in topic["inhalte"]:
+        parts = [blk.get("titel", ""), blk.get("html", ""), blk.get("caption", "")]
+        if blk.get("t") == "table":
+            parts += [" ".join(blk.get("kopf", []))] + [" ".join(z) for z in blk.get("zeilen", [])]
+        (lk if blk.get("lk") else gk).append(_plain(" ".join(parts)))
+    kc = meta.get("kcgo") or {}
+    gk += [_plain(x) for x in kc.get("gn", [])]
+    lk += [_plain(x) for x in kc.get("en", [])]
+    def hit(texts):
+        return any(pat in t for t in texts)
+    return hit(lk) and not hit(gk)
+
+
 # ---------------------------------------------------------------------------
 def main():
     topics_meta = {}
@@ -354,7 +403,17 @@ def main():
             for a_, c in counts.items():
                 assert c >= 3, "%s: nur %d Aufgaben in AFB %s" % (tid, c, a_)
         pub_mats = [{k: v for k, v in m.items() if k != "beschreibung"} for m in materialien]
-        out = {"id": tid, "begriffe": topic["begriffe"], "inhalte": topic["inhalte"], "materialien": pub_mats, "aufgaben": public}
+        memo = load_memo(modname)
+        begriffe = []
+        for bg in topic["begriffe"]:
+            b2 = dict(bg)
+            korr = getattr(site, "LK_BEGRIFFE_KORREKTUR", {}).get(tid, {})
+            if korr.get(bg["b"], lk_only_term(bg["b"], topic, meta)):
+                b2["lk"] = True
+            if memo.get(bg["b"]):
+                b2["memo"] = memo[bg["b"]]
+            begriffe.append(b2)
+        out = {"id": tid, "begriffe": begriffe, "inhalte": plakat_inhalte(topic["inhalte"]), "materialien": pub_mats, "aufgaben": public}
         with open(os.path.join(ROOT, "data", "topics", tid + ".json"), "w", encoding="utf-8") as f:
             json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
         has_content[tid] = {"begriffe": len(topic["begriffe"]), "aufgaben": len(public)}
@@ -731,8 +790,67 @@ def check(mods):
     return ok_all
 
 
+STOP = {"der", "die", "das", "und", "oder", "von", "vom", "des", "dem", "den", "eine", "einer", "eines", "für", "mit", "nach", "über",
+        "unter", "zwischen", "gegen", "auf", "aus", "bei", "zur", "zum", "im", "in", "am", "an", "als", "wie", "nicht", "sowie"}
+
+
+def memo_verboten(begriff):
+    """Wortbestandteile eines Fachbegriffs, die in der Memory-Beschreibung nicht vorkommen dürfen."""
+    words = re.findall(r"[A-Za-zÄÖÜäöüß]+", re.sub(r"\(.*?\)", " ", begriff))
+    out = []
+    for w in words:
+        wl = w.lower()
+        if wl in STOP or len(wl) < 4:
+            continue
+        stem = re.sub(r"(innen|ungen|ung|en|er|es|e|s|n)$", "", wl) if len(wl) > 6 else wl
+        out.append(stem if len(stem) >= 4 else wl)
+    return out
+
+
+def load_memo(modname):
+    path = os.path.join(CONTENT, "memo_" + modname + ".py")
+    if not os.path.exists(path):
+        return {}
+    return _load(path, "memo_" + modname).MEMO
+
+
+def check_memo(mods):
+    ok_all = True
+    for modname in mods:
+        topic = load_topic(modname)
+        if topic is None:
+            print("FEHLT:", modname)
+            ok_all = False
+            continue
+        memo = load_memo(modname)
+        probs = []
+        names = [b["b"] for b in topic["begriffe"]]
+        for n in names:
+            if n not in memo:
+                probs.append("fehlt: " + n)
+        for n, txt in memo.items():
+            if n not in names:
+                probs.append("unbekannter Begriff (Schreibweise exakt wie in begriffe!): " + n)
+                continue
+            low = txt.lower()
+            for v in memo_verboten(n):
+                if v in low:
+                    probs.append("%s: Beschreibung enthält „%s“" % (n, v))
+            if len(txt) > 150:
+                probs.append("%s: zu lang (%d Zeichen, max. 150)" % (n, len(txt)))
+            if "<" in txt:
+                probs.append("%s: bitte kein HTML" % n)
+        print("[%s] %s: %d/%d Beschreibungen" % ("OK" if not probs else "FEHLER", modname, len([n for n in names if n in memo]), len(names)))
+        for p_ in probs:
+            print("   ", p_)
+        ok_all = ok_all and not probs
+    return ok_all
+
+
 if __name__ == "__main__":
     import sys
+    if len(sys.argv) > 2 and sys.argv[1] == "--check-memo":
+        sys.exit(0 if check_memo(sys.argv[2:]) else 1)
     if len(sys.argv) > 2 and sys.argv[1] == "--check":
         sys.exit(0 if check(sys.argv[2:]) else 1)
     main()
