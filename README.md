@@ -10,13 +10,13 @@ Läuft kostenlos auf GitHub Pages unter <https://feibitur.janrickmer.de> – ohn
 | `assets/js/config.js` | Adresse des Chatbot-Workers (`chatEndpoint`) |
 | `data/` | **generiert** – Tabs, Abitur-Hinweis, Operatoren, Inhalte je Unterthema (ohne Lösungen) |
 | `korrektur/` | **generiert** – Korrekturdateien (PDF) mit unsichtbaren Lösungshinweisen für KI-Systeme |
-| `tools/content/` | **Quelltexte aller Inhalte** (`meta.py` = Tabs/Erlass/Operatoren, `q1_1.py` … = Unterthemen) |
+| `tools/content/` | **Quelltexte aller Inhalte**: `meta.py` = Tabs/Erlass/Operatoren, `q1_1.py` … = Fachbegriffe und Lerninhalte, `q1_1_aufgaben.py` … = Materialien (M1, M2, …) und Einzelaufgaben je Anforderungsbereich (mind. 3 pro AFB) mit Lösungshinweisen |
 | `tools/build.py` | erzeugt `data/` und `korrektur/` aus `tools/content/` |
 | `tools/chat-worker/` | Cloudflare-Worker für den KI-Chatbot + Einrichtungsanleitung |
 
 ## Inhalte ändern oder ergänzen
-1. Datei in `tools/content/` bearbeiten oder neue anlegen (Vorlage: `q1_1.py`) und in `TOPIC_MODULES` in `tools/build.py` eintragen.
-2. `pip install reportlab` (einmalig), dann `python3 tools/build.py` ausführen.
+1. Datei in `tools/content/` bearbeiten oder neue anlegen (Vorlagen: `q1_1.py` und `q1_1_aufgaben.py`) und das Modul in `TOPIC_MODULES` in `tools/build.py` eintragen. Jede Aufgabe erhält automatisch eine eigene Korrekturdatei; der Build bricht ab, wenn ein Anforderungsbereich weniger als drei Aufgaben hat.
+2. `pip install reportlab svglib` (einmalig), dann `python3 tools/build.py` ausführen.
 3. Änderungen committen und pushen.
 
 ## Hinweise

@@ -297,7 +297,7 @@
      "methode": true,
      "content": {
       "begriffe": 0,
-      "aufgaben": 1
+      "aufgaben": 0
      }
     },
     {
@@ -307,7 +307,7 @@
      "methode": true,
      "content": {
       "begriffe": 0,
-      "aufgaben": 1
+      "aufgaben": 0
      }
     },
     {
@@ -317,7 +317,7 @@
      "methode": true,
      "content": {
       "begriffe": 0,
-      "aufgaben": 1
+      "aufgaben": 0
      }
     }
    ]
@@ -345,7 +345,7 @@
      "erlass": true,
      "content": {
       "begriffe": 29,
-      "aufgaben": 1
+      "aufgaben": 10
      }
     },
     {
@@ -370,7 +370,7 @@
      "erlass_hinweis": "Laut Erlass 2027: im GK „Funktionen von Parteien und Populismus“ sowie Extremismus „insbesondere Nationalismus, Islamismus“; die Stellung von Bundespräsident und Bundeskanzler ist nur im LK Schwerpunkt.",
      "content": {
       "begriffe": 26,
-      "aufgaben": 1
+      "aufgaben": 11
      }
     },
     {
@@ -391,7 +391,7 @@
      "erlass_hinweis": "Kein eigener Schwerpunkt 2027 – aber die europäischen Institutionen im Gesetzgebungsprozess gehören über Q1.1 zum Prüfungsstoff!",
      "content": {
       "begriffe": 19,
-      "aufgaben": 1
+      "aufgaben": 10
      }
     },
     {
@@ -413,7 +413,7 @@
      "erlass_hinweis": "Laut Erlass 2027: Personalisierung und Medienethik sind nur im LK Schwerpunkt.",
      "content": {
       "begriffe": 25,
-      "aufgaben": 1
+      "aufgaben": 10
      }
     },
     {
@@ -434,7 +434,7 @@
      "erlass_hinweis": "Kein Schwerpunkt 2027. Die Gerechtigkeitsbegriffe sind aber über Q2.4 prüfungsrelevant – auch im Grundkurs!",
      "content": {
       "begriffe": 21,
-      "aufgaben": 1
+      "aufgaben": 10
      }
     }
    ]

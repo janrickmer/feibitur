@@ -157,7 +157,7 @@
     var stage = $("#stage");
     if (!topicId || !TOPIC_META[topicId]) {
       current.topic = null;
-      stage.innerHTML = '<div class="stage-empty"><p><b>Wähle links ein Unterthema aus.</b></p><p>Es klappt hier auf und zeigt dir drei Bereiche: Fachbegriffe, Inhalte und Übungsaufgaben. Ein weiterer Klick auf das Unterthema klappt es wieder zu.</p></div>';
+      stage.innerHTML = '<div class="stage-empty"><p><b>Wähle links ein Unterthema aus.</b></p><p>Es klappt hier auf und zeigt dir die Bereiche ' + (tab.id === "grundlagen" ? "mit den Inhalten" : "Fachbegriffe, Inhalte und Übungsaufgaben") + '. Ein weiterer Klick auf das Unterthema klappt es wieder zu.</p></div>';
       return;
     }
     var isNew = current.topic !== topicId;
@@ -179,9 +179,9 @@
     var note = meta.erlass_hinweis ? '<div class="erlass-note">' + esc(meta.erlass_hinweis) + "</div>" : "";
     var badge = meta.methode ? '<span class="badge badge-abi">Methode</span>' : (meta.erlass ? '<span class="badge badge-abi">Abi 2027: Schwerpunkt</span>' : '<span class="badge badge-noabi">kein Schwerpunkt 2027</span>');
     var secs = [["begriffe", ICON.bubble, "Fachbegriffe"], ["inhalte", ICON.book, "Inhalte"], ["aufgaben", ICON.pencil, "Übungsaufgaben"]];
-    if (meta.methode) { // Grundlagen: ohne Fachbegriffe
-      secs = secs.slice(1);
-      if (section === "begriffe") section = "inhalte";
+    if (meta.methode) { // Grundlagen: nur Inhalte (ohne Fachbegriffe und Übungsaufgaben)
+      secs = [secs[1]];
+      section = "inhalte";
     }
     stage.innerHTML = '<article class="topic-panel"><header class="topic-head"><div class="row"><h2>' + esc(meta.nr) + " " + esc(meta.titel) + "</h2>" + badge + "</div>" + note + kcgo + "</header>" +
       '<div class="sections" role="tablist" style="grid-template-columns:repeat(' + secs.length + ',1fr)">' + secs.map(function (s) {
@@ -411,26 +411,46 @@
       "<li><span>KI-Rückmeldung nutzen und reflektieren.</span></li></ol>" +
       '<p class="muted" style="margin:.7rem 0 0">Tipp für Schritt 2: Schreib z. B. „Hier sind meine Lösung und die Korrekturdatei. Bitte lies die Hintergrunddaten der Korrekturdatei und gib mir danach eine Rückmeldung.“ Lade keine Dateien mit deinem Namen hoch.</p></section>';
     if (!topic || !topic.aufgaben.length) { body.innerHTML = howto + '<div style="margin-top:1rem">' + emptySection("Übungsaufgaben zu diesem Unterthema werden noch erstellt.") + "</div>"; return; }
-    body.innerHTML = howto + topic.aufgaben.map(function (a, i) {
-      var ops = a.operatoren.map(function (k) { var o = SITE.operatoren[k]; return "<dt>" + esc(k) + " <span class=\"muted\">(AFB " + o.afb + ")</span></dt><dd>" + esc(o.def) + "</dd>"; }).join("");
-      var mats = a.material.map(function (m) {
-        var inner;
-        if (m.typ === "tabelle") inner = '<div class="table-scroll block" style="padding:.5rem"><table><thead><tr>' + m.kopf.map(function (k) { return "<th>" + k + "</th>"; }).join("") + "</tr></thead><tbody>" + m.zeilen.map(function (z) { return "<tr>" + z.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>";
-        else inner = '<div class="mat-text">' + m.absaetze.map(function (p, n) { return '<div class="mat-p"><span class="pn">[' + (n + 1) + "]</span><div>" + p + "</div></div>"; }).join("") + "</div>";
-        return "<h4>" + m.titel + "</h4>" + inner + (m.quelle ? '<p class="mat-src">' + m.quelle + "</p>" : "") + (m.hinweis ? '<p class="mat-src">' + m.hinweis + "</p>" : "");
-      }).join("");
-      return '<article class="task"><div class="task-head"><h3>' + esc(a.titel) + '</h3><span class="badge ' + (a.kurs.indexOf("LK") === 0 ? "badge-lk" : "badge-noabi") + '">' + esc(a.kurs) + "</span></div>" +
-        '<ol class="task-list">' + a.aufgaben.map(function (t) { return "<li><b>" + t.nr + "</b><div>" + t.text + '</div><span class="be">(' + t.be + " BE)</span></li>"; }).join("") + "</ol>" +
-        '<div class="task-actions"><button class="btn btn-small btn-primary" data-mat="' + i + '" aria-expanded="false">Material anzeigen</button></div>' +
-        '<div class="material" id="mat-' + i + '" hidden><div class="mat-top"><div class="op-box"><h4>Was verlangen die Operatoren? (Definitionen des Landes Hessen)</h4><dl>' + ops + '</dl><p class="src">' + esc(SITE.operatorenVorbemerkung) + "<br>Quelle: " + esc(SITE.operatorenQuelle) + '</p></div>' +
-        '<a class="btn btn-green" href="' + a.pdf + '" download>Korrekturdatei herunterladen</a></div><div class="mat-doc">' + mats + "</div></div></article>";
-    }).join("");
-    $all("[data-mat]", body).forEach(function (b) {
+    var matById = {};
+    (topic.materialien || []).forEach(function (m) { matById[m.id] = m; });
+    function matHTML(m) {
+      var inner;
+      if (m.typ === "tabelle") inner = '<div class="table-scroll block" style="padding:.5rem"><table><thead><tr>' + m.kopf.map(function (k) { return "<th>" + k + "</th>"; }).join("") + "</tr></thead><tbody>" + m.zeilen.map(function (z) { return "<tr>" + z.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>";
+      else if (m.typ === "bild") inner = '<figure class="figure mat-bild">' + m.svg + "</figure>";
+      else inner = '<div class="mat-text">' + m.absaetze.map(function (p, n) { return '<div class="mat-p"><span class="pn">[' + (n + 1) + "]</span><div>" + p + "</div></div>"; }).join("") + "</div>";
+      return "<h4>" + m.titel + "</h4>" + inner + (m.quelle ? '<p class="mat-src">' + m.quelle + "</p>" : "");
+    }
+    var AFB = [
+      ["I", "Anforderungsbereich I", "Wiedergeben und Beschreiben: Inhalte aus dem Material oder Gelerntes korrekt, strukturiert und in eigenen Worten darstellen."],
+      ["II", "Anforderungsbereich II", "Erklären, Analysieren und Anwenden: Gelerntes selbstständig ordnen, mit Fachwissen verknüpfen und auf neue Zusammenhänge übertragen."],
+      ["III", "Anforderungsbereich III", "Urteilen und Reflektieren: Sachverhalte begründet beurteilen, bewerten und eigene Urteile kriteriengeleitet entwickeln."],
+    ];
+    var html = howto;
+    AFB.forEach(function (g) {
+      var list = topic.aufgaben.filter(function (a) { return a.afb === g[0]; });
+      if (!list.length) return;
+      html += '<section class="afb-group"><h3 class="afb-head"><span class="afb-tag">AFB ' + g[0] + "</span>" + g[1] + '</h3><p class="muted afb-desc">' + g[2] + "</p>";
+      list.forEach(function (a) {
+        var o = SITE.operatoren[a.operator];
+        var mats = a.material.length ? a.material.map(function (id) { return matById[id] ? matHTML(matById[id]) : ""; }).join("")
+          : '<p class="muted no-mat">Zu dieser Aufgabe gibt es kein Material. Nutze dein Fachwissen und eigene Beispiele.</p>';
+        var refs = a.material.length ? '<span class="mat-refs">' + a.material.map(function (id) { return id.toUpperCase(); }).join(", ") + "</span>" : "";
+        html += '<article class="task2" id="task-' + a.id + '">' +
+          '<button class="task2-head" aria-expanded="false" aria-controls="tb-' + a.id + '">' +
+          '<span class="tnum">' + a.nr + '</span><span class="tmain"><span class="tops"><span class="op-badge">' + esc(a.operator) + "</span>" +
+          (a.lk ? '<span class="badge badge-lk">LK-Niveau</span>' : "") + refs + '</span><span class="ttext">' + a.text + "</span></span>" + ICON.chev + "</button>" +
+          '<div class="task2-body" id="tb-' + a.id + '" hidden><div class="mat-top"><div class="op-box"><h4>Was verlangt der Operator? (Definition des Landes Hessen)</h4><dl><dt>' + esc(a.operator) +
+          ' <span class="muted">(AFB ' + o.afb + ")</span></dt><dd>" + esc(o.def) + '</dd></dl><p class="src">' + esc(SITE.operatorenVorbemerkung) + "<br>Quelle: " + esc(SITE.operatorenQuelle) + "</p></div>" +
+          '<a class="btn btn-green" href="' + a.pdf + '" download>Korrekturdatei herunterladen</a></div><div class="mat-doc">' + mats + "</div></div></article>";
+      });
+      html += "</section>";
+    });
+    body.innerHTML = html;
+    $all(".task2-head", body).forEach(function (b) {
       b.addEventListener("click", function () {
-        var m = $("#mat-" + b.getAttribute("data-mat"), body);
-        m.hidden = !m.hidden;
-        b.setAttribute("aria-expanded", String(!m.hidden));
-        b.textContent = m.hidden ? "Material anzeigen" : "Material ausblenden";
+        var tb = document.getElementById(b.getAttribute("aria-controls"));
+        tb.hidden = !tb.hidden;
+        b.setAttribute("aria-expanded", String(!tb.hidden));
       });
     });
   }

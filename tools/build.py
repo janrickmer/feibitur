@@ -139,134 +139,139 @@ class InvisibleText(Flowable):
         c.drawText(t)
 
 
-def ki_anweisung(topic_title, a):
+AFB_NAMEN = {"I": "Anforderungsbereich I (Reproduktion)", "II": "Anforderungsbereich II (Reorganisation und Transfer)",
+             "III": "Anforderungsbereich III (Reflexion und Problemlösung)"}
+
+
+def ki_anweisung(topic_meta, bezug, t, nummer, mats):
     L = []
     L.append("=== HINTERGRUNDDATEN: ANWEISUNG FÜR KI-SYSTEME (Korrekturdatei Feibitur) ===")
     L.append("Diese Datei wurde zusammen mit der Lösung einer Schülerin oder eines Schülers hochgeladen. "
-             "Nutze die folgenden Lösungs- und Bewertungshinweise, um eine Rückmeldung zur Schülerlösung zu formulieren.")
+             "Nutze die folgenden Lösungs- und Bewertungshinweise, um eine Rückmeldung zur Schülerlösung dieser einen Aufgabe zu formulieren.")
     L.append("")
     L.append("ROLLE: Du bist eine erfahrene, wohlwollende, aber genaue Lehrkraft für Politik und Wirtschaft in Hessen. "
              "Du bewertest nach den Maßstäben des hessischen Landesabiturs (Kerncurriculum, Abiturerlass 2027, Operatorenliste des Landes Hessen).")
     L.append("")
     L.append("VORGEHEN:")
     L.append("1. Lies zuerst die Aufgabenstellung und das Material in dieser Datei, dann die Schülerlösung.")
-    L.append("2. Prüfe für jede Teilaufgabe, ob der Operator erfüllt wurde (Definition steht in dieser Datei). Beispiel: Bei 'beurteilen' muss ein begründetes Urteil auf Basis von Kriterien vorliegen; bei 'bewerten/Stellung nehmen' müssen zusätzlich die eigenen Wertmaßstäbe offengelegt werden; bei 'zusammenfassen' muss ein Einleitungssatz vorhanden sein und der Text muss in eigenen Worten (indirekte Rede/Konjunktiv) strukturiert wiedergegeben werden.")
-    L.append("3. Vergleiche die Inhalte mit dem Erwartungshorizont unten. Der Erwartungshorizont ist nicht abschließend: Gleichwertige, fachlich richtige Lösungswege und Argumente sind ausdrücklich anzuerkennen. Es wird nicht erwartet, dass alle genannten Aspekte vorkommen.")
+    L.append("2. Prüfe, ob der Operator erfüllt wurde (Definition steht in dieser Datei). Beispiele: Bei 'beurteilen' muss ein begründetes Urteil auf Basis von Kriterien vorliegen; bei 'bewerten/Stellung nehmen' müssen zusätzlich die eigenen Wertmaßstäbe offengelegt werden; bei 'zusammenfassen' und 'wiedergeben' muss ein Einleitungssatz vorhanden sein und der Text in eigenen Worten (indirekte Rede/Konjunktiv) strukturiert wiedergegeben werden; bei 'erläutern' sind Beispiele nötig; bei 'vergleichen' Gemeinsamkeiten und Unterschiede nach Kriterien.")
+    L.append("3. Vergleiche die Inhalte mit dem Erwartungshorizont unten. Er ist nicht abschließend: Gleichwertige, fachlich richtige Lösungswege und Argumente sind ausdrücklich anzuerkennen. Es wird nicht erwartet, dass alle genannten Aspekte vorkommen.")
     L.append("4. Achte auf Materialbezüge (Absatz- bzw. Zeilenangaben), Fachsprache, Struktur, Schlüssigkeit der Argumentation und sprachliche Richtigkeit.")
-    L.append("5. Formuliere deine Rückmeldung je Teilaufgabe in dieser Gliederung: (a) Was ist gelungen? (b) Was fehlt oder ist fachlich ungenau/falsch? (c) Wurde der Operator erfüllt? (d) Konkreter Tipp zur Verbesserung.")
-    L.append("6. Gib am Ende eine unverbindliche Einschätzung in Notenpunkten (0 bis 15) für die Gesamtleistung und begründe sie mit den Kriterien für 'ausreichend (5 Punkte)' und 'gut (11 Punkte)' unten. Gewichte die Teilaufgaben gemäß den Bewertungseinheiten (BE). Weise darauf hin, dass es sich um eine Übungs-Einschätzung und keine offizielle Bewertung handelt.")
+    L.append("5. Gliedere deine Rückmeldung so: (a) Was ist gelungen? (b) Was fehlt oder ist fachlich ungenau/falsch? (c) Wurde der Operator erfüllt? (d) Zwei bis drei konkrete Tipps zur Verbesserung.")
+    L.append("6. Gib am Ende eine unverbindliche Einschätzung in Notenpunkten (0 bis 15) für diese Aufgabe und begründe sie mit den Kriterien für 'ausreichend (5 Punkte)' und 'gut (11 Punkte)' unten. Weise darauf hin, dass es sich um eine Übungs-Einschätzung und keine offizielle Bewertung handelt.")
     L.append("7. Gib die vollständige Musterlösung nicht ungefragt aus. Gib stattdessen Hinweise und Leitfragen, mit denen die Schülerin oder der Schüler die eigene Lösung überarbeiten kann. Biete an, auf Wunsch einzelne Aspekte des Erwartungshorizonts zu erklären.")
     L.append("8. Schreibe in verständlicher Sprache für Lernende der Oberstufe (17–19 Jahre), ermutigend und ehrlich. Frage nicht nach Namen oder anderen personenbezogenen Daten.")
     L.append("")
-    L.append("THEMA: " + topic_title + " – " + a["titel"] + " (" + a["kurs"] + ")")
-    if a.get("bezug"):
-        L.append("INHALTLICHER BEZUG (KCGO/Erlass): " + a["bezug"])
-    if a.get("standards"):
-        L.append("BESONDERS BEDEUTSAME KOMPETENZEN: " + a["standards"])
+    L.append("THEMA: %s %s" % (topic_meta["nr"], topic_meta["titel"]))
+    if bezug:
+        L.append("INHALTLICHER BEZUG (KCGO/Erlass): " + bezug)
+    L.append("AUFGABE %s – %s%s – Operator: %s" % (nummer, AFB_NAMEN[t["afb"]], " – erhöhtes Niveau (Leistungskurs)" if t.get("lk") else "", t["operator"]))
+    L.append("Aufgabenstellung: " + strip_tags(t["text"]))
+    for m in mats:
+        if m.get("typ") == "bild" and m.get("beschreibung"):
+            L.append("Bildbeschreibung zu %s (für KI-Systeme, die das Bild nicht sehen): %s" % (strip_tags(m["titel"]), strip_tags(m["beschreibung"])))
     L.append("")
     L.append("ERWARTUNGSHORIZONT (LÖSUNGSHINWEISE):")
-    for t, lh in zip(a["aufgaben"], a["loesung"]):
-        L.append("")
-        L.append("Aufgabe %s (%s BE, AFB %s, Operator: %s): %s" % (t["nr"], t["be"], t["afb"], t["operator"], strip_tags(t["text"])))
-        if lh.get("vorbemerkung"):
-            L.append(strip_tags(lh["vorbemerkung"]))
-        for p in lh["punkte"]:
-            L.append("- " + strip_tags(p))
-        if lh.get("hinweis"):
-            L.append("Hinweis für die Korrektur: " + strip_tags(lh["hinweis"]))
+    lh = t["loesung"]
+    if lh.get("vorbemerkung"):
+        L.append(strip_tags(lh["vorbemerkung"]))
+    for pkt in lh["punkte"]:
+        L.append("- " + strip_tags(pkt))
+    if lh.get("hinweis"):
+        L.append("Hinweis für die Korrektur: " + strip_tags(lh["hinweis"]))
     L.append("")
     L.append("BEWERTUNG UND BEURTEILUNG:")
-    L.append("Eine Leistung ist mit 'ausreichend' (5 Punkte) zu beurteilen, wenn die für die Bearbeitung besonders bedeutsamen Kompetenzen grundsätzlich nachgewiesen werden und")
-    for t, k in zip(a["aufgaben"], a["bewertung"]["ausreichend"]):
-        L.append("- in Aufgabe %s %s" % (t["nr"], k))
-    L.append("Eine Leistung ist mit 'gut' (11 Punkte) zu beurteilen, wenn die für die Bearbeitung besonders bedeutsamen Kompetenzen weitgehend nachgewiesen werden und")
-    for t, k in zip(a["aufgaben"], a["bewertung"]["gut"]):
-        L.append("- in Aufgabe %s %s" % (t["nr"], k))
-    L.append("Die Bewertungseinheiten sind etwa im Verhältnis 30:45:25 (Grundkurs) bzw. 30:40:30 (Leistungskurs) den Anforderungsbereichen I, II und III zugeordnet. "
-             "Neben dem Inhalt zählen Strukturierung, Differenziertheit, (fach-)sprachliche Gestaltung und Schlüssigkeit der Argumentation.")
+    L.append("'ausreichend' (5 Punkte), wenn " + strip_tags(t["bewertung"]["ausreichend"]))
+    L.append("'gut' (11 Punkte), wenn " + strip_tags(t["bewertung"]["gut"]))
+    L.append("Neben dem Inhalt zählen Strukturierung, Differenziertheit, (fach-)sprachliche Gestaltung und Schlüssigkeit der Argumentation.")
     L.append("=== ENDE DER HINTERGRUNDDATEN ===")
     return "\n".join(L)
 
 
-def build_pdf(topic_meta, a, path):
+def svg_flowable(svg, max_w):
+    from svglib.svglib import svg2rlg
+    import io
+    svg = re.sub(r"font-family='[^']*'", "font-family='Helvetica'", svg)
+    d = svg2rlg(io.BytesIO(svg.encode("utf-8")))
+    sc = min(1.0, max_w / d.width)
+    d.width, d.height = d.width * sc, d.height * sc
+    d.scale(sc, sc)
+    return d
+
+
+def material_story(m, styles):
+    out = [Paragraph(m["titel"], styles["h2"])]
+    if m.get("typ") == "tabelle":
+        data = [[Paragraph("<b>%s</b>" % c, styles["small"]) for c in m["kopf"]]]
+        for z in m["zeilen"]:
+            data.append([Paragraph(str(c), styles["small"]) for c in z])
+        mt = Table(data, repeatRows=1)
+        mt.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.3, colors.HexColor("#999999")),
+                                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8ecf4")), ("VALIGN", (0, 0), (-1, -1), "TOP")]))
+        out.append(mt)
+    elif m.get("typ") == "bild":
+        out.append(svg_flowable(m["svg"], 166 * mm))
+    else:
+        rows = []
+        for i, p in enumerate(m["absaetze"], 1):
+            rows.append([Paragraph("<font color='#777777' size='8'>[%d]</font>" % i, styles["mat"]), Paragraph(rl(p), styles["mat"])])
+        mt = Table(rows, colWidths=[10 * mm, 156 * mm])
+        mt.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+                                ("LEFTPADDING", (0, 0), (0, -1), 0)]))
+        out.append(mt)
+    if m.get("quelle"):
+        out.append(Paragraph(m["quelle"], styles["src"]))
+    return out
+
+
+def build_pdf(topic_meta, bezug, t, nummer, mats, path):
     styles = {
         "h1": ParagraphStyle("h1", fontName="Lib-B", fontSize=15, leading=19, textColor=NAVY, spaceAfter=4),
         "h2": ParagraphStyle("h2", fontName="Lib-B", fontSize=11.5, leading=15, textColor=NAVY, spaceBefore=10, spaceAfter=4),
         "meta": ParagraphStyle("meta", fontName="Lib", fontSize=9, leading=12, textColor=GREY),
-        "body": ParagraphStyle("body", fontName="Lib", fontSize=10.5, leading=14.5, alignment=TA_LEFT),
         "small": ParagraphStyle("small", fontName="Lib", fontSize=8.5, leading=11, textColor=GREY),
-        "task": ParagraphStyle("task", fontName="Lib", fontSize=10.5, leading=14.5),
+        "task": ParagraphStyle("task", fontName="Lib", fontSize=11, leading=15.5),
         "mat": ParagraphStyle("mat", fontName="Lib", fontSize=10, leading=14),
         "src": ParagraphStyle("src", fontName="Lib-I", fontSize=8.5, leading=11, textColor=GREY, spaceBefore=4),
     }
     story = []
-    story.append(Paragraph("Feibitur · Politik und Wirtschaft · Übungsaufgabe", styles["meta"]))
+    story.append(Paragraph("Feibitur · Politik und Wirtschaft · Übungsaufgabe · Vorbereitung Landesabitur 2027", styles["meta"]))
     story.append(Spacer(1, 3 * mm))
-    story.append(Paragraph(a["titel"], styles["h1"]))
-    story.append(Paragraph("%s %s · %s · Kurs: %s" % (topic_meta["nr"], topic_meta["titel"], "Vorbereitung Landesabitur 2027", a["kurs"]), styles["meta"]))
+    story.append(Paragraph("Aufgabe %s: %s" % (nummer, AFB_NAMEN[t["afb"]]), styles["h1"]))
+    story.append(Paragraph("%s %s%s" % (topic_meta["nr"], topic_meta["titel"], " · erhöhtes Niveau (Leistungskurs)" if t.get("lk") else ""), styles["meta"]))
     story.append(Spacer(1, 4 * mm))
+    box = Table([[Paragraph(rl(t["text"]), styles["task"])]], colWidths=[166 * mm])
+    box.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1, NAVY), ("LEFTPADDING", (0, 0), (-1, -1), 8), ("RIGHTPADDING", (0, 0), (-1, -1), 8),
+                             ("TOPPADDING", (0, 0), (-1, -1), 7), ("BOTTOMPADDING", (0, 0), (-1, -1), 8)]))
+    story.append(box)
 
-    story.append(Paragraph("Aufgaben", styles["h2"]))
-    rows = []
-    for t in a["aufgaben"]:
-        rows.append([Paragraph("<b>%s</b>" % t["nr"], styles["task"]),
-                     Paragraph(rl(t["text"]), styles["task"]),
-                     Paragraph("<b>(%s BE)</b>" % t["be"], styles["task"])])
-    tb = Table(rows, colWidths=[9 * mm, 135 * mm, 22 * mm])
-    tb.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
-                            ("LINEBELOW", (0, 0), (-1, -2), 0.3, colors.HexColor("#cccccc"))]))
-    story.append(tb)
-
-    story.append(Paragraph("Operatoren in dieser Aufgabe (Definition laut Land Hessen)", styles["h2"]))
-    seen, orows = [], []
-    for t in a["aufgaben"]:
-        k = operator_key(t["operator"])
-        if k in seen:
-            continue
-        seen.append(k)
-        o = site.OPERATOREN[k]
-        orows.append([Paragraph("<b>%s</b>" % k, styles["task"]), Paragraph(o["def"], styles["task"]),
-                      Paragraph("AFB " + o["afb"], styles["small"])])
-    ot = Table(orows, colWidths=[38 * mm, 110 * mm, 18 * mm])
+    story.append(Paragraph("Operator (Definition laut Land Hessen)", styles["h2"]))
+    k = operator_key(t["operator"])
+    o = site.OPERATOREN[k]
+    ot = Table([[Paragraph("<b>%s</b>" % k, styles["task"]), Paragraph(o["def"], styles["task"]), Paragraph("AFB " + o["afb"], styles["small"])]],
+               colWidths=[38 * mm, 110 * mm, 18 * mm])
     ot.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#f3f5f9")),
                             ("BOX", (0, 0), (-1, -1), 0.4, colors.HexColor("#c9d1e0")), ("BOTTOMPADDING", (0, 0), (-1, -1), 6)]))
     story.append(ot)
     story.append(Paragraph(site.OPERATOREN_VORBEMERKUNG, styles["small"]))
     story.append(Paragraph("Quelle: " + site.OPERATOREN_QUELLE, styles["small"]))
 
-    for m in a["material"]:
-        story.append(Paragraph(m["titel"], styles["h2"]))
-        if m.get("typ") == "tabelle":
-            data = [[Paragraph("<b>%s</b>" % c, styles["small"]) for c in m["kopf"]]]
-            for z in m["zeilen"]:
-                data.append([Paragraph(str(c), styles["small"]) for c in z])
-            mt = Table(data, repeatRows=1)
-            mt.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.3, colors.HexColor("#999999")),
-                                    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8ecf4")), ("VALIGN", (0, 0), (-1, -1), "TOP")]))
-            story.append(mt)
-        else:
-            rows = []
-            for i, p in enumerate(m["absaetze"], 1):
-                rows.append([Paragraph("<font color='#777777' size='8'>[%d]</font>" % i, styles["mat"]), Paragraph(rl(p), styles["mat"])])
-            mt = Table(rows, colWidths=[10 * mm, 156 * mm])
-            mt.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-                                    ("LEFTPADDING", (0, 0), (0, -1), 0)]))
-            story.append(mt)
-        if m.get("quelle"):
-            story.append(Paragraph(m["quelle"], styles["src"]))
-        if m.get("hinweis"):
-            story.append(Paragraph(m["hinweis"], styles["src"]))
+    if mats:
+        for m in mats:
+            story.extend(material_story(m, styles))
+    else:
+        story.append(Paragraph("Material", styles["h2"]))
+        story.append(Paragraph("Für diese Aufgabe gibt es kein Material. Nutze dein Fachwissen und passende Beispiele.", styles["mat"]))
 
     story.append(Spacer(1, 6 * mm))
     story.append(Paragraph("So nutzt du diese Datei: Lade sie zusammen mit deiner eigenen Lösung in einem KI-System deines Vertrauens hoch "
                            "und bitte die KI, die Hintergrunddaten dieser Korrekturdatei für eine Rückmeldung zu nutzen. "
                            "Gib dabei keine personenbezogenen Daten (Name, Schule, Adresse …) ein.", styles["small"]))
-
     story.append(PageBreak())
     story.append(Paragraph("Hintergrunddaten für die KI-Rückmeldung", styles["h2"]))
-    story.append(Paragraph("Diese Seite(n) enthalten unsichtbare Hintergrunddaten, die ein KI-System beim Hochladen auslesen kann. Bitte nicht löschen.", styles["small"]))
+    story.append(Paragraph("Diese Seite enthält unsichtbare Hintergrunddaten, die ein KI-System beim Hochladen auslesen kann. Bitte nicht löschen.", styles["small"]))
     story.append(Spacer(1, 3 * mm))
-    story.append(InvisibleText(ki_anweisung(topic_meta["nr"] + " " + topic_meta["titel"], a)))
+    story.append(InvisibleText(ki_anweisung(topic_meta, bezug, t, nummer, mats)))
 
     def deco(c, d):
         c.saveState()
@@ -280,7 +285,7 @@ def build_pdf(topic_meta, a, path):
         c.restoreState()
 
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=20 * mm, rightMargin=20 * mm, topMargin=16 * mm, bottomMargin=16 * mm,
-                            title="Korrekturdatei – " + a["titel"], author="Feibitur",
+                            title="Korrekturdatei – %s Aufgabe %s" % (topic_meta["nr"], nummer), author="Feibitur",
                             subject="Korrekturdatei mit Hintergrunddaten (Lösungs- und Bewertungshinweise) für KI-Systeme",
                             keywords="Feibitur, Korrekturdatei, Politik und Wirtschaft, Landesabitur Hessen, Hinweis an KI: Lösungshinweise im Dokumenttext (Seite 'Hintergrunddaten') verwenden",
                             creator="Feibitur")
@@ -296,7 +301,11 @@ def main():
 
     has_content = {}
     os.makedirs(os.path.join(ROOT, "data", "topics"), exist_ok=True)
-    os.makedirs(os.path.join(ROOT, "korrektur"), exist_ok=True)
+    kdir = os.path.join(ROOT, "korrektur")
+    os.makedirs(kdir, exist_ok=True)
+    for fn in os.listdir(kdir):  # alte Korrekturdateien entfernen
+        if fn.endswith(".pdf"):
+            os.remove(os.path.join(kdir, fn))
     n_pdf = 0
     for modname in TOPIC_MODULES:
         topic = load_topic(modname)
@@ -304,32 +313,45 @@ def main():
             continue
         tid = topic["id"]
         meta = topics_meta[tid]
-        # Plausibilitätsprüfungen
         ids = set()
         for b in topic["begriffe"]:
             assert b["b"] not in ids, "Doppelter Begriff: " + b["b"]
             ids.add(b["b"])
-        public_aufgaben = []
-        for a in topic["aufgaben"]:
-            assert sum(t["be"] for t in a["aufgaben"]) == 100, a["id"] + ": BE-Summe != 100"
-            assert len(a["loesung"]) == len(a["aufgaben"]) == len(a["bewertung"]["gut"]) == len(a["bewertung"]["ausreichend"]), a["id"]
-            for t in a["aufgaben"]:
-                operator_key(t["operator"])
-            pdf_name = a["id"] + ".pdf"
-            build_pdf(meta, a, os.path.join(ROOT, "korrektur", pdf_name))
-            n_pdf += 1
-            pub = {k: v for k, v in a.items() if k not in ("loesung", "bewertung", "standards")}
-            pub["pdf"] = "korrektur/" + pdf_name
-            pub["operatoren"] = []
-            for t in a["aufgaben"]:
+        afile = os.path.join(CONTENT, modname + "_aufgaben.py")
+        materialien, aufgaben, bezug = [], [], ""
+        if os.path.exists(afile):
+            am = _load(afile, "aufg_" + modname)
+            materialien, aufgaben, bezug = am.MATERIALIEN, am.AUFGABEN, getattr(am, "BEZUG", "")
+        mat_by_id = {m["id"]: m for m in materialien}
+        assert len(mat_by_id) == len(materialien), tid + ": doppelte Material-ID"
+        counts = {"I": 0, "II": 0, "III": 0}
+        public = []
+        seen_ids = set()
+        for afb in ("I", "II", "III"):
+            for t in [x for x in aufgaben if x["afb"] == afb]:
+                assert t["id"] not in seen_ids, t["id"]
+                seen_ids.add(t["id"])
+                counts[afb] += 1
+                nummer = "%s.%d" % (afb, counts[afb])
                 k = operator_key(t["operator"])
-                if k not in pub["operatoren"]:
-                    pub["operatoren"].append(k)
-            public_aufgaben.append(pub)
-        out = {"id": tid, "begriffe": topic["begriffe"], "inhalte": topic["inhalte"], "aufgaben": public_aufgaben}
+                for mid in t.get("material", []):
+                    assert mid in mat_by_id, "%s: Material %s fehlt" % (t["id"], mid)
+                for key in ("loesung", "bewertung"):
+                    assert key in t, t["id"] + ": " + key
+                mats = [mat_by_id[mid] for mid in t.get("material", [])]
+                pdf_name = t["id"] + ".pdf"
+                build_pdf(meta, bezug, t, nummer, mats, os.path.join(kdir, pdf_name))
+                n_pdf += 1
+                public.append({"id": t["id"], "nr": nummer, "afb": afb, "operator": k, "text": t["text"],
+                               "material": t.get("material", []), "lk": bool(t.get("lk")), "pdf": "korrektur/" + pdf_name})
+        if aufgaben:
+            for a_, c in counts.items():
+                assert c >= 3, "%s: nur %d Aufgaben in AFB %s" % (tid, c, a_)
+        pub_mats = [{k: v for k, v in m.items() if k != "beschreibung"} for m in materialien]
+        out = {"id": tid, "begriffe": topic["begriffe"], "inhalte": topic["inhalte"], "materialien": pub_mats, "aufgaben": public}
         with open(os.path.join(ROOT, "data", "topics", tid + ".json"), "w", encoding="utf-8") as f:
             json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
-        has_content[tid] = {"begriffe": len(topic["begriffe"]), "aufgaben": len(public_aufgaben)}
+        has_content[tid] = {"begriffe": len(topic["begriffe"]), "aufgaben": len(public)}
 
     site_json = {
         "stand": date.today().isoformat(),
