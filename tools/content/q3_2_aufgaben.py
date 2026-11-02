@@ -95,7 +95,7 @@ AUFGABEN = [
         },
         "bewertung": {
             "ausreichend": "die wesentlichen Prinzipien der WTO und der Ablauf der Streitbeilegung in Grundzügen zutreffend dargestellt werden.",
-            "gut": "Prinzipien, Ausnahmen und Streitbeilegung strukturiert, fachsprachlich präzise und mit Bezug zur Blockade des Berufungsgremiums dargestellt werden.",
+            "gut": "die Prinzipien, Ausnahmen und die Streitbeilegung strukturiert, fachsprachlich präzise und mit Bezug zur Blockade des Berufungsgremiums dargestellt werden.",
         },
     },
     {
@@ -182,8 +182,8 @@ AUFGABEN = [
             "hinweis": "Erklären: Rückführung auf ökonomische Grundprinzipien (Arbeitsteilung, Kostenvorteile, Standortfaktoren, Risiko). Materialbezüge zu [1]–[3] sind erforderlich.",
         },
         "bewertung": {
-            "ausreichend": "Gründe für die internationale Arbeitsteilung und für die Störanfälligkeit von Lieferketten im Ansatz zutreffend erklärt und auf M3 bezogen werden.",
-            "gut": "Arbeitsteilung und Störanfälligkeit schlüssig auf Kostenvorteile, Standortfaktoren und Risiken zurückgeführt werden und der Zielkonflikt zwischen Effizienz und Resilienz mit Materialbezug deutlich wird.",
+            "ausreichend": "die Gründe für die internationale Arbeitsteilung und für die Störanfälligkeit von Lieferketten im Ansatz zutreffend erklärt und auf M3 bezogen werden.",
+            "gut": "die Arbeitsteilung und die Störanfälligkeit schlüssig auf Kostenvorteile, Standortfaktoren und Risiken zurückgeführt werden und der Zielkonflikt zwischen Effizienz und Resilienz mit Materialbezug deutlich wird.",
         },
     },
     {
@@ -206,7 +206,7 @@ AUFGABEN = [
         },
         "bewertung": {
             "ausreichend": "die Opportunitätskosten im Wesentlichen korrekt berechnet, die komparativen Vorteile richtig zugeordnet und ein Spezialisierungsgewinn ansatzweise gezeigt werden.",
-            "gut": "Rechnung, Spezialisierungsgewinn und ein geeignetes Tauschverhältnis vollständig und nachvollziehbar dargelegt und daraus begründete wirtschaftspolitische Folgerungen samt Grenzen des Modells abgeleitet werden.",
+            "gut": "die Rechnung, der Spezialisierungsgewinn und ein geeignetes Tauschverhältnis vollständig und nachvollziehbar dargelegt und daraus begründete wirtschaftspolitische Folgerungen samt Grenzen des Modells abgeleitet werden.",
         },
     },
     {

@@ -26,15 +26,15 @@ MATERIALIEN = [
         "id": "m2",
         "titel": "M2: Entwicklungsindikatoren ausgewählter Länder im Vergleich",
         "typ": "tabelle",
-        "kopf": ["Land (Einwohner 2025)", "HDI 2023 (Rang von 193)", "Lebenserwartung 2023 in Jahren", "Schuljahre im Durchschnitt 2023", "BNE pro Kopf 2025 in US-$ (Einkommensgruppe)", "Extreme Armut in % (Jahr)", "Beschäftigte in der Landwirtschaft 2025 in %", "Verarbeitendes Gewerbe 2025 in % des BIP"],
+        "kopf": ["Land (Einwohner 2025)", "HDI 2023 (Rang von 193)", "Lebenserwartung 2023 in Jahren", "Ø Schuljahre 2023", "BNE pro Kopf 2025 in US-$ (Gruppe)", "Extreme Armut in % (Jahr)", "Beschäftigte im Agrarsektor 2025 in %", "Industrie* in % des BIP 2025"],
         "zeilen": [
-            ["Bangladesch (175,7\u00a0Mio.)", "0,685\u00a0(130)", "74,7", "6,8", "2.840 (untere mittlere)", "5,9\u00a0(2022)", "44,3", "22,4"],
-            ["Vietnam (101,6\u00a0Mio.)", "0,766\u00a0(93)", "74,6", "9,0", "4.970 (obere mittlere)", "1,6\u00a0(2022)", "25,0", "24,5"],
-            ["Äthiopien (135,5\u00a0Mio.)", "0,497\u00a0(180)", "67,3", "2,4", "1.110 (niedrige)", "38,6\u00a0(2021)", "60,1", "4,2"],
-            ["Niger (27,9\u00a0Mio.)", "0,419\u00a0(188)", "61,2", "1,4", "750 (niedrige)", "60,5\u00a0(2021)", "73,0", "7,0\u00a0(2024)"],
-            ["Deutschland (83,5\u00a0Mio.)", "0,959\u00a0(5)", "81,4", "14,3", "60.200 (hohe)", "0,7\u00a0(2022)", "1,1", "17,6"],
+            ["Bangladesch (175,7 Mio.)", "0,685 (130)", "74,7", "6,8", "2.840 (untere mittlere)", "5,9 (2022)", "44,3", "22,4"],
+            ["Vietnam (101,6 Mio.)", "0,766 (93)", "74,6", "9,0", "4.970 (obere mittlere)", "1,6 (2022)", "25,0", "24,5"],
+            ["Äthiopien (135,5 Mio.)", "0,497 (180)", "67,3", "2,4", "1.110 (niedrige)", "38,6 (2021)", "60,1", "4,2"],
+            ["Niger (27,9 Mio.)", "0,419 (188)", "61,2", "1,4", "750 (niedrige)", "60,5 (2021)", "73,0", "7,0 (2024)"],
+            ["Deutschland (83,5 Mio.)", "0,959 (5)", "81,4", "14,3", "60.200 (hohe)", "0,7 (2022)", "1,1", "17,6"],
         ],
-        "quelle": "Extreme Armut = Anteil der Bevölkerung mit weniger als 3,00 US-$ pro Tag (Kaufkraftparitäten 2021); Einkommensgruppen nach der Weltbank-Klassifikation ab 1. Juli 2026. Quellen: UNDP, Human Development Report 2025, Statistik-Tabelle 1 (Daten für 2023); Weltbank, World Development Indicators (Datenstand 8. Oktober 2026, abgerufen am 2. November 2026): Bevölkerung, BNE pro Kopf (Atlas-Methode), Armutsquote bei 3,00 US-$ pro Tag (Kaufkraftparitäten 2021), Beschäftigte in der Landwirtschaft (modellierte ILO-Schätzung), Wertschöpfung des Verarbeitenden Gewerbes. Werte gerundet.",
+        "quelle": "Erläuterungen: Ø Schuljahre = durchschnittliche Zahl der Schuljahre von Erwachsenen ab 25 Jahren; Gruppe = Einkommensgruppe nach der Weltbank-Klassifikation ab 1. Juli 2026; extreme Armut = Anteil der Bevölkerung mit weniger als 3,00 US-$ pro Tag (Kaufkraftparitäten 2021); * Industrie = Verarbeitendes Gewerbe. Quellen: UNDP, Human Development Report 2025, Statistik-Tabelle 1 (Daten für 2023); Weltbank, World Development Indicators (Datenstand 8. Oktober 2026, abgerufen am 2. November 2026): Bevölkerung, BNE pro Kopf (Atlas-Methode), Armutsquote bei 3,00 US-$ pro Tag (Kaufkraftparitäten 2021), Beschäftigte in der Landwirtschaft (modellierte ILO-Schätzung), Wertschöpfung des Verarbeitenden Gewerbes. Werte gerundet.",
     },
     {
         "id": "m3",
@@ -116,7 +116,7 @@ AUFGABEN = [
         },
         "bewertung": {
             "ausreichend": "die Agenda 2030 und einige Mittel der staatlichen EZ in Grundzügen zutreffend dargestellt werden.",
-            "gut": "Agenda 2030 und Mittel der staatlichen EZ strukturiert, fachsprachlich präzise und mit Beispielen dargestellt werden.",
+            "gut": "die Agenda 2030 und die Mittel der staatlichen EZ strukturiert, fachsprachlich präzise und mit Beispielen dargestellt werden.",
         },
     },
     {
@@ -137,7 +137,7 @@ AUFGABEN = [
             "hinweis": "Analysieren: kriteriengeleitete Erschließung entlang der vier vorgegebenen Dimensionen mit Belegen aus M1 und M2. Das Herausarbeiten von Wechselwirkungen zwischen den Dimensionen kennzeichnet eine gute Leistung.",
         },
         "bewertung": {
-            "ausreichend": "Entwicklungsprobleme in mehreren Dimensionen im Ansatz zutreffend und mit einzelnen Materialbelegen analysiert werden.",
+            "ausreichend": "die Entwicklungsprobleme in mehreren Dimensionen im Ansatz zutreffend und mit einzelnen Materialbelegen analysiert werden.",
             "gut": "alle vier Dimensionen strukturiert, mit Belegen aus M1 und M2 analysiert und Wechselwirkungen zwischen ihnen schlüssig herausgearbeitet werden.",
         },
     },
@@ -158,7 +158,7 @@ AUFGABEN = [
             "hinweis": "Erläutern: Beiträge der Akteure mit Beispielen aus M1 und zusätzlichem Fachwissen veranschaulichen; die Unterscheidung staatlich/nichtstaatlich sowie national/international sollte erkennbar sein.",
         },
         "bewertung": {
-            "ausreichend": "Beiträge einiger staatlicher und nichtstaatlicher Akteure im Ansatz zutreffend und mit Bezug zu M1 erläutert werden.",
+            "ausreichend": "die Beiträge einiger staatlicher und nichtstaatlicher Akteure im Ansatz zutreffend und mit Bezug zu M1 erläutert werden.",
             "gut": "die Beiträge verschiedener Akteursgruppen differenziert, mit Beispielen aus M1 und Fachwissen erläutert und auf die Dimensionen nachhaltiger Entwicklung bezogen werden, einschließlich ihrer Grenzen.",
         },
     },
@@ -215,14 +215,15 @@ AUFGABEN = [
         "loesung": {
             "punkte": [
                 "Pro: Erfolgsbeispiele Ostasiens und Bangladeschs (Exporterlöse, Jobs und Rücküberweisungen übertreffen die Entwicklungsgelder deutlich) [3]; Fehlanreize und Abhängigkeit durch Hilfe, Korruption, Geberinteressen [2]; Marktöffnung (z. B. „Alles außer Waffen“) als wirksames Instrument; Stärkung der Eigenverantwortung.",
-                "Kontra: Die ärmsten Länder (z. B. Niger, Äthiopien) haben kaum wettbewerbsfähige Exportsektoren, oft Binnenlage und Konflikte – Handel allein reicht nicht; Gesundheit, Bildung und Infrastruktur entstehen oft erst durch öffentliche Investitionen und Hilfe (auch Bangladesch profitierte von NGOs und Weltbank); Handel ohne Standards kann zu Ausbeutung führen (Rana Plaza), Wachstum verbessert Standards nicht automatisch [5]; globale Herausforderungen (Klima, Pandemien) erfordern öffentliche Gelder; Kürzungen treffen akut Bedürftige (humanitäre Hilfe 2025 laut OECD um über ein Drittel gesunken).",
+                "Kontra: Die ärmsten Länder (z. B. Niger, Äthiopien) haben kaum wettbewerbsfähige Exportsektoren, oft Binnenlage und Konflikte – Handel allein reicht nicht; Gesundheit, Bildung und Infrastruktur entstehen oft erst durch öffentliche Investitionen und Hilfe (auch Bangladesch profitierte von NGOs und Weltbank); Handel ohne Standards kann zu Ausbeutung führen (Rana Plaza), Wachstum verbessert Standards nicht automatisch [5].",
+                "Weitere Gegenargumente: Globale Herausforderungen (Klimaanpassung, Pandemien) erfordern öffentliche Gelder; Kürzungen treffen akut Bedürftige (humanitäre Hilfe 2025 laut OECD um über ein Drittel gesunken); Handelsvorteile nützen nur Ländern mit exportfähigen Produkten, während Agrarsubventionen und Zölle der Industrieländer Exportchancen begrenzen.",
                 "Abwägung: Handel und Hilfe als Ergänzung („Aid for Trade“), Qualität statt Quantität der EZ, Kohärenz von Handels-, Agrar- und Entwicklungspolitik.",
                 "Begründetes eigenes Urteil nach Kriterien (z. B. Wirksamkeit, Gerechtigkeit, Nachhaltigkeit, Eigenverantwortung); unterschiedliche Ergebnisse sind möglich, wenn sie schlüssig begründet werden.",
             ],
             "hinweis": "Erörtern: Pro und Kontra abwägen und zu einem eigenen Urteil gelangen; Materialbezüge zu M3 sowie gern Belege aus der Fallstudie Bangladesch.",
         },
         "bewertung": {
-            "ausreichend": "Argumente für und gegen die These ansatzweise strukturiert abgewogen werden und ein nachvollziehbares Urteil vorliegt.",
+            "ausreichend": "die Argumente für und gegen die These ansatzweise strukturiert abgewogen werden und ein nachvollziehbares Urteil vorliegt.",
             "gut": "die Erörterung strukturiert, fachlich fundiert und abwägend ist, unterschiedliche Ländergruppen differenziert betrachtet und in ein schlüssig begründetes Urteil mündet.",
         },
     },
