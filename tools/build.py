@@ -301,6 +301,31 @@ def _plain(x):
     return " " + re.sub(r"\s+", " ", strip_tags(x)).lower() + " "
 
 
+# Schaubilder der Inhalte an die Plakatwelt anpassen (Farben, Schrift, eckige Kästen).
+# Materialien (Karikaturen, Tabellen in Aufgaben) bleiben unverändert.
+SVG_FARBEN = {
+    "#14213d": "#141618", "#22355e": "#2b2e30", "#333": "#2b2e30", "#3a2a00": "#141618", "#6a4b00": "#141618",
+    "#555": "#555a5c", "#666": "#555a5c", "#777": "#555a5c", "#888": "#555a5c",
+    "#eef2fb": "#f3f4f2", "#e3e3e3": "#f3f4f2", "#dfe6f7": "#e3e4e1",
+    "#b5302a": "#d23a1f", "#d9a400": "#f2b300", "#ffd75e": "#f2b300", "#fff7e0": "#fff1c2",
+    "#6d86c0": "#2340c8", "#5b77b5": "#2340c8", "#3b5592": "#2340c8",
+}
+def plakat_svg(svg):
+    def farbe(m):
+        return SVG_FARBEN.get(m.group(0).lower(), m.group(0))
+    svg = re.sub(r"#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b", farbe, svg)
+    svg = re.sub(r"font-family=(['\"])system-ui[^'\"]*\1", "font-family='Archivo, Arial, sans-serif'", svg)
+    svg = re.sub(r"(<rect\b[^>]*?)\s(rx|ry)=(['\"])[0-9.]+\3", r"\1 \2='0'", svg)
+    svg = re.sub(r"(<rect\b[^>]*?)\s(rx|ry)=(['\"])[0-9.]+\3", r"\1 \2='0'", svg)
+    return svg
+def plakat_inhalte(inhalte):
+    out = []
+    for blk in inhalte:
+        if blk.get("t") == "svg":
+            blk = dict(blk); blk["svg"] = plakat_svg(blk["svg"])
+        out.append(blk)
+    return out
+
 def lk_only_term(name, topic, meta):
     """Ein Begriff gilt als LK-Begriff, wenn er nur in LK-Inhaltsblöcken bzw. LK-Stichworten
     des Kerncurriculums vorkommt, aber in keinem Inhaltsblock bzw. Stichwort für beide Kurse."""
@@ -388,7 +413,7 @@ def main():
             if memo.get(bg["b"]):
                 b2["memo"] = memo[bg["b"]]
             begriffe.append(b2)
-        out = {"id": tid, "begriffe": begriffe, "inhalte": topic["inhalte"], "materialien": pub_mats, "aufgaben": public}
+        out = {"id": tid, "begriffe": begriffe, "inhalte": plakat_inhalte(topic["inhalte"]), "materialien": pub_mats, "aufgaben": public}
         with open(os.path.join(ROOT, "data", "topics", tid + ".json"), "w", encoding="utf-8") as f:
             json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
         has_content[tid] = {"begriffe": len(topic["begriffe"]), "aufgaben": len(public)}

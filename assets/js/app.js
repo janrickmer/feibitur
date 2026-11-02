@@ -444,16 +444,17 @@
       ov.innerHTML = '<div class="m-table">' + LAMP +
         '<header class="m-head">' + plate(0) + '<div class="m-mid"><div class="m-progress" aria-hidden="true"><span></span></div><div class="m-count"></div></div>' + plate(1) + X + "</header>" +
         '<main class="m-felt"><div class="m-grid">' + G.deck.map(cardHTML).join("") + '</div><div class="m-deck" aria-hidden="true"></div></main>' +
-        '<footer class="m-foot"><div class="m-learn" hidden></div><div class="m-bar"><p class="m-msg" aria-live="polite"></p><button class="btn btn-primary m-nextbtn" id="m-next" hidden>Nächster Spieler</button></div></footer></div>';
+        '<footer class="m-foot"><div class="m-learn intro">Nach jedem gefundenen Paar steht hier die Kurzdefinition des Fachbegriffs – zum Mitlernen.</div><div class="m-bar"><p class="m-msg" aria-live="polite"></p><button class="btn btn-primary m-nextbtn" id="m-next" hidden>Nächster Spieler</button></div></footer></div>';
       $(".m-x", ov).addEventListener("click", close);
       $("#m-next", ov).addEventListener("click", next);
       $all(".m-card", ov).forEach(function (b) { b.addEventListener("click", function () { click(G.deck[+b.getAttribute("data-c")]); }); });
       fit(); status();
+      if (window.ResizeObserver) { var ro = new ResizeObserver(function () { if (G && !G.over) fit(); }); ro.observe($(".m-felt", ov)); }
     }
     function cardHTML(c) {
       return '<button class="m-card" data-c="' + c.id + '" style="--rot:' + c.rot + 'deg" aria-label="verdeckte Karte">' +
-        '<span class="m-inner"><span class="m-back"><span class="m-logo">F</span><span class="m-stripes"><i></i><i></i><i></i><i></i></span></span>' +
-        '<span class="m-front ' + (c.kind === "b" ? "m-term" : "m-def") + '"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + "</span></span></span></button>";
+        '<span class="m-inner"><span class="m-back"><span class="m-print">Feibitur</span><span class="m-logo">F</span><span class="m-stripes"><i></i><i></i><i></i><i></i></span></span>' +
+        '<span class="m-front ' + (c.kind === "b" ? "m-term" : "m-def") + '"><span class="m-text">' + esc(c.text) + "</span></span></span></button>";
     }
     function el(c) { return $('.m-card[data-c="' + c.id + '"]', ov); }
     // Kartengröße so wählen, dass möglichst alle Karten ohne Scrollen auf den Tisch passen
@@ -466,7 +467,7 @@
         var w = Math.min((W - gap * (cols - 1)) / cols, ((H - gap * (rows - 1)) / rows) * 0.75);
         if (!best || w > best.w) best = { cols: cols, w: w };
       }
-      var minW = W < 560 ? 96 : 118;
+      var minW = W < 400 ? 74 : (W < 560 ? 80 : 118);
       if (best.w < minW) { // lieber scrollen als winzige Karten – dann die Breite voll nutzen
         var c2 = Math.max(2, Math.floor((W + gap) / (minW + gap)));
         best = { cols: c2, w: (W - gap * (c2 - 1)) / c2 };
@@ -514,21 +515,19 @@
     function zoom(c) {
       var z = document.createElement("div");
       z.className = "m-zoom";
-      z.innerHTML = '<div class="m-zoom-card ' + (c.kind === "b" ? "m-term" : "m-def") + '" role="document"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + '</span><span class="m-hint">Zum Schließen tippen</span></div>';
+      z.innerHTML = '<div class="m-zoom-card ' + (c.kind === "b" ? "m-term" : "m-def") + '" role="document" aria-label="' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '"><span class="m-text">' + esc(c.text) + '</span><span class="m-hint">Zum Schließen tippen</span></div>';
       z.addEventListener("click", function () { z.remove(); });
       ov.appendChild(z);
     }
     function learn(c) {
       var l = $(".m-learn", ov);
       l.innerHTML = '<span class="m-learn-k">Gut gemerkt?</span><b>' + esc(c.term) + "</b>" + (c.kurz ? " – " + esc(c.kurz) : "");
-      l.hidden = false;
-      l.classList.remove("in"); void l.offsetWidth; l.classList.add("in");
+      l.classList.remove("intro", "in"); void l.offsetWidth; l.classList.add("in");
     }
     function click(c) {
       if (!G || G.over || c.state === "gone") return;
       if (c.state === "up") { zoom(c); return; }
       if (G.phase === "pick1") {
-        $(".m-learn", ov).hidden = true;
         flip(c, true); G.open = [c]; G.phase = "pick2"; status(); return;
       }
       if (G.phase !== "pick2") return;
