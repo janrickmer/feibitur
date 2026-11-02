@@ -54,7 +54,8 @@ ACCENT = colors.HexColor("#b5302a")
 GREY = colors.HexColor("#555555")
 
 TOPIC_MODULES = ["g1", "g2", "g3", "q1_1", "q1_2", "q1_3", "q1_4", "q1_5",
-                 "q2_1", "q2_2", "q2_3", "q2_4", "q2_5", "q3_1", "q3_2", "q3_3", "q3_4", "q3_5"]
+                 "q2_1", "q2_2", "q2_3", "q2_4", "q2_5", "q3_1", "q3_2", "q3_3", "q3_4", "q3_5",
+                 "q4_1", "q4_2", "q4_3"]
 
 
 def load_topic(modname):
