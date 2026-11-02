@@ -32,6 +32,7 @@
     bubble: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg>',
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5z"/><path d="M12 6v13.5"/></svg>',
     pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="M14.5 5.5l3 3"/></svg>',
+    cards: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="11" height="15" rx="2" transform="rotate(-8 8.5 12.5)"/><rect x="10" y="4" width="11" height="15" rx="2" transform="rotate(8 15.5 11.5)"/></svg>',
     tools: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L22 13.6 13.6 22l-2.3-2.3a4 4 0 0 0-5-5L4 12.4 12.4 4z" transform="scale(.9) translate(1 1)"/><path d="M3 21l5-5"/></svg>',
     speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>',
     chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
@@ -83,6 +84,23 @@
   function topbar(extra) {
     return '<header class="topbar"><a class="brand" href="#/">Feibitur</a><nav>' + (extra || "") + '</nav></header>';
   }
+  // Kurswahl: "GK", "LK" oder null (noch nicht gewählt -> alles anzeigen)
+  function kursWahl() { var k = store("kurs"); return k === "GK" || k === "LK" ? k : null; }
+  function zeigeLK() { return kursWahl() !== "GK"; }
+  function kursSwitchHTML() {
+    var k = kursWahl();
+    return '<div class="kurs-switch"><span>Mein Kurs:</span><div class="seg" role="group" aria-label="Kurs wählen"><button data-kurswahl="GK" aria-pressed="' + (k === "GK") + '">Grundkurs</button><button data-kurswahl="LK" aria-pressed="' + (k === "LK") + '">Leistungskurs</button></div></div>' +
+      (k ? "" : '<p class="kurs-hint">Wähle deinen Kurs – dann blenden wir aus, was für dich nicht relevant ist.</p>');
+  }
+  function bindKursWahl(root) {
+    $all("[data-kurswahl]", root).forEach(function (b) {
+      b.addEventListener("click", function () {
+        store("kurs", b.getAttribute("data-kurswahl"));
+        var pr = $("#powi-root"); if (pr) pr.remove();
+        app.innerHTML = ""; route();
+      });
+    });
+  }
   function toolsBtn() { return '<a class="btn btn-small btn-tools" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a>"; }
   function footer() {
     return '<footer class="site-foot"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · Feibitur speichert deinen Lernstand nur in deinem Browser.</footer>';
@@ -120,7 +138,8 @@
     var open = store("hinweisZu") ? "" : " open";
     return '<div class="abi-wrap"><details class="abi" id="abi"' + open + '><summary>' + h.titel + ' ' + ICON.chev + '</summary><div class="abi-body">' +
       '<ul>' + h.allgemein.map(function (p) { return "<li>" + p + "</li>"; }).join("") + '</ul>' +
-      '<div class="abi-cols">' + col(h.grundkurs, "gk", "Wichtig für den Grundkurs") + col(h.leistungskurs, "lk", "Wichtig für den Leistungskurs") + '</div>' +
+      (kursWahl() === "GK" ? '<div class="abi-cols abi-one">' + col(h.grundkurs, "gk", "Wichtig für den Grundkurs") + "</div>" :
+        '<div class="abi-cols">' + col(h.grundkurs, "gk", "Wichtig für den Grundkurs") + col(h.leistungskurs, "lk", "Wichtig für den Leistungskurs") + '</div>') +
       '<div class="abi-tipps"><b>Tipps:</b><ul>' + h.tipps.map(function (p) { return "<li>" + p + "</li>"; }).join("") + '</ul></div>' +
       '<p class="abi-src">Quelle: ' + h.quelle + '</p></div></details></div>';
   }
@@ -132,9 +151,10 @@
     if (!existing) {
       app.innerHTML = topbar(toolsBtn() + '<a class="btn btn-small" href="#/">Zur Startseite</a>') + '<div class="flagline"></div>' +
         '<div id="powi-root"><section class="powi-hero">' + ICON.dome.replace("<svg", '<svg class="dome"') + '<h1>Politik und Wirtschaft</h1><p>Vorbereitung auf das Landesabitur 2027 in Hessen</p>' +
-        '<a class="btn btn-tools-hero" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a></section>" +
+        kursSwitchHTML() + '<a class="btn btn-tools-hero" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a></section>" +
         renderHinweis() + '<div class="tabs-wrap"><div class="tabs" role="tablist" aria-label="Kurshalbjahre"></div></div><div id="tabpanel"></div></div>' + footer();
       $("#abi").addEventListener("toggle", function (e) { store("hinweisZu", !e.target.open); });
+      bindKursWahl(app);
       preloadGlossar();
     }
     var tabsEl = $(".tabs");
@@ -181,7 +201,7 @@
     var kcgo = "";
     if (meta.kcgo) {
       kcgo = '<details class="kcgo"><summary>Stichworte laut Kerncurriculum</summary><b>Grundkurs und Leistungskurs:</b><ul>' + meta.kcgo.gn.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") +
-        '</ul><b>Nur Leistungskurs:</b><ul>' + meta.kcgo.en.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></details>";
+        "</ul>" + (zeigeLK() ? '<b>Nur Leistungskurs:</b><ul>' + meta.kcgo.en.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") + "</details>";
     }
     var note = meta.erlass_hinweis ? '<div class="erlass-note">' + esc(meta.erlass_hinweis) + "</div>" : "";
     var badge = meta.methode ? '<span class="badge badge-abi">Methode</span>' : (meta.erlass ? '<span class="badge badge-abi">Abi 2027: Schwerpunkt</span>' : '<span class="badge badge-noabi">kein Schwerpunkt 2027</span>');
@@ -216,7 +236,7 @@
     var metas = Object.keys(TOPIC_META).map(function (k) { return TOPIC_META[k]; }).filter(function (m) { return m.content; });
     Promise.all(metas.map(loadTopic)).then(function (ts) {
       GLOSSAR = [];
-      ts.forEach(function (t, i) { if (!t) return; t.begriffe.forEach(function (b) { GLOSSAR.push({ b: b.b, kurz: b.kurz, topic: metas[i].nr }); }); });
+      ts.forEach(function (t, i) { if (!t) return; t.begriffe.forEach(function (b) { GLOSSAR.push({ b: b.b, kurz: b.kurz, topic: metas[i].nr, lk: !!b.lk }); }); });
     });
   }
 
@@ -323,6 +343,121 @@
     draw();
   }
 
+  // ---------------------------------------------------------------- Fachbegriffe-Memory (2 Spieler, ein Gerät)
+  function memoText(t) {
+    if (t.memo) return t.memo;
+    var w = t.b.split(/[\s(/-]/)[0];
+    return String(t.kurz).replace(/<[^>]+>/g, "").replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), "…");
+  }
+  function openMemory(terms, titel) {
+    if (terms.length < 4) { alert("Für ein Memory werden mindestens 4 Fachbegriffe benötigt."); return; }
+    var ov = document.createElement("div");
+    ov.className = "memory-overlay";
+    ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "Fachbegriffe-Memory");
+    document.body.appendChild(ov); document.body.classList.add("no-scroll");
+    var G = null, lastFocus = document.activeElement;
+    function close() {
+      if (G && !G.over && G.found > 0 && !confirm("Spiel wirklich beenden?")) return;
+      ov.remove(); document.body.classList.remove("no-scroll"); document.removeEventListener("keydown", onKey);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function onKey(e) { if (e.key === "Escape") { var z = $(".m-zoom", ov); if (z) z.remove(); else close(); } }
+    document.addEventListener("keydown", onKey);
+    var maxPairs = Math.min(12, terms.length);
+    function setup() {
+      var opts = [4, 6, 8, 10, 12].filter(function (n) { return n <= maxPairs; });
+      var def = opts.indexOf(8) >= 0 ? 8 : opts[opts.length - 1];
+      ov.innerHTML = '<div class="m-table m-setup"><div class="m-setup-card"><button class="m-x" aria-label="Schließen">×</button><h2>Fachbegriffe-Memory</h2><p class="muted">' + esc(titel) + "</p>" +
+        "<p>Deckt abwechselnd zwei Karten auf. Ein Paar besteht aus einem <b>Fachbegriff</b> und seiner <b>Beschreibung</b>. Wer ein Paar findet, bekommt einen Punkt und ist noch einmal dran. Ein erneuter Klick auf eine aufgedeckte Karte vergrößert sie.</p>" +
+        '<label class="bk-f"><span>Name Spieler/in 1</span><input id="m-n1" value="Spieler 1" maxlength="20"></label>' +
+        '<label class="bk-f"><span>Name Spieler/in 2</span><input id="m-n2" value="Spieler 2" maxlength="20"></label>' +
+        '<label class="bk-f"><span>Anzahl Paare</span><select id="m-pairs">' + opts.map(function (n) { return '<option value="' + n + '"' + (n === def ? " selected" : "") + ">" + n + " Paare (" + 2 * n + " Karten)</option>"; }).join("") + "</select></label>" +
+        '<p class="muted small">Die Namen werden nicht gespeichert.</p><button class="btn btn-primary" id="m-start">Spiel starten</button></div></div>';
+      $(".m-x", ov).addEventListener("click", close);
+      $("#m-start", ov).addEventListener("click", function () {
+        start([$("#m-n1", ov).value.trim() || "Spieler 1", $("#m-n2", ov).value.trim() || "Spieler 2"], +$("#m-pairs", ov).value);
+      });
+      $("#m-start", ov).focus();
+    }
+    function start(names, n) {
+      var pick = shuffle(terms).slice(0, n), deck = [];
+      pick.forEach(function (t, i) {
+        deck.push({ pair: i, kind: "b", text: t.b });
+        deck.push({ pair: i, kind: "d", text: memoText(t) });
+      });
+      deck = shuffle(deck).map(function (c, i) { c.id = i; c.rot = (Math.random() * 7 - 3.5).toFixed(1); c.state = "down"; return c; });
+      G = { names: names, deck: deck, n: n, player: 0, scores: [0, 0], piles: [[], []], open: [], phase: "pick1", found: 0, over: false };
+      render();
+    }
+    function cardHTML(c) {
+      if (c.state === "gone") return '<div class="m-slot"></div>';
+      var up = c.state === "up";
+      return '<button class="m-card' + (up ? " up" : "") + (c.hit ? " hit" : "") + '" data-c="' + c.id + '" style="--rot:' + c.rot + 'deg" aria-label="' + (up ? (c.kind === "b" ? "Fachbegriff: " : "Beschreibung: ") + esc(c.text) + " – zum Vergrößern erneut klicken" : "verdeckte Karte") + '">' +
+        '<span class="m-inner"><span class="m-back"><span>F</span></span><span class="m-front ' + (c.kind === "b" ? "m-term" : "m-def") + '"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + "</span></span></span></button>";
+    }
+    function render(msg) {
+      var p = G.player;
+      ov.innerHTML = '<div class="m-table"><header class="m-head"><div class="m-players">' + [0, 1].map(function (i) {
+          return '<div class="m-player' + (i === p && !G.over ? " active" : "") + '"><span class="m-name">' + esc(G.names[i]) + '</span><span class="m-score">' + G.scores[i] + "</span></div>";
+        }).join("") + '</div><button class="m-x" aria-label="Spiel schließen">×</button></header>' +
+        '<div class="m-grid' + (G.n > 8 ? " many" : "") + '">' + G.deck.map(cardHTML).join("") + "</div>" +
+        '<footer class="m-foot"><div class="m-msg" aria-live="polite">' + (msg || (esc(G.names[p]) + " ist dran: " + (G.phase === "pick1" ? "Decke die erste Karte auf." : "Decke die zweite Karte auf."))) + "</div>" +
+        (G.phase === "reveal" ? '<button class="btn btn-primary" id="m-next">Nächster Spieler</button>' : "") + "</footer></div>";
+      $(".m-x", ov).addEventListener("click", close);
+      var nx = $("#m-next", ov);
+      if (nx) { nx.addEventListener("click", next); nx.focus(); }
+      $all(".m-card", ov).forEach(function (b) { b.addEventListener("click", function () { click(G.deck[+b.getAttribute("data-c")]); }); });
+    }
+    function zoom(c) {
+      var z = document.createElement("div");
+      z.className = "m-zoom";
+      z.innerHTML = '<div class="m-zoom-card ' + (c.kind === "b" ? "m-term" : "m-def") + '"><span class="m-kind">' + (c.kind === "b" ? "Fachbegriff" : "Beschreibung") + '</span><span class="m-text">' + esc(c.text) + '</span><span class="muted small">Zum Schließen tippen</span></div>';
+      z.addEventListener("click", function () { z.remove(); });
+      ov.appendChild(z);
+    }
+    function click(c) {
+      if (G.over || c.state === "gone") return;
+      if (c.state === "up") { zoom(c); return; }
+      if (G.phase === "pick1") { c.state = "up"; G.open = [c]; G.phase = "pick2"; render(); return; }
+      if (G.phase !== "pick2") return;
+      c.state = "up"; G.open.push(c);
+      var a = G.open[0], b = G.open[1];
+      if (a.pair === b.pair && a.kind !== b.kind) {
+        a.hit = b.hit = true; G.phase = "wait";
+        render("Richtig! " + esc(G.names[G.player]) + " bekommt das Paar und ist noch einmal dran.");
+        setTimeout(function () {
+          a.state = b.state = "gone"; a.hit = b.hit = false;
+          G.scores[G.player]++; G.found++;
+          G.piles[G.player].push(a.kind === "b" ? a.text : b.text);
+          G.open = []; G.phase = "pick1";
+          if (G.found === G.n) end(); else render();
+        }, 1300);
+      } else {
+        G.phase = "reveal";
+        render("Kein Paar. Schau dir beide Karten an und klicke dann auf „Nächster Spieler“.");
+      }
+    }
+    function next() {
+      G.open.forEach(function (c) { c.state = "down"; });
+      G.open = []; G.player = 1 - G.player; G.phase = "pick1";
+      render();
+    }
+    function end() {
+      G.over = true;
+      var s = G.scores, w = s[0] === s[1] ? -1 : (s[0] > s[1] ? 0 : 1);
+      ov.innerHTML = '<div class="m-table m-setup"><div class="m-setup-card m-end"><button class="m-x" aria-label="Schließen">×</button><div class="m-trophy" aria-hidden="true">' + (w < 0 ? "🤝" : "🏆") + "</div>" +
+        "<h2>" + (w < 0 ? "Unentschieden!" : "Herzlichen Glückwunsch, " + esc(G.names[w]) + "!") + "</h2>" +
+        "<p>" + (w < 0 ? "Ihr habt beide gleich viele Paare gefunden." : esc(G.names[w]) + " gewinnt das Fachbegriffe-Memory.") + "</p>" +
+        '<div class="m-final">' + [0, 1].map(function (i) { return '<div class="m-player' + (i === w ? " active" : "") + '"><span class="m-name">' + esc(G.names[i]) + '</span><span class="m-score">' + s[i] + '</span><span class="muted small">' + (G.piles[i].length ? G.piles[i].map(esc).join(", ") : "keine Paare") + "</span></div>"; }).join("") + "</div>" +
+        '<div class="tools-actions" style="justify-content:center"><button class="btn btn-primary" id="m-again">Nochmal spielen</button><button class="btn" id="m-close">Schließen</button></div></div></div>';
+      $(".m-x", ov).addEventListener("click", close);
+      $("#m-close", ov).addEventListener("click", close);
+      $("#m-again", ov).addEventListener("click", function () { start(G.names, G.n); });
+    }
+    setup();
+  }
+  function memoryBtnHTML() { return '<div class="memory-launch"><button class="btn btn-memory" data-memory>' + ICON.cards + " Fachbegriffe-Memory gegen eine weitere Person spielen</button></div>"; }
+
   function renderBegriffe(body, meta, topic) {
     if (!topic || !topic.begriffe.length) {
       body.innerHTML = emptySection("Die Fachbegriffe zu diesem Unterthema werden noch eingepflegt.") + glossarHTML();
@@ -330,9 +465,11 @@
       return;
     }
     migrateKarten(meta.id);
-    var cards = topic.begriffe.map(function (t) { return { key: cardKey(meta.id, t.b), b: t.b, lang: t.lang, kurz: t.kurz }; });
-    body.innerHTML = '<div id="cs"></div>' + glossarHTML();
+    var terms = topic.begriffe.filter(function (t) { return zeigeLK() || !t.lk; });
+    var cards = terms.map(function (t) { return { key: cardKey(meta.id, t.b), b: t.b, lang: t.lang, kurz: t.kurz }; });
+    body.innerHTML = memoryBtnHTML() + '<div id="cs"></div>' + glossarHTML();
     bindGlossar(body);
+    $("[data-memory]", body).addEventListener("click", function () { openMemory(terms, meta.nr + " " + meta.titel); });
     cardSession($("#cs", body), cards, {
       onReset: function () { var l = leitner(); cards.forEach(function (c) { delete l[c.key]; }); saveLeitner(l); }
     });
@@ -351,6 +488,7 @@
       var hidden = current.card ? norm(current.card) : null;
       var blocked = false;
       var hits = GLOSSAR.filter(function (g) {
+        if (g.lk && !zeigeLK()) return false;
         var n = norm(g.b);
         if (hidden && n === hidden) { if (n.indexOf(v) !== -1) blocked = true; return false; }
         return n.indexOf(v) !== -1;
@@ -381,7 +519,10 @@
     return '<section class="' + cls + '">' + sp + lk + kind + (b.titel ? "<h3>" + b.titel + "</h3>" : "") + inner + (b.quelle ? '<p class="src">' + b.quelle + "</p>" : "") + "</section>";
   }
   function renderInhalte(body, meta, topic) {
-    var main = (!topic || !topic.inhalte.length) ? emptySection("Die Inhalte zu diesem Unterthema werden noch eingepflegt.") : topic.inhalte.map(renderBlock).join("");
+    var blocks = topic ? topic.inhalte.filter(function (b) { return zeigeLK() || !b.lk; }) : [];
+    var weg = topic ? topic.inhalte.length - blocks.length : 0;
+    var main = (!topic || !topic.inhalte.length) ? emptySection("Die Inhalte zu diesem Unterthema werden noch eingepflegt.") : blocks.map(renderBlock).join("") +
+      (weg ? '<p class="muted kurs-note">' + weg + " Abschnitt" + (weg === 1 ? "" : "e") + " nur für den Leistungskurs ausgeblendet (du hast „Grundkurs“ gewählt).</p>" : "");
     body.innerHTML = '<div class="content-grid"><div class="content-main">' + main + '</div><aside class="chat" id="chat"></aside></div>';
     bindSpeak(body);
     renderChat($("#chat", body), meta);
@@ -526,7 +667,7 @@
     ];
     var html = howto;
     AFB.forEach(function (g) {
-      var list = topic.aufgaben.filter(function (a) { return a.afb === g[0]; });
+      var list = topic.aufgaben.filter(function (a) { return a.afb === g[0] && (zeigeLK() || !a.lk); });
       if (!list.length) return;
       html += '<section class="afb-group"><h3 class="afb-head"><span class="afb-tag">AFB ' + g[0] + "</span>" + g[1] + '</h3><p class="muted afb-desc">' + g[2] + "</p>";
       list.forEach(function (a) {
@@ -568,11 +709,12 @@
   // Schnittstelle für die Lerntools (assets/js/tools.js)
   window.Feibitur = {
     site: function () { return SITE; }, meta: TOPIC_META, loadTopic: loadTopic, fetchJSON: fetchJSON,
+    kursWahl: kursWahl, zeigeLK: zeigeLK,
     store: store, unstore: unstore, esc: esc, $: $, $all: $all, go: go, norm: norm, shuffle: shuffle,
     topbar: topbar, toolsBtn: toolsBtn, footer: footer, icon: ICON, current: current, app: app,
     renderBlock: renderBlock, matHTML: matHTML, wrapTables: wrapTables,
     leitner: leitner, saveLeitner: saveLeitner, cardKey: cardKey, migrateKarten: migrateKarten, rateCard: rateCard,
-    fachStats: fachStats, cardSession: cardSession, today: today, addDays: addDays, isoDate: isoDate,
+    fachStats: fachStats, cardSession: cardSession, openMemory: openMemory, memoryBtnHTML: memoryBtnHTML, today: today, addDays: addDays, isoDate: isoDate,
     glossarHTML: glossarHTML, bindGlossar: bindGlossar, preloadGlossar: preloadGlossar,
     speechSupported: speechSupported, speechPrefs: speechPrefs, speak: speak, bindSpeak: bindSpeak, pickVoice: pickVoice
   };

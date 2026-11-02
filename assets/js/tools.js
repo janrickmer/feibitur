@@ -23,9 +23,11 @@
   }
   function kurs() { return store("kurs") === "LK" ? "LK" : "GK"; }
   function kursSwitch() {
-    var k = kurs();
-    return '<div class="seg" role="group" aria-label="Kurs"><button data-kurs="GK" aria-pressed="' + (k === "GK") + '">Grundkurs</button><button data-kurs="LK" aria-pressed="' + (k === "LK") + '">Leistungskurs</button></div>';
+    var k = F.kursWahl();
+    return '<div class="seg" role="group" aria-label="Kurs"><button data-kurs="GK" aria-pressed="' + (k === "GK") + '">Grundkurs</button><button data-kurs="LK" aria-pressed="' + (k === "LK") + '">Leistungskurs</button></div>' +
+      (k ? "" : '<span class="kurs-hint-inline">Bitte wähle deinen Kurs.</span>');
   }
+  function termOK(b) { return !b.lk || kurs() === "LK"; }
   function bindKurs(root, cb) {
     $all("[data-kurs]", root).forEach(function (b) {
       b.addEventListener("click", function () { store("kurs", b.getAttribute("data-kurs")); cb(); });
@@ -165,7 +167,7 @@
       var l = F.leitner(), erl = store("erledigt") || {}, t = F.today(), dueAll = 0;
       var rows = all.map(function (x) {
         var m = x.meta, tp = x.topic;
-        var cards = tp.begriffe.map(function (b) { return F.cardKey(m.id, b.b); });
+        var cards = tp.begriffe.filter(termOK).map(function (b) { return F.cardKey(m.id, b.b); });
         F.migrateKarten(m.id);
         var sicher = 0, begonnen = 0;
         cards.forEach(function (key) { var e = l[key]; if (e) { begonnen++; if (e.f >= 4) sicher++; if (e.d <= t) dueAll++; } });
@@ -315,7 +317,7 @@
     main.innerHTML = '<div class="tools-controls"><label>Unterthema ' + topicSelect("st-sel", cur, function (t) { return t.content.begriffe > 4; }) + '</label></div><div id="quiz"><p class="muted">Lade Fragen …</p></div>';
     $("#st-sel", main).addEventListener("change", function (e) { store("testThema", e.target.value); schnelltest(main, e.target.value); });
     F.loadTopic(F.meta[cur]).then(function (tp) {
-      var terms = tp.begriffe;
+      var terms = tp.begriffe.filter(termOK);
       function mask(text, b) { var w = b.split(/[\s(]/)[0]; return text.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), "…"); }
       var pool = F.shuffle(terms), qs = [];
       pool.slice(0, 4).forEach(function (t) {
@@ -365,7 +367,7 @@
     main.innerHTML = '<p class="muted">Lade Lernkartei …</p>';
     allTopics().then(function (all) {
       var cards = [];
-      all.forEach(function (x) { F.migrateKarten(x.meta.id); x.topic.begriffe.forEach(function (b) { cards.push({ key: F.cardKey(x.meta.id, b.b), b: b.b, lang: b.lang, kurz: b.kurz, nr: x.meta.nr, tid: x.meta.id }); }); });
+      all.forEach(function (x) { F.migrateKarten(x.meta.id); x.topic.begriffe.filter(termOK).forEach(function (b) { cards.push({ key: F.cardKey(x.meta.id, b.b), b: b.b, lang: b.lang, kurz: b.kurz, nr: x.meta.nr, tid: x.meta.id }); }); });
       var l = F.leitner(), t = F.today();
       var known = cards.filter(function (c) { return l[c.key]; });
       var due = known.filter(function (c) { return l[c.key].d <= t; });
@@ -378,8 +380,14 @@
         '<p class="muted">Fach 1: täglich · Fach 2: nach 1 Tag · Fach 3: nach 3 Tagen · Fach 4: nach 1 Woche · Fach 5: nach 2 Wochen. Heute fällig: <b>' + due.length + "</b> Karten.</p>" +
         '<div class="tools-actions"><button class="btn btn-primary" id="w-due"' + (due.length ? "" : " disabled") + ">Fällige Karten wiederholen (" + Math.min(due.length, 40) + ")</button>" +
         '<span class="add-new">Neue Karten aus ' + topicSelect("w-sel", store("wThema") || "q1-1", function (tt) { return tt.content.begriffe > 0; }) + ' <button class="btn btn-small" id="w-new">10 neue Karten lernen</button></span></div>' +
+        F.memoryBtnHTML().replace("data-memory>", "data-memory> ").replace("spielen</button>", "spielen (Unterthema oben auswählen)</button>") +
         '<div id="w-session"></div><details class="w-details"><summary>Stand je Unterthema</summary><div class="table-scroll"><table class="ptable"><thead><tr><th>Thema</th><th>begonnen</th><th>heute fällig</th><th>sicher (F4–5)</th></tr></thead><tbody>' + perTopic + "</tbody></table></div></details>";
       var sess = $("#w-session", main);
+      $("[data-memory]", main).addEventListener("click", function () {
+        var tid = $("#w-sel", main).value; store("wThema", tid);
+        var x = all.filter(function (y) { return y.meta.id === tid; })[0];
+        F.openMemory(x.topic.begriffe.filter(termOK), x.meta.nr + " " + x.meta.titel);
+      });
       $("#w-due", main).addEventListener("click", function () { F.cardSession(sess, due, { dueFirst: true, limit: 40 }); sess.scrollIntoView({ behavior: "smooth" }); });
       $("#w-new", main).addEventListener("click", function () {
         var tid = $("#w-sel", main).value; store("wThema", tid);
@@ -525,7 +533,7 @@
   function buildNet(all) {
     var nodes = {}, list = [];
     all.forEach(function (x) {
-      x.topic.begriffe.forEach(function (b) {
+      x.topic.begriffe.filter(termOK).forEach(function (b) {
         var key = F.norm(b.b);
         if (!nodes[key]) { nodes[key] = { key: key, name: b.b, kurz: b.kurz, lang: b.lang, topics: [], edges: {} }; list.push(nodes[key]); }
         if (nodes[key].topics.indexOf(x.meta) < 0) nodes[key].topics.push(x.meta);
@@ -546,7 +554,7 @@
   function begriffsnetz(main, start) {
     main.innerHTML = '<p class="muted">Baue das Begriffsnetz auf …</p>';
     allTopics().then(function (all) {
-      if (!NET) NET = buildNet(all);
+      if (!NET || NET.kurs !== kurs()) { NET = buildNet(all); NET.kurs = kurs(); }
       var cand = NET.list.filter(function (n) { return Object.keys(n.edges).length >= 4; });
       var center = (start && NET.nodes[start]) || NET.nodes[F.norm("Inflation")] || cand[0];
       draw(center);
@@ -597,7 +605,7 @@
     F.loadTopic(m).then(function (tp) {
       var pa = $("#print-area", main);
       if (art === "karten") {
-        var cards = tp.begriffe, per = 10, html = "";
+        var cards = tp.begriffe.filter(termOK), per = 10, html = "";
         for (var p = 0; p < cards.length; p += per) {
           var page = cards.slice(p, p + per);
           html += '<div class="pc-page">' + page.map(function (c) { return '<div class="pc-card pc-front"><span class="pc-nr">' + esc(m.nr) + "</span><b>" + esc(c.b) + "</b></div>"; }).join("") + "</div>";
@@ -612,7 +620,7 @@
       var merke = tp.inhalte.filter(function (b) { return b.art === "Merke" && (!b.lk || k === "LK"); });
       pa.innerHTML = '<div class="lz"><h2>' + esc(m.nr + " " + m.titel) + '</h2><p class="muted small">Feibitur-Lernzettel · ' + (k === "LK" ? "Leistungskurs" : "Grundkurs") + " · Landesabitur 2027" + (m.erlass ? " · Erlass-Schwerpunkt" : "") + "</p>" +
         (kl.length ? "<h3>Das solltest du können</h3><ul class=\"lz-kann\">" + kl.map(function (it) { return "<li>☐ " + esc(it.t) + "</li>"; }).join("") + "</ul>" : "") +
-        "<h3>Fachbegriffe</h3><table class=\"lz-terms\"><tbody>" + tp.begriffe.map(function (b) { return "<tr><th>" + esc(b.b) + "</th><td>" + esc(stripHTML(b.kurz)) + "</td></tr>"; }).join("") + "</tbody></table>" +
+        "<h3>Fachbegriffe</h3><table class=\"lz-terms\"><tbody>" + tp.begriffe.filter(termOK).map(function (b) { return "<tr><th>" + esc(b.b) + "</th><td>" + esc(stripHTML(b.kurz)) + "</td></tr>"; }).join("") + "</tbody></table>" +
         (merke.length ? "<h3>Merke</h3>" + merke.map(function (b) { var bb = JSON.parse(JSON.stringify(b)); return F.renderBlock(bb).replace(/<button class="speak-btn"[\s\S]*?<\/button>/, ""); }).join("") : "") + "</div>";
     });
   }

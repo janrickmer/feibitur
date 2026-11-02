@@ -280,3 +280,13 @@ TABS = [
          "erlass": True},
     ]},
 ]
+
+# Korrekturen der automatischen Einordnung „Fachbegriff nur für den Leistungskurs“ (build.py: lk_only_term).
+# True = nur LK, False = für GK und LK. Geprüft gegen Kerncurriculum und Abiturerlass 2027.
+LK_BEGRIFFE_KORREKTUR = {
+    "q1-1": {"Gewaltenverschränkung": False, "Vermittlungsausschuss": False},
+    "q1-4": {"Öffentlich-rechtlicher Rundfunk": False},
+    "q2-1": {"Keynesianismus": False},
+    "q2-3": {"Inflationsziel": False, "Verbot der monetären Staatsfinanzierung": False},
+    "q2-4": {"Mindestlohnkommission": False},
+}
