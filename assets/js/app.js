@@ -32,6 +32,8 @@
     bubble: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg>',
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5z"/><path d="M12 6v13.5"/></svg>',
     pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="M14.5 5.5l3 3"/></svg>',
+    tools: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L22 13.6 13.6 22l-2.3-2.3a4 4 0 0 0-5-5L4 12.4 12.4 4z" transform="scale(.9) translate(1 1)"/><path d="M3 21l5-5"/></svg>',
+    speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>',
     chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
     columns: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M8 26 32 10l24 16z"/><path d="M12 26v24M22 26v24M32 26v24M42 26v24M52 26v24"/><path d="M6 54h52"/></svg>',
     cross: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M32 8v48M18 22h28"/></svg>',
@@ -64,6 +66,7 @@
     var h = (location.hash || "#/").replace(/^#\/?/, "").split("/").filter(Boolean);
     if (h[0] === "powi") return renderPowi(h[1] || "grundlagen", h[2] || null, h[3] || "begriffe");
     if (h[0] === "religion") return renderReligion();
+    if (h[0] === "lerntools" && window.FeibiturTools) { current.topic = null; return window.FeibiturTools.render(h.slice(1)); }
     renderHome();
   }
   function go(path) { if (location.hash === "#/" + path) route(); else location.hash = "#/" + path; }
@@ -80,6 +83,7 @@
   function topbar(extra) {
     return '<header class="topbar"><a class="brand" href="#/">Feibitur</a><nav>' + (extra || "") + '</nav></header>';
   }
+  function toolsBtn() { return '<a class="btn btn-small btn-tools" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a>"; }
   function footer() {
     return '<footer class="site-foot"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · Feibitur speichert deinen Lernstand nur in deinem Browser.</footer>';
   }
@@ -91,6 +95,7 @@
       '<main class="home-choices">' +
       '<button class="choice choice-powi" data-go="powi">' + ICON.columns + '<span class="choice-title">Politik und Wirtschaft</span><span class="choice-sub">Fachbegriffe, Inhalte und Übungsaufgaben für Q1–Q4</span></button>' +
       '<button class="choice choice-rel" data-go="religion">' + ICON.cross + '<span class="choice-title">ev. Religion</span><span class="choice-sub">Evangelische Religion</span></button>' +
+      '<button class="choice choice-tools" data-go="lerntools">' + ICON.tools + '<span class="choice-title">Lerntools</span><span class="choice-sub">Lernplan, Fortschritt, Operatoren-Trainer, Abi-Simulation und mehr (Politik und Wirtschaft)</span></button>' +
       '</main>' + footer() + '</div>';
     $all("[data-go]", app).forEach(function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
     window.scrollTo(0, 0);
@@ -125,8 +130,9 @@
     var tab = SITE.tabs.filter(function (t) { return t.id === tabId; })[0] || SITE.tabs[0];
     var existing = $("#powi-root");
     if (!existing) {
-      app.innerHTML = topbar('<a class="btn btn-small" href="#/">Zur Startseite</a>') + '<div class="flagline"></div>' +
-        '<div id="powi-root"><section class="powi-hero">' + ICON.dome.replace("<svg", '<svg class="dome"') + '<h1>Politik und Wirtschaft</h1><p>Vorbereitung auf das Landesabitur 2027 in Hessen</p></section>' +
+      app.innerHTML = topbar(toolsBtn() + '<a class="btn btn-small" href="#/">Zur Startseite</a>') + '<div class="flagline"></div>' +
+        '<div id="powi-root"><section class="powi-hero">' + ICON.dome.replace("<svg", '<svg class="dome"') + '<h1>Politik und Wirtschaft</h1><p>Vorbereitung auf das Landesabitur 2027 in Hessen</p>' +
+        '<a class="btn btn-tools-hero" href="#/lerntools">' + ICON.tools + "<span>Lerntools</span></a></section>" +
         renderHinweis() + '<div class="tabs-wrap"><div class="tabs" role="tablist" aria-label="Kurshalbjahre"></div></div><div id="tabpanel"></div></div>' + footer();
       $("#abi").addEventListener("toggle", function (e) { store("hinweisZu", !e.target.open); });
       preloadGlossar();
@@ -217,72 +223,119 @@
   function emptySection(text) { return '<div class="placeholder"><p><b>Noch keine Inhalte.</b></p><p>' + text + "</p></div>"; }
 
   // ---------------------------------------------------------------- Fachbegriffe
+  // ---------------------------------------------------------------- Lernkartei (Leitner-System, 5 Fächer)
+  // Fach 1: täglich (sofort wieder), Fach 2: nach 1 Tag, Fach 3: nach 3, Fach 4: nach 7, Fach 5: nach 14 Tagen.
+  var INTERVALL = [0, 0, 1, 3, 7, 14];
+  function isoDate(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function today() { return isoDate(new Date()); }
+  function addDays(n) { var d = new Date(); d.setDate(d.getDate() + n); return isoDate(d); }
+  function leitner() { return store("leitner") || {}; }
+  function saveLeitner(l) { store("leitner", l); }
+  function cardKey(tid, b) { return tid + "|" + b; }
+  function migrateKarten(tid) { // Lernstand aus der alten Zwei-Stapel-Version übernehmen
+    var old = store("karten." + tid);
+    if (!old || !old.s) return;
+    var l = leitner();
+    Object.keys(old.s).forEach(function (b) {
+      var k = cardKey(tid, b);
+      if (!l[k]) l[k] = old.s[b] === "gut" ? { f: 2, d: addDays(1) } : { f: 1, d: today() };
+    });
+    saveLeitner(l); unstore("karten." + tid);
+  }
+  function rateCard(key, gut) {
+    var l = leitner(), e = l[key] || {};
+    var f = gut ? Math.min(5, (e.f || 1) + 1) : 1;
+    l[key] = { f: f, d: addDays(INTERVALL[f]) };
+    saveLeitner(l);
+    return f;
+  }
+  function fachStats(cards) {
+    var l = leitner(), t = today(), st = { neu: 0, faellig: 0, f: [0, 0, 0, 0, 0, 0] };
+    cards.forEach(function (c) {
+      var e = l[c.key];
+      if (!e) { st.neu++; return; }
+      st.f[e.f]++;
+      if (e.d <= t) st.faellig++;
+    });
+    return st;
+  }
+
+  // Wiederverwendbare Lernsitzung (Themenansicht und tägliche Wiederholung)
+  function cardSession(el, cards, opts) {
+    opts = opts || {};
+    var practice = !!opts.practice;
+    function buildQueue() {
+      var l = leitner(), t = today();
+      if (practice) return shuffle(cards.slice());
+      var neu = shuffle(cards.filter(function (c) { return !l[c.key]; }));
+      var due = shuffle(cards.filter(function (c) { return l[c.key] && l[c.key].d <= t; }));
+      due.sort(function (a, b) { return l[a.key].f - l[b.key].f; });
+      return (opts.dueFirst ? due.concat(neu) : neu.concat(due)).slice(0, opts.limit || 9999);
+    }
+    var queue = buildQueue();
+    function statsHTML() {
+      var st = fachStats(cards);
+      var fach = [1, 2, 3, 4, 5].map(function (i) { return '<span class="pill fach fach-' + i + '" title="Fach ' + i + '">F' + i + ": " + st.f[i] + "</span>"; }).join("");
+      return '<div class="cards-top"><div class="progress"><span class="pill">' + cards.length + ' Begriffe</span><span class="pill">' + st.neu + ' neu</span><span class="pill pill-bad">' + st.faellig + " heute fällig</span>" + fach + "</div>" +
+        (opts.onReset ? '<button class="linklike" data-cs="reset">Lernstand zurücksetzen</button>' : "") + "</div>" +
+        '<p class="muted leitner-hint">Lernkartei mit 5 Fächern: „Klappt schon relativ gut“ schiebt eine Karte ein Fach weiter (später wiederholen), „Klappt noch nicht so gut“ legt sie zurück in Fach 1 (heute noch einmal).</p>';
+    }
+    function draw() {
+      var c = queue[0];
+      var html = statsHTML();
+      if (!c) {
+        current.card = null;
+        var l = leitner(), next = null;
+        cards.forEach(function (x) { var e = l[x.key]; if (e && (!next || e.d < next)) next = e.d; });
+        html += '<div class="cards-done"><h3>' + (practice ? "Durchgang geschafft!" : "Für heute ist alles erledigt.") + "</h3>" +
+          (next && !practice ? '<p class="muted">Nächste fällige Wiederholung: ' + next.split("-").reverse().join(".") + "</p>" : "") +
+          '<button class="btn btn-primary" data-cs="practice">Alle Begriffe trotzdem üben</button></div>';
+      } else {
+        current.card = c.b;
+        var e = leitner()[c.key];
+        html += (queue.length ? '<p class="muted" style="text-align:center">Noch ' + queue.length + " Karte" + (queue.length === 1 ? "" : "n") + " in dieser Runde" + (e ? " · aktuell in Fach " + e.f : " · neue Karte") + "</p>" : "") +
+          '<div class="flash-wrap"><button class="flash" id="flash" aria-label="Karteikarte umdrehen"><div class="face face-front">' + (c.nr ? '<div class="card-topic">' + esc(c.nr) + "</div>" : "") + '<div class="term">' + esc(c.b) + '</div><div class="hint">Antippen zum Umdrehen</div></div>' +
+          '<div class="face face-back"><div class="term-small">' + esc(c.b) + '</div><div class="def">' + c.lang + '</div></div></button></div>' +
+          '<div class="rate" id="rate" hidden><button class="btn btn-good" data-r="gut">Klappt schon relativ gut</button><button class="btn btn-bad" data-r="nicht">Klappt noch nicht so gut</button></div>' +
+          '<p class="muted" style="text-align:center" id="rate-hint">Überlege dir zuerst selbst eine Erklärung – dann dreh die Karte um.</p>';
+      }
+      el.innerHTML = html;
+      var rs = $('[data-cs="reset"]', el);
+      if (rs) rs.addEventListener("click", function () { if (confirm("Möchtest du den Lernstand für diese Begriffe wirklich zurücksetzen?")) { opts.onReset(); practice = false; queue = buildQueue(); draw(); } });
+      var pr = $('[data-cs="practice"]', el);
+      if (pr) pr.addEventListener("click", function () { practice = true; queue = buildQueue(); draw(); });
+      var flash = $("#flash", el);
+      if (!flash) return;
+      flash.addEventListener("click", function () {
+        flash.classList.toggle("flipped");
+        if (flash.classList.contains("flipped")) { $("#rate", el).hidden = false; $("#rate-hint", el).hidden = true; }
+      });
+      $all("#rate [data-r]", el).forEach(function (b) {
+        b.addEventListener("click", function () {
+          var gut = b.getAttribute("data-r") === "gut";
+          rateCard(c.key, gut);
+          queue.shift();
+          if (!gut) queue.push(c); // nicht so gut: in dieser Runde später noch einmal
+          draw();
+        });
+      });
+    }
+    draw();
+  }
+
   function renderBegriffe(body, meta, topic) {
     if (!topic || !topic.begriffe.length) {
       body.innerHTML = emptySection("Die Fachbegriffe zu diesem Unterthema werden noch eingepflegt.") + glossarHTML();
       bindGlossar(body);
       return;
     }
-    var key = "karten." + meta.id;
-    var terms = topic.begriffe;
-    function state() { return store(key) || { s: {} }; }
-    var order = shuffle(terms.map(function (t) { return t.b; }));
-    var queue2 = null;
-
-    function draw() {
-      var st = state();
-      var s = st.s;
-      var known = terms.filter(function (t) { return s[t.b] === "gut"; }).length;
-      var notyet = terms.filter(function (t) { return s[t.b] === "nicht"; }).length;
-      var open = terms.filter(function (t) { return !s[t.b]; }).length;
-      var termName = null, phase = 1;
-      var unsorted = order.filter(function (b) { return !s[b] && terms.some(function (t) { return t.b === b; }); });
-      if (unsorted.length) termName = unsorted[0];
-      else {
-        phase = 2;
-        if (!queue2) queue2 = shuffle(terms.filter(function (t) { return s[t.b] === "nicht"; }).map(function (t) { return t.b; }));
-        queue2 = queue2.filter(function (b) { return s[b] === "nicht"; });
-        termName = queue2[0] || null;
-      }
-      var top = '<div class="cards-top"><div class="progress"><span class="pill">' + terms.length + ' Begriffe</span><span class="pill">' + open + ' neu</span><span class="pill pill-good">' + known + ' klappt schon relativ gut</span><span class="pill pill-bad">' + notyet + ' klappt noch nicht so gut</span></div><button class="linklike" id="cards-reset">Lernstand zurücksetzen</button></div>';
-      var html;
-      if (!termName) {
-        current.card = null;
-        html = '<div class="cards-done"><h3>Stark! Alle ' + terms.length + ' Begriffe klappen schon relativ gut.</h3><p class="muted">Du kannst den Stapel jederzeit neu starten.</p><button class="btn btn-primary" id="cards-restart">Alle Begriffe noch einmal üben</button></div>';
-      } else {
-        var t = terms.filter(function (x) { return x.b === termName; })[0];
-        current.card = t.b;
-        html = (phase === 2 ? '<p class="muted" style="text-align:center">Wiederholung: Begriffe, die noch nicht so gut klappen (' + notyet + ' übrig)</p>' : "") +
-          '<div class="flash-wrap"><button class="flash" id="flash" aria-label="Karteikarte umdrehen"><div class="face face-front"><div class="term">' + esc(t.b) + '</div><div class="hint">Antippen zum Umdrehen</div></div>' +
-          '<div class="face face-back"><div class="term-small">' + esc(t.b) + '</div><div class="def">' + t.lang + '</div></div></button></div>' +
-          '<div class="rate" id="rate" hidden><button class="btn btn-good" data-r="gut">Klappt schon relativ gut</button><button class="btn btn-bad" data-r="nicht">Klappt noch nicht so gut</button></div>' +
-          '<p class="muted" style="text-align:center" id="rate-hint">Überlege dir zuerst selbst eine Erklärung – dann dreh die Karte um.</p>';
-      }
-      body.innerHTML = top + html + glossarHTML();
-      bindGlossar(body);
-      $("#cards-reset", body).addEventListener("click", function () {
-        if (confirm("Möchtest du deinen Lernstand für dieses Unterthema wirklich zurücksetzen?")) { unstore(key); queue2 = null; order = shuffle(order); draw(); }
-      });
-      var restart = $("#cards-restart", body);
-      if (restart) restart.addEventListener("click", function () { unstore(key); queue2 = null; order = shuffle(order); draw(); });
-      var flash = $("#flash", body);
-      if (flash) {
-        flash.addEventListener("click", function () {
-          flash.classList.toggle("flipped");
-          if (flash.classList.contains("flipped")) { $("#rate", body).hidden = false; $("#rate-hint", body).hidden = true; }
-        });
-        $all("#rate [data-r]", body).forEach(function (b) {
-          b.addEventListener("click", function () {
-            var st2 = state();
-            st2.s[termName] = b.getAttribute("data-r");
-            store(key, st2);
-            if (phase === 2 && queue2) { queue2 = queue2.filter(function (x) { return x !== termName; }); if (b.getAttribute("data-r") === "nicht") queue2.push(termName); }
-            draw();
-          });
-        });
-      }
-    }
-    draw();
+    migrateKarten(meta.id);
+    var cards = topic.begriffe.map(function (t) { return { key: cardKey(meta.id, t.b), b: t.b, lang: t.lang, kurz: t.kurz }; });
+    body.innerHTML = '<div id="cs"></div>' + glossarHTML();
+    bindGlossar(body);
+    cardSession($("#cs", body), cards, {
+      onReset: function () { var l = leitner(); cards.forEach(function (c) { delete l[c.key]; }); saveLeitner(l); }
+    });
   }
 
   function glossarHTML() {
@@ -324,11 +377,13 @@
     else if (b.t === "table") inner = '<div class="table-scroll"><table><thead><tr>' + b.kopf.map(function (k) { return "<th>" + k + "</th>"; }).join("") + "</tr></thead><tbody>" +
       b.zeilen.map(function (z) { return "<tr>" + z.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" + (b.html || "");
     else inner = wrapTables(b.html);
-    return '<section class="' + cls + '">' + lk + kind + (b.titel ? "<h3>" + b.titel + "</h3>" : "") + inner + (b.quelle ? '<p class="src">' + b.quelle + "</p>" : "") + "</section>";
+    var sp = speechOn() ? '<button class="speak-btn" data-speak aria-label="Abschnitt vorlesen" title="Vorlesen">' + ICON.speaker + "</button>" : "";
+    return '<section class="' + cls + '">' + sp + lk + kind + (b.titel ? "<h3>" + b.titel + "</h3>" : "") + inner + (b.quelle ? '<p class="src">' + b.quelle + "</p>" : "") + "</section>";
   }
   function renderInhalte(body, meta, topic) {
     var main = (!topic || !topic.inhalte.length) ? emptySection("Die Inhalte zu diesem Unterthema werden noch eingepflegt.") : topic.inhalte.map(renderBlock).join("");
     body.innerHTML = '<div class="content-grid"><div class="content-main">' + main + '</div><aside class="chat" id="chat"></aside></div>';
+    bindSpeak(body);
     renderChat($("#chat", body), meta);
   }
 
@@ -405,6 +460,55 @@
     });
   }
 
+  function matHTML(m) {
+    var inner;
+    if (m.typ === "tabelle") inner = '<div class="table-scroll block" style="padding:.5rem"><table><thead><tr>' + m.kopf.map(function (k) { return "<th>" + k + "</th>"; }).join("") + "</tr></thead><tbody>" + m.zeilen.map(function (z) { return "<tr>" + z.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>";
+    else if (m.typ === "bild") inner = '<figure class="figure mat-bild">' + m.svg + "</figure>";
+    else inner = '<div class="mat-text">' + m.absaetze.map(function (p, n) { return '<div class="mat-p"><span class="pn">[' + (n + 1) + "]</span><div>" + p + "</div></div>"; }).join("") + "</div>";
+    return "<h4>" + m.titel + "</h4>" + inner + (m.quelle ? '<p class="mat-src">' + m.quelle + "</p>" : "");
+  }
+
+  // ---------------------------------------------------------------- Vorlesen (Sprachausgabe des Geräts)
+  function speechSupported() { return "speechSynthesis" in window && "SpeechSynthesisUtterance" in window; }
+  function speechPrefs() { var p = store("vorlesen") || {}; return { on: p.on !== false, rate: p.rate || 1, voice: p.voice || "", online: !!p.online }; }
+  function speechOn() { return speechSupported() && speechPrefs().on; }
+  function pickVoice() {
+    var pr = speechPrefs(), vs = speechSynthesis.getVoices().filter(function (v) { return /^de/i.test(v.lang); });
+    if (!pr.online) vs = vs.filter(function (v) { return v.localService; });
+    return vs.filter(function (v) { return v.voiceURI === pr.voice; })[0] || vs[0] || null;
+  }
+  function speak(text, onEnd) {
+    if (!speechSupported()) return false;
+    speechSynthesis.cancel();
+    var v = pickVoice();
+    if (!v) { alert("Auf diesem Gerät ist keine lokale deutsche Stimme verfügbar. In den Lerntools unter „Vorlesen“ kannst du die Einstellungen anpassen."); return false; }
+    var chunks = String(text).replace(/\s+/g, " ").match(/[^.!?]+[.!?]*\s*/g) || [text];
+    chunks.forEach(function (c, i) {
+      var u = new SpeechSynthesisUtterance(c);
+      u.voice = v; u.lang = v.lang; u.rate = speechPrefs().rate;
+      if (i === chunks.length - 1 && onEnd) u.onend = onEnd;
+      speechSynthesis.speak(u);
+    });
+    return true;
+  }
+  function textOf(el) {
+    var c = el.cloneNode(true);
+    $all("svg, .speak-btn, .block-kind, .lk-tag, .src", c).forEach(function (x) { x.remove(); });
+    return c.textContent;
+  }
+  function bindSpeak(root) {
+    $all("[data-speak]", root).forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (b.classList.contains("speaking")) { speechSynthesis.cancel(); b.classList.remove("speaking"); return; }
+        $all(".speak-btn.speaking").forEach(function (x) { x.classList.remove("speaking"); });
+        var sec = b.closest("section, article, .speakable");
+        if (speak(textOf(sec), function () { b.classList.remove("speaking"); })) b.classList.add("speaking");
+      });
+    });
+  }
+  window.addEventListener("hashchange", function () { if (speechSupported()) speechSynthesis.cancel(); });
+
   // ---------------------------------------------------------------- Übungsaufgaben
   function renderAufgaben(body, meta, topic) {
     var howto = '<section class="howto"><h3>So funktioniert das Üben mit den Übungsaufgaben</h3><ol>' +
@@ -415,13 +519,6 @@
     if (!topic || !topic.aufgaben.length) { body.innerHTML = howto + '<div style="margin-top:1rem">' + emptySection("Übungsaufgaben zu diesem Unterthema werden noch erstellt.") + "</div>"; return; }
     var matById = {};
     (topic.materialien || []).forEach(function (m) { matById[m.id] = m; });
-    function matHTML(m) {
-      var inner;
-      if (m.typ === "tabelle") inner = '<div class="table-scroll block" style="padding:.5rem"><table><thead><tr>' + m.kopf.map(function (k) { return "<th>" + k + "</th>"; }).join("") + "</tr></thead><tbody>" + m.zeilen.map(function (z) { return "<tr>" + z.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>";
-      else if (m.typ === "bild") inner = '<figure class="figure mat-bild">' + m.svg + "</figure>";
-      else inner = '<div class="mat-text">' + m.absaetze.map(function (p, n) { return '<div class="mat-p"><span class="pn">[' + (n + 1) + "]</span><div>" + p + "</div></div>"; }).join("") + "</div>";
-      return "<h4>" + m.titel + "</h4>" + inner + (m.quelle ? '<p class="mat-src">' + m.quelle + "</p>" : "");
-    }
     var AFB = [
       ["I", "Anforderungsbereich I", "Wiedergeben und Beschreiben: Inhalte aus dem Material oder Gelerntes korrekt, strukturiert und in eigenen Worten darstellen."],
       ["II", "Anforderungsbereich II", "Erklären, Analysieren und Anwenden: Gelerntes selbstständig ordnen, mit Fachwissen verknüpfen und auf neue Zusammenhänge übertragen."],
@@ -437,17 +534,26 @@
         var mats = a.material.length ? a.material.map(function (id) { return matById[id] ? matHTML(matById[id]) : ""; }).join("")
           : '<p class="muted no-mat">Zu dieser Aufgabe gibt es kein Material. Nutze dein Fachwissen und eigene Beispiele.</p>';
         var refs = a.material.length ? '<span class="mat-refs">' + a.material.map(function (id) { return id.toUpperCase(); }).join(", ") + "</span>" : "";
-        html += '<article class="task2" id="task-' + a.id + '">' +
+        var done = !!(store("erledigt") || {})[a.id];
+        html += '<article class="task2' + (done ? " is-done" : "") + '" id="task-' + a.id + '">' +
           '<button class="task2-head" aria-expanded="false" aria-controls="tb-' + a.id + '">' +
           '<span class="tnum">' + a.nr + '</span><span class="tmain"><span class="tops"><span class="op-badge">' + esc(a.operator) + "</span>" +
-          (a.lk ? '<span class="badge badge-lk">LK-Niveau</span>' : "") + refs + '</span><span class="ttext">' + a.text + "</span></span>" + ICON.chev + "</button>" +
-          '<div class="task2-body" id="tb-' + a.id + '" hidden><div class="mat-top"><div class="op-box"><h4>Was verlangt der Operator? (Definition des Landes Hessen)</h4><dl><dt>' + esc(a.operator) +
+          (a.lk ? '<span class="badge badge-lk">LK-Niveau</span>' : "") + refs + '<span class="done-badge">✓ bearbeitet</span></span><span class="ttext">' + a.text + "</span></span>" + ICON.chev + "</button>" +
+          '<div class="task2-body" id="tb-' + a.id + '" hidden><label class="done-check"><input type="checkbox" data-done="' + a.id + '"' + (done ? " checked" : "") + "> Diese Aufgabe habe ich bearbeitet (für deinen Lernfortschritt)</label>" + '<div class="mat-top"><div class="op-box"><h4>Was verlangt der Operator? (Definition des Landes Hessen)</h4><dl><dt>' + esc(a.operator) +
           ' <span class="muted">(AFB ' + o.afb + ")</span></dt><dd>" + esc(o.def) + '</dd></dl><p class="src">' + esc(SITE.operatorenVorbemerkung) + "<br>Quelle: " + esc(SITE.operatorenQuelle) + "</p></div>" +
           '<a class="btn btn-green" href="' + a.pdf + '" download>Korrekturdatei herunterladen</a></div><div class="mat-doc">' + mats + "</div></div></article>";
       });
       html += "</section>";
     });
     body.innerHTML = html;
+    $all("[data-done]", body).forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        var d = store("erledigt") || {}, id = cb.getAttribute("data-done");
+        if (cb.checked) d[id] = today(); else delete d[id];
+        store("erledigt", d);
+        document.getElementById("task-" + id).classList.toggle("is-done", cb.checked);
+      });
+    });
     $all(".task2-head", body).forEach(function (b) {
       b.addEventListener("click", function () {
         var tb = document.getElementById(b.getAttribute("aria-controls"));
@@ -458,5 +564,17 @@
   }
 
   ["g1", "g2", "g3"].forEach(function (id) { unstore("karten." + id); }); // alter Lernstand der früheren Grundlagen-Karteikarten
+
+  // Schnittstelle für die Lerntools (assets/js/tools.js)
+  window.Feibitur = {
+    site: function () { return SITE; }, meta: TOPIC_META, loadTopic: loadTopic, fetchJSON: fetchJSON,
+    store: store, unstore: unstore, esc: esc, $: $, $all: $all, go: go, norm: norm, shuffle: shuffle,
+    topbar: topbar, toolsBtn: toolsBtn, footer: footer, icon: ICON, current: current, app: app,
+    renderBlock: renderBlock, matHTML: matHTML, wrapTables: wrapTables,
+    leitner: leitner, saveLeitner: saveLeitner, cardKey: cardKey, migrateKarten: migrateKarten, rateCard: rateCard,
+    fachStats: fachStats, cardSession: cardSession, today: today, addDays: addDays, isoDate: isoDate,
+    glossarHTML: glossarHTML, bindGlossar: bindGlossar, preloadGlossar: preloadGlossar,
+    speechSupported: speechSupported, speechPrefs: speechPrefs, speak: speak, bindSpeak: bindSpeak, pickVoice: pickVoice
+  };
   initGate();
 })();

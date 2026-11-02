@@ -58,9 +58,12 @@ TOPIC_MODULES = ["g1", "g2", "g3", "q1_1", "q1_2", "q1_3", "q1_4", "q1_5",
                  "q4_1", "q4_2", "q4_3"]
 
 
+SKIP = [x.strip() for x in os.environ.get("FEIBITUR_SKIP", "").split(",") if x.strip()]  # z. B. FEIBITUR_SKIP=q4_1,q4_2
+
+
 def load_topic(modname):
     path = os.path.join(CONTENT, modname + ".py")
-    if not os.path.exists(path):
+    if not os.path.exists(path) or modname in SKIP:
         return None
     return _load(path, "topic_" + modname).TOPIC
 
@@ -309,6 +312,7 @@ def main():
         if fn.endswith(".pdf"):
             os.remove(os.path.join(kdir, fn))
     n_pdf = 0
+    pool_src = []
     for modname in TOPIC_MODULES:
         topic = load_topic(modname)
         if topic is None:
@@ -354,6 +358,10 @@ def main():
         with open(os.path.join(ROOT, "data", "topics", tid + ".json"), "w", encoding="utf-8") as f:
             json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
         has_content[tid] = {"begriffe": len(topic["begriffe"]), "aufgaben": len(public)}
+        if aufgaben:
+            nummern = {p_["id"]: p_["nr"] for p_ in public}
+            pool_src.append({"meta": meta, "tab": next(tb["id"] for tb in site.TABS if any(x["id"] == tid for x in tb["themen"])),
+                             "materialien": materialien, "aufgaben": aufgaben, "bezug": bezug, "nummern": nummern})
 
     site_json = {
         "stand": date.today().isoformat(),
@@ -373,7 +381,198 @@ def main():
         site_json["tabs"].append(tt)
     with open(os.path.join(ROOT, "data", "site.json"), "w", encoding="utf-8") as f:
         json.dump(site_json, f, ensure_ascii=False, indent=1)
-    print("OK: %d Themen mit Inhalt, %d Korrekturdateien" % (len(has_content), n_pdf))
+    n_v = build_vorschlaege(pool_src, kdir)
+    build_lerntools(topics_meta)
+    print("OK: %d Themen mit Inhalt, %d Korrekturdateien, %d Abi-Vorschläge" % (len(has_content), n_pdf, n_v))
+
+
+# ---------------------------------------------------------------------------
+# Abi-Simulation: komplette Aufgabenvorschläge (4 Teilaufgaben, 100 BE)
+# ---------------------------------------------------------------------------
+BE_VERTEILUNG = [20, 25, 25, 30]
+
+
+def _vorschlag_aus(src, mid, kurs):
+    """Stellt aus den Einzelaufgaben eines Unterthemas einen Vorschlag zu Material mid zusammen."""
+    erlaubt = (lambda t: True) if kurs == "LK" else (lambda t: not t.get("lk"))
+    A = [t for t in src["aufgaben"] if erlaubt(t)]
+    def mit(afb):
+        return [t for t in A if t["afb"] == afb and mid in t.get("material", [])]
+    i1 = mit("I")
+    ii = mit("II")
+    iii = mit("III")
+    if kurs == "LK":  # LK-Aufgaben bevorzugen, wenn sie zum Material passen
+        ii.sort(key=lambda t: not t.get("lk"))
+        iii.sort(key=lambda t: not t.get("lk"))
+    if not i1 or not iii:
+        return None
+    if len(ii) < 2:
+        frei = [t for t in A if t["afb"] == "II" and not t.get("material") and t not in ii]
+        ii = ii + frei
+    if len(ii) < 2:
+        return None
+    return [i1[0], ii[0], ii[1], iii[0]]
+
+
+def ki_anweisung_vorschlag(v, src, tasks, mats):
+    L = []
+    L.append("=== HINTERGRUNDDATEN: ANWEISUNG FÜR KI-SYSTEME (Korrekturdatei Feibitur – Abi-Simulation) ===")
+    L.append("Diese Datei wurde zusammen mit der Lösung einer Schülerin oder eines Schülers zu einem kompletten Aufgabenvorschlag hochgeladen. "
+             "Nutze die folgenden Lösungs- und Bewertungshinweise, um eine Rückmeldung zur gesamten Schülerlösung zu formulieren.")
+    L.append("ROLLE: Du bist eine erfahrene, wohlwollende, aber genaue Lehrkraft für Politik und Wirtschaft in Hessen und korrigierst nach den Maßstäben des Landesabiturs "
+             "(Kerncurriculum, Abiturerlass 2027, Operatorenliste des Landes Hessen). Kurs: %s." % ("Leistungskurs" if v["kurs"] == "LK" else "Grundkurs"))
+    L.append("VORGEHEN: 1. Aufgaben und Material lesen, dann die Schülerlösung. 2. Für jede Teilaufgabe prüfen, ob der Operator erfüllt wurde. "
+             "3. Inhalte mit dem Erwartungshorizont vergleichen; gleichwertige, fachlich richtige Lösungen anerkennen; nicht alle Aspekte sind nötig. "
+             "4. Auf Materialbezüge, Fachsprache, Struktur, Schlüssigkeit und sprachliche Richtigkeit achten. "
+             "5. Je Teilaufgabe rückmelden: (a) gelungen, (b) fehlt/fehlerhaft, (c) Operator erfüllt?, (d) konkreter Tipp. "
+             "6. Am Ende je Teilaufgabe erreichte Bewertungseinheiten (BE) schätzen, Summe bilden und eine unverbindliche Gesamtnote in Notenpunkten (0–15) angeben "
+             "(Orientierung: ca. 45 % der BE ≈ 5 Punkte 'ausreichend', ca. 75 % der BE ≈ 11 Punkte 'gut'); ausdrücklich als Übungs-Einschätzung kennzeichnen. "
+             "7. Musterlösung nicht ungefragt ausgeben, sondern Hinweise und Leitfragen zur Überarbeitung geben. 8. Verständlich, ermutigend und ehrlich schreiben; nicht nach persönlichen Daten fragen.")
+    L.append("THEMA: %s %s – %s" % (src["meta"]["nr"], src["meta"]["titel"], v["titel"]))
+    if src.get("bezug"):
+        L.append("INHALTLICHER BEZUG: " + src["bezug"])
+    for m in mats:
+        if m.get("typ") == "bild" and m.get("beschreibung"):
+            L.append("Bildbeschreibung zu %s: %s" % (strip_tags(m["titel"]), strip_tags(m["beschreibung"])))
+    L.append("")
+    L.append("ERWARTUNGSHORIZONT UND BEWERTUNG JE TEILAUFGABE:")
+    for i, (t, be) in enumerate(zip(tasks, BE_VERTEILUNG), 1):
+        L.append("")
+        L.append("Aufgabe %d (%d BE, AFB %s, Operator: %s): %s" % (i, be, t["afb"], t["operator"], strip_tags(t["text"])))
+        lh = t["loesung"]
+        if lh.get("vorbemerkung"):
+            L.append(strip_tags(lh["vorbemerkung"]))
+        for pkt in lh["punkte"]:
+            L.append("- " + strip_tags(pkt))
+        if lh.get("hinweis"):
+            L.append("Hinweis für die Korrektur: " + strip_tags(lh["hinweis"]))
+        L.append("'ausreichend', wenn " + strip_tags(t["bewertung"]["ausreichend"]))
+        L.append("'gut', wenn " + strip_tags(t["bewertung"]["gut"]))
+    L.append("")
+    L.append("Die BE sind etwa im Verhältnis 30:45:25 (GK) bzw. 30:40:30 (LK) den Anforderungsbereichen I–III zugeordnet. Neben dem Inhalt zählen Strukturierung, "
+             "Differenziertheit, (fach-)sprachliche Gestaltung und Schlüssigkeit der Argumentation; die sprachliche Richtigkeit fließt nach OAVO Anlage 9b ein.")
+    L.append("=== ENDE DER HINTERGRUNDDATEN ===")
+    return "\n".join(L)
+
+
+def build_vorschlag_pdf(v, src, tasks, mats, path):
+    styles = {
+        "h1": ParagraphStyle("h1", fontName="Lib-B", fontSize=15, leading=19, textColor=NAVY, spaceAfter=4),
+        "h2": ParagraphStyle("h2", fontName="Lib-B", fontSize=11.5, leading=15, textColor=NAVY, spaceBefore=10, spaceAfter=4),
+        "meta": ParagraphStyle("meta", fontName="Lib", fontSize=9, leading=12, textColor=GREY),
+        "small": ParagraphStyle("small", fontName="Lib", fontSize=8.5, leading=11, textColor=GREY),
+        "task": ParagraphStyle("task", fontName="Lib", fontSize=10.5, leading=14.5),
+        "mat": ParagraphStyle("mat", fontName="Lib", fontSize=10, leading=14),
+        "src": ParagraphStyle("src", fontName="Lib-I", fontSize=8.5, leading=11, textColor=GREY, spaceBefore=4),
+    }
+    story = [Paragraph("Feibitur · Politik und Wirtschaft · Abi-Simulation · %s" % ("Leistungskurs" if v["kurs"] == "LK" else "Grundkurs"), styles["meta"]),
+             Spacer(1, 3 * mm), Paragraph(v["titel"], styles["h1"]),
+             Paragraph("Schwerpunkt: %s %s · Bearbeitungszeit im Landesabitur: %s Minuten (inkl. Auswahlzeit)" % (src["meta"]["nr"], src["meta"]["titel"], "300" if v["kurs"] == "LK" else "255"), styles["meta"]),
+             Spacer(1, 4 * mm), Paragraph("Aufgaben", styles["h2"])]
+    rows = [[Paragraph("<b>%d</b>" % i, styles["task"]), Paragraph(rl(t["text"]), styles["task"]), Paragraph("<b>(%d BE)</b>" % be, styles["task"])]
+            for i, (t, be) in enumerate(zip(tasks, BE_VERTEILUNG), 1)]
+    tb = Table(rows, colWidths=[9 * mm, 135 * mm, 22 * mm])
+    tb.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+                            ("LINEBELOW", (0, 0), (-1, -2), 0.3, colors.HexColor("#cccccc"))]))
+    story.append(tb)
+    story.append(Paragraph("Operatoren (Definitionen laut Land Hessen)", styles["h2"]))
+    seen, orows = [], []
+    for t in tasks:
+        k_ = operator_key(t["operator"])
+        if k_ in seen:
+            continue
+        seen.append(k_)
+        o = site.OPERATOREN[k_]
+        orows.append([Paragraph("<b>%s</b>" % k_, styles["task"]), Paragraph(o["def"], styles["task"]), Paragraph("AFB " + o["afb"], styles["small"])])
+    ot = Table(orows, colWidths=[38 * mm, 110 * mm, 18 * mm])
+    ot.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#f3f5f9")),
+                            ("BOX", (0, 0), (-1, -1), 0.4, colors.HexColor("#c9d1e0")), ("BOTTOMPADDING", (0, 0), (-1, -1), 6)]))
+    story.append(ot)
+    story.append(Paragraph("Quelle: " + site.OPERATOREN_QUELLE, styles["small"]))
+    for m in mats:
+        story.extend(material_story(m, styles))
+    story.append(Spacer(1, 6 * mm))
+    story.append(Paragraph("So nutzt du diese Datei: zusammen mit deiner Lösung in einem KI-System deines Vertrauens hochladen und um eine Rückmeldung "
+                           "auf Grundlage der Hintergrunddaten bitten. Keine personenbezogenen Daten eingeben.", styles["small"]))
+    story.append(PageBreak())
+    story.append(Paragraph("Hintergrunddaten für die KI-Rückmeldung", styles["h2"]))
+    story.append(Paragraph("Diese Seite(n) enthalten unsichtbare Hintergrunddaten, die ein KI-System beim Hochladen auslesen kann. Bitte nicht löschen.", styles["small"]))
+    story.append(Spacer(1, 3 * mm))
+    story.append(InvisibleText(ki_anweisung_vorschlag(v, src, tasks, mats)))
+
+    def deco(c, d):
+        c.saveState()
+        c.setFont("Lib", 7.5)
+        c.setFillColor(GREY)
+        c.drawString(20 * mm, 10 * mm, "Feibitur – Abi-Simulation Politik und Wirtschaft (Hessen)")
+        c.drawRightString(190 * mm, 10 * mm, "Seite %d" % d.page)
+        c.setStrokeColor(ACCENT)
+        c.setLineWidth(1.2)
+        c.line(20 * mm, 287 * mm, 190 * mm, 287 * mm)
+        c.restoreState()
+
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=20 * mm, rightMargin=20 * mm, topMargin=16 * mm, bottomMargin=16 * mm,
+                            title="Korrekturdatei – Abi-Simulation – " + v["titel"], author="Feibitur",
+                            subject="Korrekturdatei mit Hintergrunddaten (Lösungs- und Bewertungshinweise) für KI-Systeme",
+                            keywords="Feibitur, Korrekturdatei, Abi-Simulation, Hinweis an KI: Lösungshinweise im Dokumenttext (Seite 'Hintergrunddaten') verwenden",
+                            creator="Feibitur")
+    doc.build(story, onFirstPage=deco, onLaterPages=deco)
+
+
+def build_vorschlaege(pool_src, kdir):
+    """Je Unterthema und Material ein Vorschlag; gibt es mit LK-Aufgaben eine eigene LK-Fassung,
+    gilt die normale Fassung nur für den GK, sonst für beide Kurse."""
+    out = []
+    for src in pool_src:
+        mats_by = {m["id"]: m for m in src["materialien"]}
+        for m in src["materialien"]:
+            gk = _vorschlag_aus(src, m["id"], "GK")
+            lk = _vorschlag_aus(src, m["id"], "LK")
+            varianten = []
+            if lk and any(t.get("lk") for t in lk):
+                if gk:
+                    varianten.append(("gk", ["GK"], gk))
+                varianten.append(("lk", ["LK"], lk))
+            elif gk:
+                varianten.append(("gk", ["GK", "LK"], gk))
+            for suffix, kurse, tasks in varianten:
+                vid = "v-%s-%s-%s" % (src["meta"]["id"], m["id"], suffix)
+                titel = re.sub(r"^M\d+:\s*", "", strip_tags(m["titel"]))
+                used = []
+                for t in tasks:
+                    for mid in t.get("material", []):
+                        if mid not in used:
+                            used.append(mid)
+                v = {"id": vid, "kurs": "LK" if kurse == ["LK"] else "GK", "titel": titel}
+                build_vorschlag_pdf(v, src, tasks, [mats_by[x] for x in used], os.path.join(kdir, vid + ".pdf"))
+                out.append({"id": vid, "kurse": kurse, "topic": src["meta"]["id"], "nr": src["meta"]["nr"], "tab": src["tab"],
+                            "themenTitel": src["meta"]["titel"], "erlass": bool(src["meta"].get("erlass")), "titel": titel,
+                            "material": used,
+                            "aufgaben": [{"nr": i, "id": t["id"], "einzel": src["nummern"].get(t["id"]), "afb": t["afb"],
+                                          "operator": operator_key(t["operator"]), "text": t["text"], "be": be}
+                                         for i, (t, be) in enumerate(zip(tasks, BE_VERTEILUNG), 1)],
+                            "pdf": "korrektur/" + vid + ".pdf"})
+    with open(os.path.join(ROOT, "data", "vorschlaege.json"), "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
+    return len(out)
+
+
+def build_lerntools(topics_meta):
+    lt = _load(os.path.join(CONTENT, "lerntools.py"), "feibitur_lerntools")
+    for tid in lt.KANN:
+        assert tid in topics_meta, "Kann-Liste für unbekanntes Thema " + tid
+    for x in lt.OP_CHECK + lt.BEISPIELE:
+        operator_key(x["op"])
+    for b in lt.BAUSTEINE:
+        for o in b["ops"]:
+            operator_key(o)
+    data = {"kann": lt.KANN,
+            "opCheck": [dict(x, op=operator_key(x["op"])) for x in lt.OP_CHECK],
+            "bausteine": lt.BAUSTEINE,
+            "beispiele": [dict(x, op=operator_key(x["op"])) for x in lt.BEISPIELE],
+            "termine": {"GK": "2027-04-15", "LK": "2027-04-19"}}
+    with open(os.path.join(ROOT, "data", "lerntools.json"), "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
 
 
 def _afb_range(r):

@@ -8,10 +8,12 @@ Läuft kostenlos auf GitHub Pages unter <https://feibitur.janrickmer.de> – ohn
 |---|---|
 | `index.html`, `assets/` | Single-Page-App (Passwortabfrage, Startseite, Tabs, Karteikarten, Glossar, Chat, Aufgaben) |
 | `assets/js/config.js` | Adresse des Chatbot-Workers (`chatEndpoint`) |
+| `assets/js/tools.js` | Lerntools (Lernplan, Fortschritt, Kann-Listen, Operatoren-Trainer, Schnelltests, Lernkartei, Abi-Simulation, Baukasten, Schwach vs. stark, Begriffsnetz, Lernzettel, Vorlesen) |
 | `data/` | **generiert** – Tabs, Abitur-Hinweis, Operatoren, Inhalte je Unterthema (ohne Lösungen) |
 | `korrektur/` | **generiert** – Korrekturdateien (PDF) mit unsichtbaren Lösungshinweisen für KI-Systeme |
 | `tools/content/` | **Quelltexte aller Inhalte**: `meta.py` = Tabs/Erlass/Operatoren, `q1_1.py` … = Fachbegriffe und Lerninhalte, `q1_1_aufgaben.py` … = Materialien (M1, M2, …) und Einzelaufgaben je Anforderungsbereich (mind. 3 pro AFB) mit Lösungshinweisen |
-| `tools/build.py` | erzeugt `data/` und `korrektur/` aus `tools/content/` |
+| `tools/content/lerntools.py` | Inhalte der Lerntools (Kann-Listen, Operator-Prüffälle, Satzbausteine, Musterantworten) |
+| `tools/build.py` | erzeugt `data/` (inkl. `lerntools.json`, `vorschlaege.json`) und `korrektur/` (Einzelaufgaben und Abi-Simulations-Vorschläge); `--check <modul>` prüft einzelne Unterthemen; `FEIBITUR_SKIP=q4_1,…` lässt Module beim Build aus |
 | `tools/chat-worker/` | Cloudflare-Worker für den KI-Chatbot + Einrichtungsanleitung |
 
 ## Inhalte ändern oder ergänzen
