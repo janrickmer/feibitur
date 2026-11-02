@@ -1,0 +1,282 @@
+# -*- coding: utf-8 -*-
+"""Metadaten der Seite: Operatoren, Tabs, Unterthemen, Abitur-Hinweis.
+
+Quellen:
+- Operatoren: HMKB, „Operatoren in den Fächern Deutsch, Musik, Sport und in den
+  Fächern des Fachbereichs II“, Landesabitur 2027, Stand 1. August 2025.
+- Abiturerlass zum Landesabitur 2027, Erlass vom 2. Juli 2025,
+  Abschnitt „Politik und Wirtschaft“ (14.1–14.3) sowie Abschnitte II.2, II.2.4, II.3, II.7.1.
+- Kerncurriculum gymnasiale Oberstufe Politik und Wirtschaft (Fassung 21.04.2026).
+"""
+
+# Wortlaut der Definitionen laut Operatorenliste LA 2027 (Fachbereich II)
+OPERATOREN = {
+    "berechnen": {"afb": "I–II", "def": "anhand vorgegebener Daten durch Rechenoperationen zu einem Ergebnis gelangen und die Rechenschritte dokumentieren"},
+    "beschreiben": {"afb": "I–II", "def": "Aussagen, Sachverhalte, Situationen, Strukturen o. Ä. in eigenen Worten strukturiert und fachsprachlich darlegen"},
+    "nennen": {"afb": "I", "def": "zielgerichtet Informationen zusammentragen, ohne diese zu kommentieren"},
+    "skizzieren": {"afb": "I–II", "def": "einen Sachverhalt oder Gedankengang in seinen Grundzügen angeben"},
+    "wiedergeben": {"afb": "I", "def": "ausgehend von einem Einleitungssatz Informationen aus dem vorliegenden Material unter Verwendung der Fachsprache in eigenen Worten ausdrücken"},
+    "zusammenfassen": {"afb": "I–II", "def": "ausgehend von einem Einleitungssatz die wesentlichen Inhalte und Aussagen eines Textes in strukturierter und komprimierter Form unter Verwendung der Fachsprache in eigenen Worten herausstellen"},
+    "analysieren": {"afb": "I–III", "def": "Materialien, Texte, Sachverhalte, Zusammenhänge o. Ä. als Ganzes oder aspektgeleitet bzw. kriterienorientiert erschließen und das Ergebnis der Erschließung darlegen"},
+    "anwenden": {"afb": "II", "def": "einen bekannten Sachverhalt oder eine bekannte Methode auf eine neue Problemstellung beziehen"},
+    "auswerten": {"afb": "II", "def": "Daten, Einzelergebnisse oder Sachverhalte zu einer abschließenden Gesamtaussage zusammenführen"},
+    "charakterisieren": {"afb": "II–III", "def": "die jeweilige Eigenart von Figuren, Sachverhalten o. Ä. verdeutlichen"},
+    "darstellen": {"afb": "I–II", "def": "Sachverhalte o. Ä. und deren Bezüge sowie Zusammenhänge aufzeigen"},
+    "einordnen/zuordnen": {"afb": "I–II", "def": "Texte oder Sachverhalte unter Verwendung von Vorwissen begründet in einen genannten Zusammenhang stellen"},
+    "erklären": {"afb": "II", "def": "Materialien, Sachverhalte o. Ä. in einen Begründungszusammenhang stellen, z. B. durch Rückführung auf fachliche Grundprinzipien, Gesetzmäßigkeiten, Funktionszusammenhänge, Modelle oder Regeln"},
+    "erläutern": {"afb": "II–III", "def": "Materialien, Sachverhalte, Zusammenhänge, Thesen o. Ä. mit zusätzlichen Informationen und Beispielen veranschaulichen"},
+    "herausarbeiten": {"afb": "II", "def": "aus Materialien nicht explizit genannte Sachverhalte erschließen"},
+    "in Beziehung setzen": {"afb": "II–III", "def": "Zusammenhänge unter vorgegebenen oder selbst gewählten Gesichtspunkten begründet herstellen"},
+    "untersuchen": {"afb": "II", "def": "Sachverhalte unter bestimmten Aspekten betrachten und belegen"},
+    "vergleichen/gegenüberstellen": {"afb": "II–III", "def": "nach vorgegebenen oder selbst gewählten Gesichtspunkten Gemeinsamkeiten, Ähnlichkeiten und Unterschiede begründet darlegen"},
+    "begründen": {"afb": "II–III", "def": "einen Sachverhalt bzw. eine Aussage durch Argumente stützen"},
+    "beurteilen": {"afb": "II–III", "def": "zu einem Sachverhalt oder einer Aussage auf Basis von Kriterien und unter Verwendung von Fachwissen und Fachmethoden eine begründete Einschätzung geben"},
+    "bewerten/Stellung nehmen": {"afb": "II–III", "def": "wie Operator ‚beurteilen‘, aber zusätzlich die eigenen Maßstäbe begründet darlegen"},
+    "diskutieren/sich auseinandersetzen mit": {"afb": "II–III", "def": "zu einer Aussage, Problemstellung oder These eine Argumentation entwickeln, die zu einer begründeten Bewertung führt"},
+    "entwickeln": {"afb": "II–III", "def": "einen eigenen Gedankengang bzw. ein Konzept zu einem Thema entfalten und Schlussfolgerungen ziehen"},
+    "erörtern": {"afb": "I–III", "def": "ggf. auf Grundlage einer Materialanalyse oder -auswertung eine These oder Problemstellung unter Abwägen von Pro- und Kontraargumenten hinterfragen und zu einem eigenen Urteil gelangen"},
+    "gestalten/entwerfen": {"afb": "III", "def": "Aufgabenstellungen kreativ und produktorientiert bearbeiten, z. B. auf der Grundlage eines Materials und seiner inhaltlichen oder stilistischen Gegebenheiten eine kreative Idee in ein selbstständiges Produkt umsetzen"},
+    "interpretieren": {"afb": "I–III", "def": "auf der Grundlage einer Analyse Sinnzusammenhänge aus Materialien methodisch reflektiert erschließen, um zu einer schlüssigen Gesamtauslegung zu gelangen"},
+    "überprüfen": {"afb": "II–III", "def": "Aussagen/Behauptungen auf der Grundlage von Fachkenntnissen kritisch hinterfragen und auf ihre Angemessenheit hin begründet einschätzen"},
+    "verfassen": {"afb": "I–III", "def": "auf der Grundlage einer Auswertung von Materialien wesentliche Aspekte eines Sachverhaltes in informierender oder argumentierender Form darlegen"},
+}
+
+OPERATOREN_QUELLE = ("Hessisches Ministerium für Kultus, Bildung und Chancen: Operatoren in den Fächern "
+                     "Deutsch, Musik, Sport und in den Fächern des Fachbereichs II, Landesabitur 2027, "
+                     "Stand: 1. August 2025")
+OPERATOREN_VORBEMERKUNG = ("Grundsätzlich wird erwartet, dass Informationen in eigenen Worten wiedergegeben werden. "
+                           "Operatoren mit dem Schwerpunkt in den Anforderungsbereichen II und III erfordern sinnvolle "
+                           "Belege sowie Text- oder Materialbezüge.")
+
+# ---------------------------------------------------------------------------
+# Abitur-Hinweis (Landesabitur 2027) – ausschließlich aus dem Abiturerlass LA 2027
+# ---------------------------------------------------------------------------
+ABITUR_HINWEIS = {
+    "titel": "Worauf es im Landesabitur 2027 ankommt",
+    "quelle": "Abiturerlass zum Landesabitur 2027 (Erlass vom 2. Juli 2025), Abschnitt „Politik und Wirtschaft“ sowie allgemeine Durchführungsbestimmungen.",
+    "allgemein": [
+        "<b>Grundlage</b> ist das Kerncurriculum (KCGO) Politik und Wirtschaft. Die Prüfungsaufgaben beziehen sich <b>schwerpunktmäßig</b> auf neun Themenfelder: <b>Q1.1, Q1.2, Q1.4, Q2.1, Q2.2, Q2.4, Q3.1, Q3.2 und Q4.3</b>. Die übrigen Themenfelder sind kein Prüfungsschwerpunkt.",
+        "<b>Auswahl:</b> Du bekommst drei Aufgabenvorschläge und wählst einen davon aus. Die Auswahlzeit ist in der Bearbeitungszeit enthalten.",
+        "<b>Bearbeitungszeit:</b> Grundkurs 255 Minuten, Leistungskurs 300 Minuten.",
+        "<b>Termine (Haupttermin):</b> Grundkurs am Donnerstag, 15.04.2027, Leistungskurs am Montag, 19.04.2027. Nachtermin: Grundkurs 18.05.2027, Leistungskurs 20.05.2027.",
+        "<b>Aufgabenart:</b> in der Regel eine Textaufgabe. Möglich sind auch produktorientierte Aufgaben (z. B. eine Rede, einen Brief oder eine Strategie entwerfen) und Materialien aus Texten zusammen mit Bildquellen, Grafiken und Statistiken.",
+        "<b>Erlaubte Hilfsmittel:</b> ein Wörterbuch der deutschen Rechtschreibung, das Grundgesetz (unkommentiert), die Charta der Vereinten Nationen (unkommentiert) und eine Liste der fachspezifischen Operatoren. Übe also mit dem Grundgesetz und der UN-Charta – du darfst sie im Abitur benutzen!",
+        "<b>Operatoren ernst nehmen:</b> Jede Aufgabe beginnt mit einem Operator (z. B. „erläutern“, „beurteilen“). Er legt fest, was du tun musst. Bei Aufgaben in den Anforderungsbereichen II und III werden Belege sowie Text- und Materialbezüge erwartet.",
+    ],
+    "grundkurs": [
+        {"tf": "Q1.1 Verfassung und Verfassungswirklichkeit", "punkte": [
+            "Grundrechte und Rechtsstaatlichkeit (insbesondere Art. 1, 20, 79 GG, wehrhafte Demokratie)",
+            "Parlament, Länderkammer, Bundesregierung und europäische Institutionen im Gesetzgebungsprozess (insbesondere Spannungsfeld Exekutive – Legislative)",
+            "Rolle des Bundesverfassungsgerichts (insbesondere Spannungsfeld Legislative – Judikative)"]},
+        {"tf": "Q1.2 Herausforderungen der Parteiendemokratie", "punkte": [
+            "Parteien als klassische Form der Partizipation – <b>Funktionen von Parteien und Populismus</b>",
+            "alternative Formen politischer Beteiligung (z. B. Volksentscheid)",
+            "nationale Wahlen und Europawahl, Parteiensysteme, Bildung der Exekutive",
+            "Extremismus als Gefährdung der Demokratie, <b>insbesondere Nationalismus und Islamismus</b>"]},
+        {"tf": "Q1.4 Öffentlichkeit im Wandel", "punkte": [
+            "Funktionen und Probleme klassischer Massenmedien",
+            "Chancen und Risiken neuer politischer Kommunikationsformen im Internet (insbesondere <b>Filterblasen, Fake News</b>)"]},
+        {"tf": "Q2.1 Konjunkturanalyse und Konjunkturpolitik", "punkte": [
+            "Analyse und Prognose der Konjunktur mit Konjunkturindikatoren",
+            "Keynesianismus: Krisenanalyse, effektive Gesamtnachfrage, Rolle des Staates, Multiplikatoreffekt",
+            "nachfrageorientierte Politik (insbesondere Fiskalpolitik, ggf. Geld- und Tarifpolitik)",
+            "Probleme und Kontroversen nachfrageorientierter Fiskalpolitik, <b>insbesondere Inflation und Staatsverschuldung</b>"]},
+        {"tf": "Q2.2 Nachhaltiges Wachstum und fairer Wettbewerb", "punkte": [
+            "Bedeutung und Bestimmungsfaktoren des Wirtschaftswachstums",
+            "neoklassische Konzeption, Gestaltung von Angebotsbedingungen",
+            "Ziele, Prinzipien, Probleme und Kontroversen angebotsorientierter Wirtschaftspolitik"]},
+        {"tf": "Q2.4 Arbeitsmarkt- und Tarifpolitik", "punkte": [
+            "Entwicklung von Beschäftigung, <b>insbesondere Fachkräftemangel</b>, und Beschäftigungsstrukturen",
+            "Wirkung arbeitsmarktpolitischer Instrumente",
+            "Tarifvertragsparteien, Tarifpolitik und Tarifautonomie",
+            "<b>konkurrierende Gerechtigkeitsbegriffe</b> (Bedarfs- und Leistungsgerechtigkeit, Chancengleichheit, Diskriminierung)"]},
+        {"tf": "Q3.1 Internationale Konflikte und Konfliktbearbeitung", "punkte": [
+            "Analyse eines aktuellen Konflikts (Nationalstaaten / failing states / transnational eingebundene Staaten; Bürgerkriege, zwischenstaatliche Konflikte, Terrorismus und <b>hybride Kriegsführung</b>) und seiner Folgen",
+            "Ziele und Strategien deutscher Außen- und Sicherheitspolitik",
+            "kollektive Konfliktbearbeitung (insbesondere UN inkl. UN-Charta, NATO)"]},
+        {"tf": "Q3.2 Strukturwandel der Weltwirtschaft", "punkte": [
+            "Verflechtung von Volkswirtschaften (Außenhandel, Freihandelszonen, Binnenmärkte, Arbeit) – Chancen und Risiken",
+            "Globalisierung von Unternehmen: Arbeitsteilung, Lieferketten, Standortfaktoren, Standortwettbewerb",
+            "eine Kontroverse um die Weltwirtschaftsordnung (<b>WTO zwischen Liberalisierung und Regulierung</b>)"]},
+        {"tf": "Q4.3 Die EU als globaler Akteur", "punkte": [
+            "die EU als Akteur kollektiver Konfliktbearbeitung und Friedenssicherung",
+            "Europas Beitrag zu einer globalen Klimapolitik"]},
+    ],
+    "leistungskurs": [
+        {"tf": "Alles aus dem Grundkurs", "punkte": [
+            "Alle Grundkurs-Inhalte sind auch im Leistungskurs prüfungsrelevant. Zusätzlich kommen die folgenden Punkte (erhöhtes Niveau) hinzu.",
+            "Im Leistungskurs wiegen die Anforderungsbereiche II und III stärker: Analysieren, Erläutern, Beurteilen und Bewerten müssen tiefer und theoriegeleitet sein."]},
+        {"tf": "Q1.1", "punkte": [
+            "Veränderung des Grundgesetzes durch gesellschaftlichen Wandel an einem Beispiel",
+            "Mehrebenensystem, Gewaltenteilung und Gewaltenverschränkung (u. a. Bundesrat und Bundesländer)"]},
+        {"tf": "Q1.2", "punkte": [
+            "Veränderungen von Parteiensystem und Parteitypen",
+            "identitäre versus repräsentative Demokratie",
+            "Demokratietheorien der Gegenwart (Pluralismustheorie, deliberative Demokratietheorie)",
+            "<b>nur LK:</b> Besonderheiten des politischen Systems (Stellung von Bundespräsident und Bundeskanzler)"]},
+        {"tf": "Q1.4", "punkte": [
+            "Medien als Wirtschaftsunternehmen",
+            "Pluralisierung, Internationalisierung und Fragmentierung der Öffentlichkeit",
+            "<b>nur LK:</b> Verhältnis von Massenmedien und Politik (Personalisierung, Medienethik)"]},
+        {"tf": "Q2.1", "punkte": [
+            "Erklärungsmodelle konjunktureller Schwankungen (güterwirtschaftlich und monetär)",
+            "Erfahrungen mit fiskalpolitischen Interventionen im historischen Vergleich"]},
+        {"tf": "Q2.2", "punkte": [
+            "Wettbewerb in Marktformen, Konzentration, EU-Wettbewerbspolitik",
+            "Wettbewerbsfähigkeit von Staaten und Regionen im Binnenmarkt (Lohnstückkosten, politische und soziale Rahmenbedingungen)",
+            "<b>nur LK:</b> Soziale Marktwirtschaft in Abgrenzung zu anderen Wirtschaftsordnungen (insbesondere freie Marktwirtschaft)"]},
+        {"tf": "Q2.4", "punkte": [
+            "Bestimmungsgründe von Arbeitsangebot und -nachfrage und ihre politische Steuerung",
+            "Strukturwandel, Arbeitsmärkte und Strukturpolitik",
+            "<b>nur LK:</b> Entwicklung der Einkommens- und Vermögensverteilung"]},
+        {"tf": "Q3.1", "punkte": [
+            "Theorien der internationalen Politik (Realismus, Idealismus/Liberalismus, Institutionalismus) zu Frieden, Sicherheit und Kriegsursachen"]},
+        {"tf": "Q3.2", "punkte": [
+            "Außenwirtschaftstheorien: absolute und komparative Kostenvorteile, Faktor-Proportionen-Theorem"]},
+        {"tf": "Q4.3", "punkte": [
+            "außenpolitische Beziehungen Europas zu den USA, China und Russland"]},
+    ],
+    "tipps": [
+        "Im Erlass sind manche Stichworte des Kerncurriculums mit „[…]“ gestrichen, z. B. in Q2.4 „Formen, Folgen und Ursachen von Arbeitslosigkeit“ oder in Q1.3 und Q1.5 ganze Themenfelder. Lerne zuerst die Schwerpunkte. Die übrigen Inhalte helfen dir trotzdem beim Verständnis.",
+        "Die Lösungshinweise des Landesabiturs verlangen bei Zusammenfassungen eine <b>Einleitung</b> (Autor, Titel, Textsorte, Erscheinungsjahr, Thema) und bei Urteilsaufgaben eine <b>begründete Bewertung</b> am Ende.",
+        "Laut den Lösungshinweisen zum Landesabitur 2026 verteilen sich die Bewertungseinheiten etwa im Verhältnis 30 : 45 : 25 (Grundkurs) bzw. 30 : 40 : 30 (Leistungskurs) auf die Anforderungsbereiche I, II und III.",
+        "Die sprachliche Richtigkeit fließt über den Fehlerindex in die Note ein (OAVO, Anlage 9b). Plane Zeit zum Korrekturlesen ein.",
+    ],
+}
+
+# ---------------------------------------------------------------------------
+# Tabs und Unterthemen
+# erlass: None = kein Schwerpunkt 2027; sonst dict mit gk/lk-Stichworten
+# kcgo: Stichworte laut KCGO (gn = grundlegendes Niveau, en = erhöhtes Niveau)
+# ---------------------------------------------------------------------------
+TABS = [
+    {"id": "grundlagen", "kurz": "Grundlagen", "titel": "Grundlagen", "themen": [
+        {"id": "g1", "nr": "G1", "titel": "Wie analysiere ich vorliegendes Material tiefgründig?", "methode": True},
+        {"id": "g2", "nr": "G2", "titel": "Was gehört in ein Sachurteil?", "methode": True},
+        {"id": "g3", "nr": "G3", "titel": "Was gehört in ein Werturteil?", "methode": True},
+    ]},
+    {"id": "q1", "kurz": "Q1", "titel": "Q1: Demokratie im politischen Mehrebenensystem", "themen": [
+        {"id": "q1-1", "nr": "Q1.1", "titel": "Verfassung und Verfassungswirklichkeit: Rechtsstaatlichkeit und Verfassungskonflikte",
+         "kcgo": {"gn": ["Grundrechte und Rechtsstaatlichkeit in der Verfassung (insbesondere Artikel 1, 20, 79 Grundgesetz, Wehrhafte Demokratie)",
+                         "Parlament, Länderkammer, Bundesregierung und Europäische Institutionen im Gesetzgebungsprozess (insbesondere Spannungsfeld Exekutive – Legislative)",
+                         "Rolle des Bundesverfassungsgerichts (insbesondere Spannungsfeld Legislative – Judikative)"],
+                  "en": ["Veränderung des Grundgesetzes aufgrund gesellschaftlicher Wandlungsprozesse anhand eines Beispiels",
+                         "das politische Mehrebenensystem vor dem Hintergrund der Gewaltenteilung und Gewaltenverschränkung (unter anderem Rolle des Bundesrates und der Bundesländer)"]},
+         "erlass": True},
+        {"id": "q1-2", "nr": "Q1.2", "titel": "Herausforderungen der Parteiendemokratie",
+         "kcgo": {"gn": ["politische Parteien als klassische Möglichkeiten der Partizipation (insbesondere Aufgaben und Funktionen von Parteien)",
+                         "alternative Formen politischer Beteiligung und Entscheidungsformen (zum Beispiel Volksentscheid)",
+                         "Besonderheiten des politischen Systems der Bundesrepublik Deutschland (Stellung des Bundespräsidenten und des Bundeskanzlers)",
+                         "Nationale Wahlen und Wahl des Europaparlaments im Zusammenhang mit entsprechenden Parteiensystemen, Bildung der jeweiligen Exekutive",
+                         "politischer und religiöser Extremismus als Gefährdung der Demokratie"],
+                  "en": ["Veränderungen von Parteiensystem und Parteientypen", "Identitäre versus Repräsentative Demokratie",
+                         "Demokratietheorien der Gegenwart (Pluralismustheorie, deliberative Demokratietheorie)"]},
+         "erlass": True,
+         "erlass_hinweis": "Laut Erlass 2027: im GK „Funktionen von Parteien und Populismus“ sowie Extremismus „insbesondere Nationalismus, Islamismus“; die Stellung von Bundespräsident und Bundeskanzler ist nur im LK Schwerpunkt."},
+        {"id": "q1-3", "nr": "Q1.3", "titel": "Demokratie jenseits der Nationalstaaten – Europa entscheidet mit",
+         "kcgo": {"gn": ["Rechtssetzung im politischen Mehrebenensystem Europas (Richtlinien, Kommission, EU-Ministerrat, EU-Parlament)",
+                         "Vergemeinschaftung und Souveränitätsverlagerung: Konflikte um Kompetenzen im Mehrebenensystem"],
+                  "en": ["Debatte über das strukturelle und institutionelle Demokratiedefizit", "Zielvorstellung der Integration zwischen Staatenbund und Bundesstaat"]},
+         "erlass": False,
+         "erlass_hinweis": "Kein eigener Schwerpunkt 2027 – aber die europäischen Institutionen im Gesetzgebungsprozess gehören über Q1.1 zum Prüfungsstoff!"},
+        {"id": "q1-4", "nr": "Q1.4", "titel": "Öffentlichkeit im Wandel – Zivilgesellschaft und Medien im politischen Prozess",
+         "kcgo": {"gn": ["Aufgaben, Funktionen und Probleme klassischer politischer Massenmedien",
+                         "Chancen und Risiken neuer politischer Kommunikationsformen im Internet (insbesondere Filterblasen, Fakenews, Desinformation)",
+                         "Veränderungen im Verhältnis von Massenmedien und politischen Akteuren (Personalisierung, Medienethik)"],
+                  "en": ["Medien als Wirtschaftsunternehmen", "Pluralisierung, Internationalisierung und Fragmentierung politischer Öffentlichkeit"]},
+         "erlass": True,
+         "erlass_hinweis": "Laut Erlass 2027: Personalisierung und Medienethik sind nur im LK Schwerpunkt."},
+        {"id": "q1-5", "nr": "Q1.5", "titel": "Gemeinwohl und organisierte Interessen",
+         "kcgo": {"gn": ["Analyse eines exemplarischen Falles aus dem Bereich Sozialpolitik (beispielsweise Genderpolitik, Familienpolitik, Gesundheitspolitik, Asyl- und Migrationspolitik)",
+                         "Interessengruppen zwischen Interessenartikulation und Lobbyismus"],
+                  "en": ["Parteien zwischen Gemeinwohlorientierung und Klientelismus", "konkurrierende Gerechtigkeitsbegriffe"]},
+         "erlass": False,
+         "erlass_hinweis": "Kein Schwerpunkt 2027. Die Gerechtigkeitsbegriffe sind aber über Q2.4 prüfungsrelevant – auch im Grundkurs!"},
+    ]},
+    {"id": "q2", "kurz": "Q2", "titel": "Q2: Wirtschaft und Wirtschaftspolitik in der sozialen Marktwirtschaft", "themen": [
+        {"id": "q2-1", "nr": "Q2.1", "titel": "Konjunkturanalyse und Konjunkturpolitik – Herausforderungen prozessorientierter Wirtschaftspolitik",
+         "kcgo": {"gn": ["Analyse und Prognose wirtschaftlicher Konjunktur anhand von Konjunkturindikatoren",
+                         "Grundlagen der keynesianischen stabilisierungspolitischen Konzeption (insbesondere Krisenanalyse, Bedeutung der effektiven Gesamtnachfrage, Rolle des Staates, Multiplikatoreffekt)",
+                         "Möglichkeiten und Varianten nachfrageorientierter Politik (insbesondere Fiskalpolitik, gegebenenfalls Geld- und Tarifpolitik)",
+                         "Probleme sowie politische und ökonomische Kontroversität nachfrageorientierter Fiskalpolitik"],
+                  "en": ["Erklärungsmodelle konjunktureller Schwankungen (güterwirtschaftliche und monetäre)", "Erfahrungen mit fiskalpolitischen Interventionen im historischen Vergleich"]},
+         "erlass": True, "erlass_hinweis": "Laut Erlass 2027 bei den Kontroversen „insbesondere Inflation sowie Staatsverschuldung“."},
+        {"id": "q2-2", "nr": "Q2.2", "titel": "Nachhaltiges Wachstum und fairer Wettbewerb – Herausforderungen wirtschaftlicher Ordnungspolitik",
+         "kcgo": {"gn": ["Bedeutung und Bestimmungsfaktoren mittel- und langfristigen Wirtschaftswachstums",
+                         "Grundlagen der neoklassischen Konzeption (Einflussfaktoren auf das Wirtschaftswachstum), wirtschaftspolitische Gestaltung von Angebotsbedingungen",
+                         "Ziele und Prinzipien angebotsorientierter Wirtschaftspolitik",
+                         "Konzeption der Sozialen Marktwirtschaft in Abgrenzung zu anderen Wirtschaftsordnungen (insbesondere freie Marktwirtschaft)",
+                         "Probleme sowie politische und ökonomische Kontroversität angebotsorientierter Wirtschaftspolitik"],
+                  "en": ["Wettbewerb in unterschiedlichen Marktformen, wirtschaftliche Konzentrationsprozesse, Wettbewerbspolitik der Europäischen Union",
+                         "Wettbewerbsfähigkeit von Staaten und Regionen im europäischen Binnenmarkt (zum Beispiel Lohnstückkosten, Infrastruktur, politische und soziale Rahmenbedingungen)"]},
+         "erlass": True, "erlass_hinweis": "Laut Erlass 2027 ist die Soziale Marktwirtschaft in Abgrenzung zu anderen Wirtschaftsordnungen nur im LK Schwerpunkt."},
+        {"id": "q2-3", "nr": "Q2.3", "titel": "Sicherung der Preisniveaustabilität in der Europäischen Währungsunion",
+         "kcgo": {"gn": ["Funktion und Bedeutung der europäischen Gemeinschaftswährung", "Folgen und Ursachen von Inflation und Deflation",
+                         "geldpolitische Ziele und Strategien der Europäischen Zentralbank", "Kontroversen um Mandat und Autonomie von Zentralbanken"],
+                  "en": ["Inflationstheorien (Angebots- / Nachfrageinflation, Quantitätstheorie)", "Implementierung von Geldpolitik im internationalen Vergleich (Geldmengen- und Zinspolitik)"]},
+         "erlass": False},
+        {"id": "q2-4", "nr": "Q2.4", "titel": "Arbeitsmarkt- und Tarifpolitik",
+         "kcgo": {"gn": ["Entwicklung von Beschäftigung und Beschäftigungsstrukturen", "Formen, Folgen und Ursachen von Arbeitslosigkeit",
+                         "Wirkung arbeitsmarktpolitischer Instrumente", "Tarifvertragsparteien, Tarifpolitik und Tarifautonomie",
+                         "Entwicklung der Einkommens- und Vermögensverteilung"],
+                  "en": ["konkurrierende Gerechtigkeitsbegriffe (insbesondere Bedarfs- und Leistungsgerechtigkeit, Chancengleichheit, Diskriminierungsprobleme)",
+                         "Bestimmungsgründe für das Angebot und die Nachfrage von Arbeitskräften und deren politische Steuerung",
+                         "Auswirkungen des Strukturwandels auf Arbeitsmärkte und Strukturpolitik"]},
+         "erlass": True, "erlass_hinweis": "Laut Erlass 2027: Fachkräftemangel betont, Gerechtigkeitsbegriffe auch im GK; Einkommens- und Vermögensverteilung nur im LK; Arbeitslosigkeit (Formen/Ursachen) gestrichen."},
+        {"id": "q2-5", "nr": "Q2.5", "titel": "Kontroversen um gerechte Sozialpolitik und Probleme der Staatsfinanzierung",
+         "kcgo": {"gn": ["Entwicklung sozialpolitischer Forderungen und sozialstaatlicher Leistungen", "Möglichkeiten und Grenzen steuerfinanzierter Sozialpolitik",
+                         "Analyse der Struktur der Einnahmen und Ausgaben des Bundeshaushaltes"],
+                  "en": ["Entwicklung und Bewertung der Staatsverschuldung und der Nettokreditaufnahme im europäischen Vergleich (u.a. nationale und europäische Schuldengrenzen)",
+                         "Europäisierung der Finanzpolitik"]},
+         "erlass": False},
+    ]},
+    {"id": "q3", "kurz": "Q3", "titel": "Q3: Internationale Beziehungen im Zeitalter der Globalisierung", "themen": [
+        {"id": "q3-1", "nr": "Q3.1", "titel": "Internationale Konflikte und Konfliktbearbeitung in einer differenzierten Staatenwelt",
+         "kcgo": {"gn": ["Analyse eines aktuellen, exemplarischen Konfliktes vor dem Hintergrund einer differenzierten Staatenwelt (klassische Nationalstaaten / failing states / transnational eingebundene Staaten) und unterschiedlicher Konfliktarten (innerstaatliche Bürgerkriege / internationalisierte Bürgerkriege / zwischenstaatliche Konflikte / Terrorismus) sowie deren Folgen (zum Beispiel Flucht und Vertreibung)",
+                         "Ziele, Strategien und möglicher Beitrag deutscher Außen- und Sicherheitspolitik zur Konfliktbearbeitung und -prävention",
+                         "Möglichkeiten und Grenzen, Verfahren und Akteure kollektiver Konfliktbearbeitung und Friedenssicherung im Rahmen internationaler Institutionen und Bündnisse (insbesondere Vereinte Nationen inklusive UN-Charta, NATO)"],
+                  "en": ["ausgewählte Theorien der internationalen Politik hinsichtlich der Aspekte Frieden / Sicherheit und Kriegsursachen (Realismus, Idealismus / Liberalismus, Institutionalismus)"]},
+         "erlass": True, "erlass_hinweis": "Laut Erlass 2027 bei den Konfliktarten zusätzlich „hybride Kriegsführung“."},
+        {"id": "q3-2", "nr": "Q3.2", "titel": "Strukturwandel der Weltwirtschaft als Herausforderung ökonomischer Globalisierung",
+         "kcgo": {"gn": ["Überblick über Entgrenzung und Verflechtung von Nationalökonomien hinsichtlich Außenhandel, Freihandelszonen, Binnenmärkten, Währungssystemen und Arbeit sowie damit verbundene Chancen und Risiken",
+                         "Globalisierung von Unternehmen und Produktionsprozessen (Veränderungen internationaler Arbeitsteilung, Lieferkettenproblematik, Standortfaktoren); Standortwettbewerb und dessen soziale und ökologische Folgen"],
+                  "en": ["exemplarische Auseinandersetzung mit einer der Kontroversen um die politische Gestaltung der Weltwirtschaftsordnung (zum Beispiel Handelspolitik der WTO zwischen Liberalisierung und Regulierung, Ansätze zur Regulation von Finanzmärkten, globale Arbeitsmigration)",
+                         "ausgewählte Außenwirtschaftstheorien und deren wirtschaftspolitische Implikationen (absolute und komparative Kostenvorteile, Faktor-Proportionen-Theorem, Wettbewerbsmodell nach Porter)"]},
+         "erlass": True, "erlass_hinweis": "Laut Erlass 2027 ist die WTO-Kontroverse auch im GK Schwerpunkt; Porter-Modell und Währungssysteme sind gestrichen."},
+        {"id": "q3-3", "nr": "Q3.3", "titel": "Integration von Schwellen- und Entwicklungsländern in Weltwirtschaft und Weltgesellschaft",
+         "kcgo": {"gn": ["Fallstudie zu Entwicklungsproblemen hinsichtlich der Bereiche Wirtschaft, Gesellschaft, Politik und Ökologie am Beispiel ausgewählter Länder oder Regionen",
+                         "der Beitrag staatlicher und nichtstaatlicher Akteure für nachhaltige Formen von Entwicklung", "Fragen nachhaltiger Entwicklungspolitik (Zielkonflikte, Strategien, Mittel)"],
+                  "en": ["Dimensionen von Unterentwicklung und multikausale Erklärungsansätze"]},
+         "erlass": False},
+        {"id": "q3-4", "nr": "Q3.4", "titel": "Herausforderung: transnationale Demokratie",
+         "kcgo": {"gn": ["Dimensionen und Folgen der Entgrenzung nationalstaatlicher Demokratien (Legislative, Exekutive, Judikative)",
+                         "Ansätze und Formen der Demokratie jenseits des Nationalstaates (unter anderem transnationale Bürgerrechte)",
+                         "Formen des Regierens für die entstehende Weltgesellschaft: globales Regieren zwischen Institutionalisierung (zum Beispiel „global governance“-Ansätze, Vereinte Nationen) und Informalisierung (Regieren durch „globale Clubs“, zum Beispiel G7/G20)",
+                         "Spannungsverhältnis von wirtschaftlicher und politischer Liberalisierung im Globalisierungsprozess"],
+                  "en": ["Bedrohung des universellen Geltungsanspruchs der Menschenrechte durch kulturrelativistische Deutungen", "Chancen und Grenzen einer internationalen Strafgerichtsbarkeit"]},
+         "erlass": False},
+        {"id": "q3-5", "nr": "Q3.5", "titel": "Weltumweltpolitik",
+         "kcgo": {"gn": ["Wechselwirkungen globaler ökologischer und ökonomischer Herausforderungen angesichts einer stark wachsenden Weltbevölkerung",
+                         "Ziele, Interessen und Strategien staatlicher und privater Akteure der internationalen Umweltpolitik",
+                         "internationale Umweltpolitik im Spannungsfeld von Kooperation und Verteilungskonflikten"],
+                  "en": ["Zielkonflikte und institutionelle Schwierigkeiten globaler Umweltpolitik"]},
+         "erlass": False},
+    ]},
+    {"id": "q4", "kurz": "Q4", "titel": "Q4: Gegenwart und Zukunft Europas in einer globalisierten Welt", "themen": [
+        {"id": "q4-1", "nr": "Q4.1", "titel": "Entwicklung des politischen Systems Europas im Kontext von Vertiefung und Erweiterung",
+         "kcgo": {"gn": ["Chancen und Risiken möglicher zukünftiger EU-Erweiterungen; Zielvorstellungen der Integration zwischen Staatenbund und Bundesstaat",
+                         "Chancen und Grenzen des europäischen Parlamentarismus und zivilgesellschaftlicher Demokratie"],
+                  "en": ["Integrationstheorien (zum Beispiel realistischer und liberaler Intergouvernementalismus, Supranationalismus, konstruktivistischer Postfunktionalismus)"]},
+         "erlass": False},
+        {"id": "q4-2", "nr": "Q4.2", "titel": "Chancen und Risiken der wirtschaftlichen Integration Europas",
+         "kcgo": {"gn": ["Freiheiten und Schranken des europäischen Binnenmarktes",
+                         "Grenzen staatlicher Souveränität in zentralen Politikfeldern (beispielsweise Fiskalpolitik, Wirtschaftspolitik, Umweltpolitik)",
+                         "Krisen als Herausforderungen europäischer Politik"],
+                  "en": ["Außenwirtschaftsbeziehungen und Außenwirtschaftspolitik der Europäischen Union (unter anderem Zollpolitik und Währungspolitik)"]},
+         "erlass": False},
+        {"id": "q4-3", "nr": "Q4.3", "titel": "Die Europäische Union als globaler Akteur",
+         "kcgo": {"gn": ["Die Europäische Union als Akteur kollektiver Konfliktbearbeitung und Friedenssicherung", "Europas Beitrag zu einer globalen Klimapolitik"],
+                  "en": ["Die außenpolitischen Beziehungen Europas zu anderen Akteuren (USA, China, Russland)"]},
+         "erlass": True},
+    ]},
+]

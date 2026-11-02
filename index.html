@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feibitur</title>
+<meta name="description" content="Feibitur – Lernplattform zur Vorbereitung auf das Landesabitur in Hessen.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<noscript><p class="noscript">Feibitur benötigt JavaScript. Bitte aktiviere JavaScript in deinem Browser.</p></noscript>
+
+<!-- Passwortabfrage -->
+<section id="gate" class="gate" hidden>
+  <form id="gate-form" class="gate-card" autocomplete="off">
+    <div class="brand brand-lg" aria-hidden="true">Feibitur</div>
+    <h1 class="visually-hidden">Feibitur</h1>
+    <p class="gate-lead">Bitte gib das Passwort ein, um fortzufahren.</p>
+    <label for="gate-pw" class="visually-hidden">Passwort</label>
+    <input id="gate-pw" type="password" placeholder="Passwort" autocomplete="current-password" required>
+    <button type="submit" class="btn btn-primary">Weiter</button>
+    <p id="gate-error" class="gate-error" role="alert" hidden>Das Passwort ist leider falsch.</p>
+  </form>
+  <footer class="legal-links"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></footer>
+</section>
+
+<div id="app" hidden></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+# -*- coding: utf-8 -*-
+"""Q1.3 Demokratie jenseits der Nationalstaaten – Europa entscheidet mit"""
+
+SVG_OGV = """<svg viewBox='0 0 760 380' xmlns='http://www.w3.org/2000/svg' font-family='system-ui, Arial, sans-serif' font-size='13' role='img' aria-labelledby='ogt'>
+<title id='ogt'>Das ordentliche Gesetzgebungsverfahren der EU</title>
+<defs><marker id='a2' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto'><path d='M0 0L10 5L0 10z' fill='#14213d'/></marker></defs>
+<rect width='760' height='380' fill='#fff'/>
+<text x='380' y='24' text-anchor='middle' font-weight='700' font-size='15' fill='#14213d'>Ordentliches Gesetzgebungsverfahren (Art. 294 AEUV), vereinfacht</text>
+<rect x='270' y='40' width='220' height='64' rx='12' fill='#003399'/>
+<text x='380' y='64' text-anchor='middle' fill='#fff' font-weight='700'>Europäische Kommission</text>
+<text x='380' y='84' text-anchor='middle' fill='#dfe6f7'>macht den Vorschlag</text>
+<text x='380' y='98' text-anchor='middle' fill='#dfe6f7' font-size='11'>(Initiativmonopol)</text>
+<path d='M330 104 L190 150' stroke='#14213d' stroke-width='1.6' marker-end='url(#a2)'/>
+<path d='M430 104 L570 150' stroke='#14213d' stroke-width='1.6' marker-end='url(#a2)'/>
+<rect x='40' y='150' width='300' height='92' rx='12' fill='#eef2fb' stroke='#14213d'/>
+<text x='190' y='175' text-anchor='middle' font-weight='700' fill='#14213d'>Europäisches Parlament</text>
+<text x='190' y='196' text-anchor='middle' fill='#333'>720 direkt gewählte Abgeordnete</text>
+<text x='190' y='215' text-anchor='middle' fill='#333'>vertritt die Unionsbürger/innen</text>
+<text x='190' y='234' text-anchor='middle' fill='#333'>entscheidet mit Mehrheit</text>
+<rect x='420' y='150' width='300' height='92' rx='12' fill='#eef2fb' stroke='#14213d'/>
+<text x='570' y='175' text-anchor='middle' font-weight='700' fill='#14213d'>Rat der EU (Ministerrat)</text>
+<text x='570' y='196' text-anchor='middle' fill='#333'>Fachminister/innen der 27 Staaten</text>
+<text x='570' y='215' text-anchor='middle' fill='#333'>vertritt die Mitgliedstaaten</text>
+<text x='570' y='234' text-anchor='middle' fill='#333'>meist qualifizierte Mehrheit</text>
+<path d='M340 196 H420' stroke='#b5302a' stroke-width='2' stroke-dasharray='5 4'/>
+<text x='380' y='188' text-anchor='middle' fill='#b5302a' font-size='12' font-weight='700'>gleichberechtigt</text>
+<rect x='190' y='262' width='380' height='46' rx='12' fill='#fff7e0' stroke='#d9a400'/>
+<text x='380' y='282' text-anchor='middle' font-weight='700' fill='#6a4b00'>Trilog: informelle Verhandlungen</text>
+<text x='380' y='299' text-anchor='middle' fill='#333'>von Parlament, Rat und Kommission</text>
+<path d='M190 242 L300 262' stroke='#14213d' stroke-width='1.4'/><path d='M570 242 L460 262' stroke='#14213d' stroke-width='1.4'/>
+<path d='M380 308 L380 326' stroke='#14213d' stroke-width='1.6' marker-end='url(#a2)'/>
+<rect x='150' y='328' width='460' height='42' rx='12' fill='#14213d'/>
+<text x='380' y='354' text-anchor='middle' fill='#fff' font-weight='700'>Verordnung (gilt direkt) oder Richtlinie (muss umgesetzt werden)</text>
+</svg>"""
+
+TOPIC = {
+    "id": "q1-3",
+    "begriffe": [
+        {"b": "Europäische Kommission", "kurz": "„Exekutive“ der EU: macht Gesetzesvorschläge, überwacht die Einhaltung des EU-Rechts („Hüterin der Verträge“).",
+         "lang": "Die <b>Kommission</b> besteht aus 27 Kommissarinnen und Kommissaren (eine Person pro Mitgliedstaat), die dem <b>Gemeinwohl der EU</b> verpflichtet sind, nicht ihrem Heimatland. Sie hat das <b>Initiativmonopol</b> für Gesetze, führt EU-Recht aus und kann Staaten vor dem EuGH verklagen. Präsidentin ist seit 2019 Ursula von der Leyen."},
+        {"b": "Europäisches Parlament", "kurz": "direkt gewählte Vertretung der Unionsbürger/innen; Mitgesetzgeber neben dem Rat.",
+         "lang": "Das <b>Europäische Parlament</b> (EP) wird alle fünf Jahre direkt gewählt (720 Sitze seit 2024). Es entscheidet im ordentlichen Gesetzgebungsverfahren <b>gleichberechtigt</b> mit dem Rat, beschließt den Haushalt mit, wählt die Kommissionspräsidentin und kann die Kommission per Misstrauensantrag stürzen. Ein eigenes Initiativrecht hat es nicht."},
+        {"b": "Rat der EU", "kurz": "auch Ministerrat: Fachministerinnen und -minister der Mitgliedstaaten; Mitgesetzgeber neben dem EP.",
+         "lang": "Im <b>Rat der EU</b> treffen sich die zuständigen Fachminister/innen der 27 Staaten (z. B. Umweltminister). Er vertritt die <b>Interessen der Mitgliedstaaten</b> und beschließt Gesetze gemeinsam mit dem EP – meist mit qualifizierter Mehrheit. Nicht verwechseln mit dem Europäischen Rat (Staats- und Regierungschefs) und dem Europarat (keine EU-Institution)."},
+        {"b": "Europäischer Rat", "kurz": "Gipfel der Staats- und Regierungschefs; legt die allgemeinen politischen Ziele fest, macht aber keine Gesetze.",
+         "lang": "Der <b>Europäische Rat</b> besteht aus den Staats- und Regierungschefs der Mitgliedstaaten, seinem Präsidenten und der Kommissionspräsidentin. Er gibt die <b>großen Linien</b> vor (z. B. Erweiterung, Krisenreaktionen) und schlägt die Kommissionspräsidentin vor. Er ist <b>kein Gesetzgeber</b>."},
+        {"b": "Qualifizierte Mehrheit", "kurz": "Abstimmungsregel im Rat: 55 % der Mitgliedstaaten, die mindestens 65 % der EU-Bevölkerung vertreten („doppelte Mehrheit“).",
+         "lang": "Die <b>qualifizierte Mehrheit</b> ist eine doppelte Mehrheit: mindestens <b>55 % der Staaten</b> (15 von 27) und mindestens <b>65 % der Bevölkerung</b>. Eine Sperrminorität braucht mindestens vier Staaten. So können weder nur die großen noch nur die kleinen Staaten allein entscheiden. In sensiblen Bereichen (z. B. Außenpolitik, Steuern) gilt Einstimmigkeit."},
+        {"b": "Ordentliches Gesetzgebungsverfahren", "kurz": "Standardverfahren der EU-Gesetzgebung: Kommission schlägt vor, Parlament und Rat entscheiden gleichberechtigt.",
+         "lang": "Im <b>ordentlichen Gesetzgebungsverfahren</b> (Art. 294 AEUV) legt die Kommission einen Vorschlag vor. EP und Rat beraten in bis zu drei Lesungen; beide müssen zustimmen. In der Praxis werden die meisten Gesetze in <b>Trilogen</b> (informellen Dreiergesprächen) ausgehandelt und dann formal beschlossen."},
+        {"b": "Trilog", "kurz": "informelle Verhandlungen zwischen Vertretern von Parlament, Rat und Kommission, um einen Kompromiss zu finden.",
+         "lang": "Im <b>Trilog</b> verhandeln kleine Delegationen von EP, Rat und Kommission hinter verschlossenen Türen. Vorteil: schnelle Einigungen. Kritik: <b>mangelnde Transparenz</b> – die Öffentlichkeit erfährt oft erst vom fertigen Kompromiss."},
+        {"b": "Verordnung (EU)", "kurz": "EU-Rechtsakt, der unmittelbar und in allen Teilen in jedem Mitgliedstaat gilt (z. B. die DSGVO).",
+         "lang": "Eine <b>Verordnung</b> gilt wie ein Gesetz direkt in allen Mitgliedstaaten, ohne dass nationale Parlamente sie umsetzen müssen (Art. 288 AEUV). Bekanntes Beispiel: die <b>Datenschutz-Grundverordnung</b> (DSGVO), die seit 2018 überall in der EU gilt."},
+        {"b": "Richtlinie", "kurz": "EU-Rechtsakt mit verbindlichem Ziel, den die Mitgliedstaaten bis zu einer Frist in nationales Recht umsetzen müssen.",
+         "lang": "Eine <b>Richtlinie</b> gibt ein <b>Ziel</b> vor (z. B. Mindeststandards beim Verbraucherschutz). Wie es erreicht wird, entscheiden die Staaten selbst: Bundestag und Bundesrat müssen ein Umsetzungsgesetz beschließen. Setzt ein Staat nicht rechtzeitig um, droht ein <b>Vertragsverletzungsverfahren</b>."},
+        {"b": "Subsidiaritätsprinzip", "kurz": "Die EU darf nur handeln, wenn ein Ziel auf EU-Ebene besser erreicht werden kann als von den Mitgliedstaaten (Art. 5 Abs. 3 EUV).",
+         "lang": "<b>Subsidiarität</b> heißt: Was die kleinere Einheit (Staat, Land, Kommune) gut selbst regeln kann, soll sie selbst regeln. Die EU darf in Bereichen, in denen sie nicht ausschließlich zuständig ist, nur tätig werden, wenn ein Ziel <b>auf EU-Ebene besser</b> zu erreichen ist. Nationale Parlamente können eine <b>Subsidiaritätsrüge</b> erheben."},
+        {"b": "Prinzip der begrenzten Einzelermächtigung", "kurz": "Die EU darf nur in den Bereichen handeln, die ihr die Mitgliedstaaten in den Verträgen übertragen haben.",
+         "lang": "Die EU ist kein Staat, der sich selbst neue Aufgaben geben kann. Sie darf nur dort handeln, wo die Mitgliedstaaten ihr in den Verträgen eine <b>Zuständigkeit übertragen</b> haben (Art. 5 Abs. 2 EUV). Die Staaten bleiben „Herren der Verträge“."},
+        {"b": "Supranationalität", "kurz": "Entscheidungen werden auf einer Ebene über den Staaten getroffen und binden diese auch gegen ihren Willen.",
+         "lang": "<b>Supranational</b> (überstaatlich) bedeutet: EU-Institutionen wie Kommission, EP und EuGH treffen Entscheidungen, die Mitgliedstaaten auch dann binden, wenn sie überstimmt wurden. Gegensatz: <b>intergouvernemental</b> (zwischenstaatlich) – die Regierungen verhandeln, meist einstimmig, z. B. in der Außenpolitik."},
+        {"b": "Vergemeinschaftung", "kurz": "Übertragung eines Politikfeldes von der nationalen auf die EU-Ebene mit supranationalen Entscheidungsverfahren.",
+         "lang": "<b>Vergemeinschaftung</b> heißt, ein Politikfeld wird von der EU geregelt (z. B. Handelspolitik, Wettbewerbsrecht, Geldpolitik im Euroraum). Damit verbunden ist eine <b>Souveränitätsverlagerung</b>: Die Staaten geben Entscheidungsmacht ab, gewinnen aber gemeinsame Handlungsfähigkeit."},
+        {"b": "Mehrebenensystem", "kurz": "politisches System, in dem Entscheidungen auf mehreren verflochtenen Ebenen (EU, Bund, Länder, Kommunen) getroffen werden.",
+         "lang": "Im <b>Mehrebenensystem</b> wird Politik nicht an einer Stelle gemacht: Die EU setzt einen Rahmen, Bund und Länder setzen um, Kommunen führen aus. Die Ebenen sind verflochten – das ermöglicht passende Lösungen, macht aber Verantwortlichkeiten oft <b>unübersichtlich</b>."},
+        {"b": "Demokratiedefizit", "kurz": "Kritik, dass die EU-Entscheidungen nicht ausreichend demokratisch legitimiert und kontrolliert seien.",
+         "lang": "Mit <b>Demokratiedefizit</b> sind Schwächen gemeint wie: Das EP hat kein Initiativrecht, im Rat entscheiden Regierungsvertreter (Exekutive) als Gesetzgeber, Stimmen der Bürger haben unterschiedliches Gewicht, es fehlt eine europäische Öffentlichkeit. Gegenargumente: doppelte Legitimation über EP und nationale Regierungen, Stärkung des EP durch den Vertrag von Lissabon."},
+        {"b": "Degressive Proportionalität", "kurz": "Verteilung der EP-Sitze: große Staaten haben mehr Sitze, aber kleine Staaten mehr Sitze pro Einwohner.",
+         "lang": "Nach der <b>degressiven Proportionalität</b> bekommt Deutschland die meisten Sitze (96), Malta, Luxemburg und Zypern je 6. Pro Abgeordnetem vertritt ein deutscher MdEP aber viel mehr Menschen als ein maltesischer. Das schützt kleine Staaten, verletzt aber die <b>Wahlgleichheit</b> („one person, one vote“)."},
+        {"b": "Europäische Bürgerinitiative", "kurz": "Mit 1 Million Unterschriften aus mindestens sieben Staaten können Bürger die Kommission auffordern, einen Gesetzesvorschlag zu prüfen.",
+         "lang": "Die <b>Europäische Bürgerinitiative</b> (seit dem Vertrag von Lissabon) erlaubt es, mit mindestens <b>einer Million Unterschriften</b> aus mindestens sieben Mitgliedstaaten die Kommission aufzufordern, einen Rechtsakt vorzuschlagen. Die Kommission muss reagieren, ist aber nicht verpflichtet, einen Vorschlag zu machen."},
+        {"b": "Staatenverbund", "kurz": "Begriff des BVerfG für die EU: mehr als ein Staatenbund, aber kein Bundesstaat.",
+         "lang": "Die EU ist ein Gebilde eigener Art: mehr als ein <b>Staatenbund</b> (lockeres Bündnis souveräner Staaten), weil sie supranationales Recht setzt, aber kein <b>Bundesstaat</b>, weil die Mitgliedstaaten souverän bleiben. Das BVerfG nennt sie deshalb <b>Staatenverbund</b>."},
+        {"b": "Europäischer Gerichtshof", "kurz": "oberstes Gericht der EU in Luxemburg; sichert die einheitliche Auslegung und Anwendung des EU-Rechts.",
+         "lang": "Der <b>EuGH</b> in Luxemburg entscheidet z. B. über Vertragsverletzungsverfahren gegen Staaten und beantwortet Vorlagefragen nationaler Gerichte zur Auslegung des EU-Rechts. Er entwickelte den <b>Vorrang des EU-Rechts</b>. Nicht verwechseln mit dem Europäischen Gerichtshof für Menschenrechte (EGMR) in Straßburg (Europarat)."},
+    ],
+    "inhalte": [
+        {"t": "text", "art": "Merke", "titel": "Hinweis zum Abitur 2027",
+         "html": "<p>Q1.3 ist laut Abiturerlass <b>kein eigener Schwerpunkt</b> im Landesabitur 2027. Trotzdem lohnt sich das Thema: In Q1.1 sind „<b>Europäische Institutionen im Gesetzgebungsprozess</b>“ ausdrücklich prüfungsrelevant, und Q4.3 (EU als globaler Akteur) setzt Grundwissen über die EU-Institutionen voraus.</p>"},
+        {"t": "text", "art": "Erklärung", "titel": "Warum entscheidet Europa mit?",
+         "html": "<p>Viele Regeln, die deinen Alltag prägen, stammen aus Brüssel und Straßburg: die Datenschutz-Grundverordnung, die Abschaffung der Roaming-Gebühren, einheitliche Ladekabel (USB-C) oder die CO<sub>2</sub>-Grenzwerte für Neuwagen. Die Mitgliedstaaten haben der EU Zuständigkeiten übertragen, weil manche Probleme <b>nationale Grenzen überschreiten</b> (Binnenmarkt, Klima, Handel, Digitalkonzerne). Die Folge: Demokratie findet nicht mehr nur im Bundestag statt, sondern in einem <b>Mehrebenensystem</b>.</p>"},
+        {"t": "svg", "art": "Schaubild", "titel": "Wie die EU Gesetze macht", "svg": SVG_OGV,
+         "caption": "Das ordentliche Gesetzgebungsverfahren ist der Regelfall. Sonderverfahren (z. B. Einstimmigkeit im Rat, nur Anhörung des EP) gelten u. a. in der Steuer- und Außenpolitik."},
+        {"t": "table", "art": "Merke", "titel": "Die Institutionen auf einen Blick",
+         "kopf": ["Institution", "Zusammensetzung", "vertritt", "wichtigste Aufgaben"],
+         "zeilen": [
+             ["Europäische Kommission", "27 Kommissare, Präsidentin", "Gemeinschaftsinteresse", "Gesetzesinitiative, Ausführung, Hüterin der Verträge"],
+             ["Europäisches Parlament", "720 Abgeordnete (2024–2029)", "Unionsbürger/innen", "Gesetzgebung (mit Rat), Haushalt, Kontrolle, Wahl der Kommissionspräsidentin"],
+             ["Rat der EU", "Fachminister/innen der 27 Staaten", "Regierungen der Mitgliedstaaten", "Gesetzgebung (mit EP), Haushalt, Koordinierung"],
+             ["Europäischer Rat", "Staats- und Regierungschefs", "Mitgliedstaaten", "politische Leitlinien, Vorschlag der Kommissionspräsidentin"],
+             ["EuGH", "ein/e Richter/in pro Staat", "Recht", "Auslegung des EU-Rechts, Vertragsverletzungsverfahren"],
+         ]},
+        {"t": "text", "art": "Fachtext", "titel": "Ein Gesetz entsteht: das „Verbrenner-Aus“",
+         "html": "<p>Im Juli 2021 schlug die Europäische Kommission im Rahmen ihres Klimapakets „Fit for 55“ vor, dass ab 2035 neu zugelassene Pkw kein CO<sub>2</sub> mehr ausstoßen dürfen. Parlament und Rat legten jeweils ihre Positionen fest und einigten sich im Oktober 2022 im Trilog. Das Europäische Parlament stimmte im Februar 2023 zu. Kurz vor der eigentlich als Formsache geltenden Abstimmung im Rat verweigerte die Bundesregierung jedoch ihre Zustimmung, weil die FDP eine Ausnahme für Fahrzeuge forderte, die ausschließlich mit klimaneutralen synthetischen Kraftstoffen (E-Fuels) betrieben werden. Ohne Deutschland drohte die qualifizierte Mehrheit zu scheitern. Nach Verhandlungen sagte die Kommission zu, einen Weg für solche Fahrzeuge vorzuschlagen, und der Rat stimmte im März 2023 zu. Die Verordnung trat danach in Kraft; über eine Lockerung wird seitdem politisch weiter gestritten.</p><p>Der Fall zeigt typische Merkmale des Mehrebenensystems: Die Kommission setzt die Agenda, Parlament und Rat müssen sich einigen, und innenpolitische Konflikte eines großen Mitgliedstaats wirken unmittelbar auf die europäische Ebene zurück. Kritiker sprachen vom „German vote“: Deutschland enthalte sich oder blockiere spät, weil sich die Koalitionspartner in Berlin nicht einig seien.</p>",
+         "quelle": "Selbst verfasster Fachtext (Feibitur) nach öffentlich dokumentiertem Verfahrensverlauf (Verordnung (EU) 2023/851)."},
+        {"t": "text", "art": "Erklärung", "titel": "Konflikte um Kompetenzen: Wer ist zuständig?",
+         "html": "<ul><li><b>Ausschließliche Zuständigkeit der EU</b> (Art. 3 AEUV): z. B. Zollunion, Wettbewerbsregeln des Binnenmarkts, Währungspolitik im Euroraum, gemeinsame Handelspolitik.</li><li><b>Geteilte Zuständigkeit</b> (Art. 4 AEUV): z. B. Binnenmarkt, Umwelt, Verbraucherschutz, Verkehr, Energie – hier gilt das <b>Subsidiaritätsprinzip</b>.</li><li><b>Unterstützende Zuständigkeit</b> (Art. 6 AEUV): z. B. Bildung, Kultur, Gesundheitsschutz – Hauptverantwortung bei den Staaten.</li></ul><p><b>Konfliktlinien:</b> Kommission und EP wollen oft mehr gemeinsame Regeln (Effizienz, Binnenmarkt), nationale Regierungen und Parlamente pochen auf Souveränität. Das BVerfG prüft, ob die EU ihre Kompetenzen überschreitet (<b>Ultra-vires-Kontrolle</b>) – z. B. im PSPP-Urteil 2020 zu Anleihekäufen der EZB, das zu einem Konflikt mit dem EuGH führte.</p><p><b>Instrumente der nationalen Parlamente:</b> Subsidiaritätsrüge (innerhalb von acht Wochen), Subsidiaritätsklage vor dem EuGH, Mitwirkungsrechte nach Art. 23 GG.</p>"},
+        {"t": "text", "art": "Fachtext", "titel": "Hat die EU ein Demokratiedefizit?", "lk": True,
+         "html": "<p>Die These vom Demokratiedefizit der EU hat eine <b>institutionelle</b> und eine <b>strukturelle</b> Dimension. Institutionell wird kritisiert, dass das Europäische Parlament als einzige direkt gewählte Institution kein Initiativrecht besitzt, dass im Rat Regierungsvertreter, also Angehörige der Exekutive, Gesetze beschließen und dass informelle Trilogverhandlungen wenig transparent sind. Zudem verstößt die degressiv proportionale Sitzverteilung gegen die strikte Wahlgleichheit. 2019 wurde mit Ursula von der Leyen eine Kommissionspräsidentin gewählt, die nicht als Spitzenkandidatin angetreten war.</p><p>Strukturell fehle es an einem europäischen Demos: Es gebe keine gemeinsame Sprache, keine europaweite Medienöffentlichkeit und keine echten europäischen Parteien. Europawahlen würden deshalb oft als „nationale Nebenwahlen“ wahrgenommen.</p><p>Verteidiger der EU verweisen auf die <b>doppelte Legitimation</b>: über das direkt gewählte Parlament und über die national gewählten Regierungen im Rat. Der Vertrag von Lissabon (2009) hat das Parlament zum gleichberechtigten Gesetzgeber in den meisten Politikfeldern gemacht, die Bürgerinitiative eingeführt und die nationalen Parlamente gestärkt. Die Wahlbeteiligung stieg 2019 und 2024 wieder auf etwas über 50 Prozent. Manche Forschende argumentieren zudem, dass die EU vor allem regulative Aufgaben erfülle, für die eine Legitimation über gute Ergebnisse (Output-Legitimation) ausreiche.</p>",
+         "quelle": "Selbst verfasster Fachtext (Feibitur)."},
+        {"t": "text", "art": "Erklärung", "titel": "Zielvorstellung: Staatenbund oder Bundesstaat?", "lk": True,
+         "html": "<table><thead><tr><th>Staatenbund</th><th>Staatenverbund (heute)</th><th>Bundesstaat („Vereinigte Staaten von Europa“)</th></tr></thead><tbody><tr><td>souveräne Staaten kooperieren, Entscheidungen einstimmig</td><td>supranationale Bereiche + intergouvernementale Bereiche; Staaten bleiben „Herren der Verträge“</td><td>EU wird selbst Staat mit eigener Verfassung, Regierung, Steuern, Armee</td></tr><tr><td>Vorbild-Argumente: Souveränität, nationale Identität</td><td>Kompromiss, flexibel</td><td>Handlungsfähigkeit in der Weltpolitik, Demokratisierung über EP</td></tr></tbody></table><p>Laut BVerfG (Lissabon-Urteil 2009) setzt das Grundgesetz der Integration Grenzen: Ein Beitritt zu einem europäischen Bundesstaat wäre nur über eine neue Verfassung (Art. 146 GG) möglich.</p>"},
+    ],
+    "aufgaben": [
+        {
+            "id": "q1-3-a1",
+            "titel": "Wer entscheidet in Europa? Das Beispiel „Verbrenner-Aus“",
+            "kurs": "Grundkurs (Aufgabe 4 mit LK-Niveau)",
+            "bezug": "Q1.3: Rechtssetzung im politischen Mehrebenensystem Europas; Vergemeinschaftung und Souveränitätsverlagerung; (LK) Debatte über das Demokratiedefizit. Zugleich Q1.1: europäische Institutionen im Gesetzgebungsprozess.",
+            "standards": "Analysekompetenz: Untersuchungsgegenstand differenziert wahrnehmen und fachsprachlich korrekt beschreiben; Interessen und Macht relevanter Akteure einschätzen. Urteilskompetenz: eigene Entscheidungen argumentativ begründen.",
+            "aufgaben": [
+                {"nr": 1, "operator": "beschreiben", "afb": "I", "be": 20, "text": "Beschreiben Sie den im Material dargestellten Entscheidungsprozess."},
+                {"nr": 2, "operator": "erklären", "afb": "II", "be": 30, "text": "Erklären Sie anhand des Fallbeispiels die Rollen von Kommission, Europäischem Parlament und Rat der EU im ordentlichen Gesetzgebungsverfahren."},
+                {"nr": 3, "operator": "erläutern", "afb": "II", "be": 20, "text": "Erläutern Sie, warum es im europäischen Mehrebenensystem zu Konflikten um Kompetenzen kommt."},
+                {"nr": 4, "operator": "Stellung nehmen", "afb": "III", "be": 30, "text": "„Die EU ist eine Demokratie der Regierungen, nicht der Bürger.“ Nehmen Sie Stellung zu dieser Aussage."},
+            ],
+            "material": [
+                {"titel": "Material: Bericht „Ein Gesetz auf der Zielgeraden – und dann?“ (2025)",
+                 "absaetze": [
+                     "Eigentlich schien alles entschieden. Im Juli 2021 hatte die Europäische Kommission vorgeschlagen, ab 2035 nur noch Neuwagen zuzulassen, die kein CO<sub>2</sub> ausstoßen. Das Europäische Parlament und die Mitgliedstaaten im Rat legten ihre Positionen fest, im Oktober 2022 einigten sich die Unterhändler beider Seiten unter Vermittlung der Kommission. Im Februar 2023 stimmte das Parlament in Straßburg zu.",
+                     "Die Abstimmung im Rat der EU galt als Formsache. Doch dann meldete sich Berlin: Der damalige Bundesverkehrsminister von der FDP erklärte, Deutschland könne nur zustimmen, wenn Autos, die ausschließlich mit synthetischen, klimaneutralen Kraftstoffen (E-Fuels) fahren, auch nach 2035 zugelassen werden dürften. Weil auch andere Staaten zögerten, war die qualifizierte Mehrheit plötzlich in Gefahr.",
+                     "In Brüssel war man verärgert. Diplomaten anderer Staaten sprachen von einem Vertrauensbruch: Wer nach einer Einigung im Trilog noch einmal nachverhandle, stelle das ganze Verfahren infrage. Abgeordnete des Europäischen Parlaments beklagten, ihr Votum werde von einer nationalen Koalitionsdebatte überlagert.",
+                     "Nach wochenlangen Gesprächen sagte die Kommission zu, einen Vorschlag für die Zulassung reiner E-Fuel-Fahrzeuge vorzulegen. Im März 2023 stimmte der Rat der Verordnung zu. Die Bundesregierung sprach von einem Erfolg für die Technologieoffenheit, Umweltverbände von einem Schlupfloch.",
+                     "Der Streit um den Verbrennungsmotor ist damit nicht beendet. Autoindustrie und mehrere Regierungen fordern seitdem, die Regeln zu lockern; andere warnen, dass Europa so seine Klimaziele verfehle. Der Fall zeigt, wie eng in Europa Klimapolitik, Industrieinteressen und nationale Politik miteinander verflochten sind – und wie schwer es ist, zu sagen, wer am Ende eigentlich entschieden hat.",
+                 ],
+                 "quelle": "Übungsmaterial: eigens für Feibitur verfasster Bericht (2025) auf Grundlage des öffentlich dokumentierten Verfahrens zur Verordnung (EU) 2023/851."},
+            ],
+            "loesung": [
+                {"punkte": [
+                    "Einleitung: Bericht (2025) über das Gesetzgebungsverfahren zu den CO2-Flottengrenzwerten (sog. Verbrenner-Aus).",
+                    "Vorschlag der Kommission 2021 (Null-Emission für Neuwagen ab 2035) [1].",
+                    "Festlegung der Positionen von Parlament und Rat, Einigung im Trilog im Oktober 2022, Zustimmung des EP im Februar 2023 [1].",
+                    "Deutsche Bundesregierung (FDP-Verkehrsminister) verlangt Ausnahme für E-Fuels; qualifizierte Mehrheit im Rat gefährdet [2].",
+                    "Kritik anderer Staaten und von EP-Abgeordneten (Vertrauensbruch, Überlagerung durch nationale Koalitionsdebatte) [3].",
+                    "Kompromiss: Zusage der Kommission, Zustimmung des Rates im März 2023; unterschiedliche Bewertungen [4].",
+                    "Fortdauernder Streit um Lockerung, Verflechtung von Klima-, Industrie- und nationaler Politik [5].",
+                ],
+                 "hinweis": "Beschreiben: strukturiert, chronologisch nachvollziehbar, fachsprachlich (Kommission, Rat, Trilog, qualifizierte Mehrheit); keine Bewertung."},
+                {"punkte": [
+                    "Kommission: Initiativmonopol (Vorschlag 2021 im Rahmen von „Fit for 55“), vertritt das Gemeinschaftsinteresse, vermittelt im Trilog, macht im Konflikt Zusagen (E-Fuel-Vorschlag) – Agenda-Setter und Vermittlerin.",
+                    "Europäisches Parlament: direkt gewählt, Mitgesetzgeber, legt Position fest, verhandelt im Trilog, stimmt zu (Februar 2023); kein Initiativrecht; im Fall: Votum durch nationale Blockade unter Druck.",
+                    "Rat der EU: Fachminister der Mitgliedstaaten, vertritt nationale Interessen, Mitgesetzgeber, Entscheidung mit qualifizierter Mehrheit (55 % der Staaten, 65 % der Bevölkerung) – Erklärung, warum Deutschland (bevölkerungsreichster Staat) mit anderen Zögernden die Mehrheit gefährden kann.",
+                    "Ordentliches Gesetzgebungsverfahren (Art. 294 AEUV): Gleichberechtigung von EP und Rat, beide müssen zustimmen; Trilog als informelles Verhandlungsforum.",
+                    "Rückwirkung nationaler Politik (Koalitionskonflikt in Berlin) auf die EU-Ebene; Verhältnis supranational vs. intergouvernemental.",
+                ],
+                 "hinweis": "Erklären: Rollen müssen auf Regeln/Funktionszusammenhänge zurückgeführt und mit dem Fall verknüpft werden; reine Institutionenkunde ohne Fallbezug reicht nicht für 'gut'."},
+                {"punkte": [
+                    "Prinzip der begrenzten Einzelermächtigung; Zuständigkeitsarten (ausschließlich, geteilt, unterstützend).",
+                    "Subsidiarität und Verhältnismäßigkeit als Auslegungsfragen: Wann ist eine EU-Regelung „besser“?",
+                    "Vergemeinschaftung = Souveränitätsverlagerung; Spannungsverhältnis zwischen Effizienz/gemeinsamer Handlungsfähigkeit und nationaler Selbstbestimmung bzw. Länderinteressen.",
+                    "Unterschiedliche Interessen der Ebenen und Akteure (Kommission/EP vs. nationale Regierungen, Industriestandorte, Parteien).",
+                    "Beispiele: Verbrenner-Aus (Industrie- vs. Klimapolitik), Datenschutz, Asyl/Migration, Ultra-vires-Konflikt BVerfG–EuGH (PSPP 2020), Subsidiaritätsrügen.",
+                ],
+                 "hinweis": "Erläutern: mit Beispielen veranschaulichen."},
+                {"punkte": [
+                    "Argumente für die Aussage: Rat (Regierungen) als Mitgesetzgeber und Europäischer Rat als Agenda-Setter; Regierungen können blockieren (Fallbeispiel); Trilog intransparent; EP ohne Initiativrecht; fehlende europäische Öffentlichkeit, Europawahlen als Nebenwahlen; Spitzenkandidatenprinzip 2019 nicht beachtet.",
+                    "Gegenargumente: EP gleichberechtigter Gesetzgeber und hat im Fall zugestimmt; doppelte Legitimation (auch Regierungen sind demokratisch gewählt und dem nationalen Parlament verantwortlich); Bürgerinitiative; Wahlbeteiligung zuletzt über 50 %; Kontrolle durch EuGH; Mitwirkung nationaler Parlamente (Art. 23 GG, Subsidiaritätsrüge).",
+                    "Ggf. Reformvorschläge (Initiativrecht für EP, mehr Transparenz im Trilog, Mehrheitsentscheidungen, transnationale Listen).",
+                    "Stellung nehmen: begründetes Urteil auf Basis von Kriterien UND ausdrückliche Offenlegung der eigenen Wertmaßstäbe (z. B. Vorrang von Bürgerbeteiligung/Wahlgleichheit vs. Handlungsfähigkeit/Effizienz).",
+                ],
+                 "hinweis": "Bei 'Stellung nehmen/bewerten' müssen die eigenen Maßstäbe begründet dargelegt werden; fehlt dies, ist der Operator nur teilweise erfüllt."},
+            ],
+            "bewertung": {
+                "ausreichend": ["der Entscheidungsprozess im Ansatz korrekt und nachvollziehbar beschrieben wird,",
+                                "die Rollen der Institutionen ansatzweise mit Bezug zum Fall erklärt werden,",
+                                "Ursachen von Kompetenzkonflikten ansatzweise erläutert werden,",
+                                "eine ansatzweise strukturierte Stellungnahme mit erkennbaren eigenen Maßstäben vorliegt."],
+                "gut": ["der Entscheidungsprozess weitgehend vollständig, strukturiert und fachsprachlich korrekt beschrieben wird,",
+                        "die Rollen der Institutionen differenziert, regelbezogen und durchgängig am Fall erklärt werden,",
+                        "Kompetenzkonflikte differenziert und mit passenden Beispielen erläutert werden,",
+                        "die Stellungnahme differenziert abwägt, die eigenen Wertmaßstäbe offenlegt und in ein schlüssig begründetes Urteil mündet."],
+            },
+        },
+    ],
+}

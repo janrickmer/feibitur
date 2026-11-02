@@ -1,0 +1,179 @@
+# -*- coding: utf-8 -*-
+"""Q1.4 Öffentlichkeit im Wandel – Zivilgesellschaft und Medien im politischen Prozess"""
+
+SVG_FILTER = """<svg viewBox='0 0 760 330' xmlns='http://www.w3.org/2000/svg' font-family='system-ui, Arial, sans-serif' font-size='13' role='img' aria-labelledby='fbt'>
+<title id='fbt'>Wie eine Filterblase entstehen kann – ein Kreislauf</title>
+<defs><marker id='a3' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto'><path d='M0 0L10 5L0 10z' fill='#b5302a'/></marker></defs>
+<rect width='760' height='330' fill='#fff'/>
+<text x='380' y='24' text-anchor='middle' font-weight='700' font-size='15' fill='#14213d'>Der Kreislauf der Personalisierung (Filterblase)</text>
+<g text-anchor='middle'>
+<rect x='280' y='45' width='200' height='60' rx='12' fill='#eef2fb' stroke='#14213d'/><text x='380' y='70' font-weight='700' fill='#14213d'>1. Du interagierst</text><text x='380' y='90' fill='#333'>Like, Kommentar, Verweildauer</text>
+<rect x='530' y='135' width='210' height='60' rx='12' fill='#eef2fb' stroke='#14213d'/><text x='635' y='160' font-weight='700' fill='#14213d'>2. Algorithmus lernt</text><text x='635' y='180' fill='#333'>Profil deiner Vorlieben</text>
+<rect x='280' y='230' width='200' height='60' rx='12' fill='#eef2fb' stroke='#14213d'/><text x='380' y='255' font-weight='700' fill='#14213d'>3. Feed wird angepasst</text><text x='380' y='275' fill='#333'>mehr vom Gleichen</text>
+<rect x='20' y='135' width='210' height='60' rx='12' fill='#eef2fb' stroke='#14213d'/><text x='125' y='160' font-weight='700' fill='#14213d'>4. Bestätigung</text><text x='125' y='180' fill='#333'>Gegenpositionen seltener</text>
+</g>
+<path d='M480 85 C560 95 620 110 630 133' fill='none' stroke='#b5302a' stroke-width='2' marker-end='url(#a3)'/>
+<path d='M630 197 C620 230 560 255 482 258' fill='none' stroke='#b5302a' stroke-width='2' marker-end='url(#a3)'/>
+<path d='M278 258 C200 255 140 230 128 198' fill='none' stroke='#b5302a' stroke-width='2' marker-end='url(#a3)'/>
+<path d='M128 133 C140 110 200 90 278 82' fill='none' stroke='#b5302a' stroke-width='2' marker-end='url(#a3)'/>
+<text x='380' y='160' text-anchor='middle' fill='#555' font-size='12'>Plattformen optimieren auf</text>
+<text x='380' y='178' text-anchor='middle' fill='#555' font-size='12'>Aufmerksamkeit (Werbeeinnahmen)</text>
+<text x='380' y='318' text-anchor='middle' fill='#555' font-size='11'>Achtung: Wie stark Filterblasen wirken, ist in der Forschung umstritten – viele Menschen nutzen mehrere Quellen.</text>
+</svg>"""
+
+TOPIC = {
+    "id": "q1-4",
+    "begriffe": [
+        {"b": "Öffentlichkeit", "kurz": "der für alle zugängliche Raum, in dem über politische Fragen informiert, diskutiert und Meinung gebildet wird.",
+         "lang": "<b>Öffentlichkeit</b> ist das „Forum“ der Demokratie: Hier werden Themen sichtbar, Positionen ausgetauscht und Entscheidungen begründet. Sie entsteht durch Medien, Versammlungen, Parlamentsdebatten und heute stark durch soziale Netzwerke. Ohne Öffentlichkeit gibt es keine Kontrolle der Macht."},
+        {"b": "Massenmedien", "kurz": "Medien, die viele Menschen gleichzeitig erreichen (Presse, Rundfunk, Online-Nachrichten).",
+         "lang": "<b>Massenmedien</b> wie Zeitungen, Fernsehen, Radio und Nachrichtenportale verbreiten Informationen an ein großes, verstreutes Publikum. Klassisch funktionieren sie als <b>Einbahnstraße</b> (wenige Sender, viele Empfänger). Journalistinnen und Journalisten wählen aus, prüfen und ordnen ein."},
+        {"b": "Vierte Gewalt", "kurz": "Bezeichnung für die Medien, weil sie Legislative, Exekutive und Judikative öffentlich kontrollieren.",
+         "lang": "Die Medien sind keine staatliche Gewalt, werden aber als <b>„vierte Gewalt“</b> bezeichnet, weil sie die drei Staatsgewalten durch Recherche und Berichterstattung kontrollieren und Missstände aufdecken (z. B. Skandale, Affären). Voraussetzung ist die <b>Pressefreiheit</b> (Art. 5 GG)."},
+        {"b": "Informationsfunktion", "kurz": "Aufgabe der Medien, vollständig, sachlich und verständlich über Politik zu informieren.",
+         "lang": "Damit Bürgerinnen und Bürger politische Entscheidungen verstehen und selbst urteilen können, sollen Medien möglichst <b>vollständig, sachlich und verständlich informieren</b>. Das ist die Grundlage für alle anderen Funktionen."},
+        {"b": "Meinungsbildungsfunktion", "kurz": "Medien bieten ein Forum für verschiedene Positionen und tragen so zur Meinungsbildung bei.",
+         "lang": "Medien stellen unterschiedliche Sichtweisen dar (z. B. in Kommentaren, Talkshows, Interviews) und helfen dir, dir eine <b>eigene Meinung</b> zu bilden. Wichtig ist die Trennung von <b>Nachricht und Kommentar</b>."},
+        {"b": "Kritik- und Kontrollfunktion", "kurz": "Medien decken Missstände auf und kontrollieren die Mächtigen.",
+         "lang": "Durch <b>investigativen Journalismus</b> decken Medien Fehlverhalten auf – etwa Korruption oder Machtmissbrauch – und zwingen Politik zum Handeln. Beispiel: Recherchen zu Masken-Geschäften von Abgeordneten in der Corona-Pandemie."},
+        {"b": "Agenda-Setting", "kurz": "Medien bestimmen durch ihre Auswahl mit, über welche Themen die Öffentlichkeit spricht.",
+         "lang": "Nach der <b>Agenda-Setting-These</b> sagen Medien uns nicht unbedingt, <i>was</i> wir denken sollen, aber <b>worüber</b> wir nachdenken. Themen, über die viel berichtet wird, halten Menschen für wichtiger. Heute setzen auch Parteien und Influencer über soziale Medien eigene Themen."},
+        {"b": "Gatekeeper", "kurz": "„Schleusenwärter“: Journalisten entscheiden, welche Informationen veröffentlicht werden.",
+         "lang": "Klassische Redaktionen sind <b>Gatekeeper</b>: Sie prüfen Informationen und wählen nach journalistischen Kriterien aus, was veröffentlicht wird. Im Internet können Politiker und Bürger diese Schleuse umgehen. Das ermöglicht mehr Vielfalt, aber auch die Verbreitung ungeprüfter Inhalte."},
+        {"b": "Framing", "kurz": "Einbettung eines Themas in einen Deutungsrahmen, der die Wahrnehmung lenkt.",
+         "lang": "Beim <b>Framing</b> wird ein Thema durch Wortwahl und Bilder in einen bestimmten Rahmen gesetzt. Beispiel: „Flüchtlingswelle“ (Bedrohung) vs. „Schutzsuchende“ (Hilfe). Der Rahmen beeinflusst, wie wir ein Problem bewerten und welche Lösungen wir für richtig halten."},
+        {"b": "Nachrichtenfaktoren", "kurz": "Merkmale, die ein Ereignis berichtenswert machen (z. B. Negativität, Prominenz, Nähe, Konflikt).",
+         "lang": "Nicht jedes Ereignis wird zur Nachricht. <b>Nachrichtenfaktoren</b> wie Negativität, Konflikt, Prominenz, Nähe, Überraschung oder Personalisierung erhöhen die Chance auf Berichterstattung. Folge: Komplexe, langsame Entwicklungen (z. B. Rentenpolitik) kommen oft zu kurz."},
+        {"b": "Öffentlich-rechtlicher Rundfunk", "kurz": "beitragsfinanzierte Sender (ARD, ZDF, Deutschlandradio) mit gesetzlichem Auftrag zur Grundversorgung.",
+         "lang": "Der <b>öffentlich-rechtliche Rundfunk</b> wird über den Rundfunkbeitrag finanziert und soll staatsfern und unabhängig von Werbekunden eine <b>umfassende, ausgewogene Grundversorgung</b> mit Information, Bildung und Kultur sichern. Zusammen mit privaten Sendern bildet er das <b>duale Rundfunksystem</b>. Debatten gibt es über Kosten, Reformen und Ausgewogenheit."},
+        {"b": "Pressefreiheit", "kurz": "Grundrecht aus Art. 5 Abs. 1 GG: Medien dürfen frei und ohne staatliche Zensur berichten.",
+         "lang": "Art. 5 Abs. 1 GG: „Die Pressefreiheit und die Freiheit der Berichterstattung durch Rundfunk und Film werden gewährleistet. Eine Zensur findet nicht statt.“ Grenzen ergeben sich aus allgemeinen Gesetzen, dem Jugendschutz und dem Recht der persönlichen Ehre (Art. 5 Abs. 2 GG)."},
+        {"b": "Filterblase", "kurz": "Situation, in der Algorithmen Nutzern vor allem Inhalte zeigen, die zu ihren bisherigen Vorlieben passen.",
+         "lang": "Der Begriff <b>Filterblase</b> stammt von Eli Pariser (2011). Plattformen personalisieren Inhalte nach deinem bisherigen Verhalten. So kann es passieren, dass du vor allem Meinungen siehst, die deine eigene bestätigen. Wie stark der Effekt in der Realität ist, ist in der Forschung <b>umstritten</b>."},
+        {"b": "Echokammer", "kurz": "Gruppe Gleichgesinnter, in der sich Meinungen gegenseitig verstärken und Gegenpositionen kaum vorkommen.",
+         "lang": "Eine <b>Echokammer</b> entsteht, wenn Menschen sich vor allem mit Gleichgesinnten austauschen (z. B. in Gruppen oder Kanälen). Die eigenen Ansichten „hallen“ zurück und werden verstärkt, abweichende Informationen werden abgewertet. Unterschied zur Filterblase: Die Auswahl erfolgt hier stärker durch die <b>Nutzer selbst</b>."},
+        {"b": "Algorithmus", "kurz": "automatisierte Rechenregel, mit der Plattformen auswählen und sortieren, welche Inhalte du siehst.",
+         "lang": "Ein <b>Algorithmus</b> entscheidet z. B. bei TikTok, Instagram oder YouTube, welche Beiträge in deinem Feed landen. Er ist meist auf <b>Verweildauer und Interaktion</b> optimiert, weil die Plattformen mit Werbung Geld verdienen. Emotionale, zugespitzte Inhalte werden dadurch oft bevorzugt."},
+        {"b": "Fake News", "kurz": "absichtlich falsche oder irreführende Nachrichten, die wie echte Nachrichten aussehen.",
+         "lang": "<b>Fake News</b> sind Falschmeldungen im Gewand echter Nachrichten. Sie verbreiten sich oft schneller als Richtigstellungen, weil sie überraschen und Emotionen auslösen. Achtung: Politiker benutzen den Begriff auch als <b>Kampfbegriff</b>, um unliebsame, aber korrekte Berichterstattung abzuwerten."},
+        {"b": "Desinformation", "kurz": "gezielte Verbreitung falscher oder manipulierter Informationen, um zu täuschen oder zu spalten.",
+         "lang": "<b>Desinformation</b> ist absichtlich (anders als <i>Misinformation</i> = unabsichtlich falsch). Staaten oder Gruppen nutzen sie, um Wahlen zu beeinflussen oder Misstrauen zu säen – z. B. die als „Doppelgänger“ bekannte russische Kampagne mit gefälschten Nachrichtenseiten. Sie ist ein Element <b>hybrider Kriegsführung</b> (vgl. Q3.1)."},
+        {"b": "Social Bots", "kurz": "automatisierte Konten in sozialen Netzwerken, die wie echte Menschen wirken und Inhalte verbreiten.",
+         "lang": "<b>Social Bots</b> sind Programme, die Accounts steuern, posten, liken und teilen. Sie können Themen künstlich groß wirken lassen („Trending“) und so eine Mehrheitsmeinung vortäuschen. Mit generativer KI werden sie schwerer zu erkennen."},
+        {"b": "Deepfake", "kurz": "mit KI erzeugtes, täuschend echtes Bild-, Video- oder Tonmaterial, das Personen Dinge sagen oder tun lässt, die nie passiert sind.",
+         "lang": "<b>Deepfakes</b> nutzen künstliche Intelligenz, um z. B. einen Politiker eine erfundene Rede halten zu lassen. Sie können vor Wahlen großen Schaden anrichten. Gegenmittel: Kennzeichnungspflichten (z. B. in der EU-KI-Verordnung), Faktenchecks und Medienkompetenz."},
+        {"b": "Digital Services Act", "kurz": "EU-Gesetz über digitale Dienste (seit 2024 voll anwendbar), das Plattformen zu Maßnahmen gegen illegale Inhalte und Risiken verpflichtet.",
+         "lang": "Der <b>Digital Services Act</b> (DSA, eine EU-Verordnung) verpflichtet Plattformen u. a., illegale Inhalte nach Meldung zu prüfen, Werbung und Empfehlungssysteme transparenter zu machen und – bei sehr großen Plattformen – <b>systemische Risiken</b> (z. B. für Wahlen) zu bewerten und zu verringern. Bei Verstößen drohen hohe Bußgelder."},
+        {"b": "Personalisierung", "kurz": "Politik wird stärker über Personen als über Inhalte und Programme vermittelt.",
+         "lang": "<b>Personalisierung</b> heißt: Medien und Parteien rücken Spitzenpersonen in den Vordergrund (Kanzlerkandidaten, TV-Duelle, Instagram-Auftritte). Inhalte treten zurück, Sympathie und Auftreten werden wichtiger. Im Erlass 2027 ist das Thema für den <b>Leistungskurs</b> Schwerpunkt."},
+        {"b": "Medienethik", "kurz": "Grundsätze für verantwortungsvollen Journalismus, z. B. im Pressekodex des Deutschen Presserats.",
+         "lang": "<b>Medienethik</b> fragt, was Journalisten dürfen und sollen. Der <b>Pressekodex</b> des Deutschen Presserats (freiwillige Selbstkontrolle) verlangt u. a. Wahrhaftigkeit, sorgfältige Recherche, Trennung von Werbung und Redaktion, Schutz der Persönlichkeit und keine Diskriminierung."},
+        {"b": "Aufmerksamkeitsökonomie", "kurz": "Aufmerksamkeit ist ein knappes Gut, um das Medien und Plattformen konkurrieren.",
+         "lang": "In der <b>Aufmerksamkeitsökonomie</b> verdienen Medien Geld mit Reichweite (Klicks, Verweildauer, Werbung). Das belohnt Zuspitzung, Skandalisierung und <b>Clickbait</b>. Medien sind also auch <b>Wirtschaftsunternehmen</b> – ein Spannungsfeld zu ihrer öffentlichen Aufgabe."},
+        {"b": "Fragmentierung der Öffentlichkeit", "kurz": "Zerfall der gemeinsamen Öffentlichkeit in viele kleine Teilöffentlichkeiten.",
+         "lang": "Früher sahen Millionen Menschen dieselbe Nachrichtensendung. Heute nutzen viele unterschiedliche Kanäle, Communities und Feeds. Die <b>gemeinsame Wissensbasis</b> für politische Debatten schrumpft – es wird schwieriger, sich auf Fakten zu einigen."},
+        {"b": "Medienkompetenz", "kurz": "Fähigkeit, Medien kritisch zu nutzen, Quellen zu prüfen und selbst verantwortungsvoll zu kommunizieren.",
+         "lang": "<b>Medienkompetenz</b> heißt z. B.: Quellen prüfen (Wer steckt dahinter? Seit wann? Belege?), Bilder rückwärts suchen, Faktenchecks nutzen, Werbung erkennen und vor dem Teilen nachdenken. Sie gilt als wichtigste langfristige Antwort auf Desinformation."},
+    ],
+    "inhalte": [
+        {"t": "text", "art": "Erklärung", "titel": "Worum geht es in Q1.4?",
+         "html": "<p>Demokratie braucht eine funktionierende Öffentlichkeit: Nur wer informiert ist, kann mitentscheiden. Diese Öffentlichkeit ist im Wandel: Neben Zeitungen und Fernsehen prägen heute TikTok, Instagram, YouTube und Messenger, wie (junge) Menschen Politik wahrnehmen.</p><p><b>Abitur 2027 (Erlass):</b> Im Grundkurs liegt der Schwerpunkt auf <b>Funktionen und Problemen klassischer Massenmedien</b> sowie <b>Chancen und Risiken neuer Kommunikationsformen im Internet (insbesondere Filterblasen, Fake News)</b>. Im Leistungskurs kommen <b>Medien als Wirtschaftsunternehmen</b>, die <b>Fragmentierung der Öffentlichkeit</b> sowie <b>Personalisierung und Medienethik</b> hinzu. Im Landesabitur 2026 (Vorschlag A) war genau dieses Thema am Beispiel TikTok gefragt.</p>"},
+        {"t": "table", "art": "Merke", "titel": "Funktionen der Massenmedien in der Demokratie",
+         "kopf": ["Funktion", "Bedeutung", "Problem in der Praxis"],
+         "zeilen": [
+             ["Information", "vollständig, sachlich, verständlich informieren", "Auswahl nach Nachrichtenfaktoren, Verkürzung, Zeitdruck"],
+             ["Meinungsbildung / Forum", "Vielfalt der Meinungen abbilden, Debatte ermöglichen", "Talkshow-Logik, Zuspitzung, wenige „Stammgäste“"],
+             ["Kritik und Kontrolle", "Missstände aufdecken, Macht kontrollieren („vierte Gewalt“)", "teure Recherche, wirtschaftlicher Druck auf Redaktionen"],
+             ["Artikulation", "Interessen und Probleme der Bürger sichtbar machen", "nicht alle Gruppen kommen gleich zu Wort"],
+             ["Bildung / Integration", "politische Bildung, gemeinsame Themen", "Fragmentierung des Publikums"],
+         ]},
+        {"t": "text", "art": "Gesetzestext", "titel": "Art. 5 GG – Meinungs- und Pressefreiheit",
+         "html": "<p>„(1) Jeder hat das Recht, seine Meinung in Wort, Schrift und Bild frei zu äußern und zu verbreiten und sich aus allgemein zugänglichen Quellen ungehindert zu unterrichten. Die Pressefreiheit und die Freiheit der Berichterstattung durch Rundfunk und Film werden gewährleistet. Eine Zensur findet nicht statt.</p><p>(2) Diese Rechte finden ihre Schranken in den Vorschriften der allgemeinen Gesetze, den gesetzlichen Bestimmungen zum Schutze der Jugend und in dem Recht der persönlichen Ehre.“</p>",
+         "quelle": "Grundgesetz, Art. 5 Abs. 1 und 2 (Wortlaut)."},
+        {"t": "svg", "art": "Schaubild", "titel": "Filterblase: Wie Personalisierung wirkt", "svg": SVG_FILTER,
+         "caption": "Das Modell zeigt den möglichen Verstärkungskreislauf. In Prüfungen solltest du auch die Gegenposition kennen: Studien finden oft schwächere Effekte als befürchtet."},
+        {"t": "text", "art": "Fachtext", "titel": "Neue Kommunikationsformen: Chancen und Risiken",
+         "html": "<p>Mit dem Internet hat sich die Struktur der Öffentlichkeit grundlegend verändert. Während klassische Massenmedien als Einbahnstraße funktionierten, in der wenige Redaktionen für ein großes Publikum auswählten, kann in sozialen Netzwerken prinzipiell jede und jeder senden. Das <b>Gatekeeping</b> durch Journalistinnen und Journalisten wird umgangen; an seine Stelle treten Algorithmen, die Inhalte nach erwartbarer Aufmerksamkeit sortieren.</p><p>Darin liegen <b>Chancen</b>: Die Zugangshürden zur Öffentlichkeit sinken, Bürgerinnen und Bürger können sich ohne Kosten informieren, Kritik äußern und sich vernetzen. Marginalisierte Gruppen und neue Themen finden leichter Gehör, Protestbewegungen können sich schnell organisieren. Politikerinnen und Politiker können junge Zielgruppen direkt ansprechen, die klassische Medien kaum noch erreichen.</p><p>Die <b>Risiken</b> sind ebenso deutlich. Weil Plattformen auf Verweildauer optimiert sind, haben emotionale, zugespitzte und polarisierende Inhalte einen Vorteil. Falschinformationen verbreiten sich oft schneller als Richtigstellungen. Personalisierte Feeds können zu <b>Filterblasen</b> und <b>Echokammern</b> beitragen, in denen abweichende Informationen kaum noch ankommen. Staatliche Akteure wie Russland betreiben gezielte Desinformationskampagnen, und mit generativer KI lassen sich täuschend echte <b>Deepfakes</b> und Bot-Netzwerke mit geringem Aufwand erzeugen. Hinzu kommen Hassrede und Einschüchterung, die Menschen aus der Debatte verdrängen können.</p><p>Die Forschung warnt allerdings vor einfachen Schlüssen: Viele Nutzerinnen und Nutzer kombinieren verschiedene Quellen und sehen in sozialen Medien durchaus auch fremde Positionen. Die Gefahr liegt weniger in einer vollständigen Abschottung als in einer schleichenden <b>Polarisierung</b> und im Vertrauensverlust gegenüber gemeinsamen Faktengrundlagen.</p>",
+         "quelle": "Selbst verfasster Fachtext (Feibitur)."},
+        {"t": "text", "art": "Erklärung", "titel": "Was hilft gegen Desinformation? Regulierungsansätze im Überblick",
+         "html": "<table><thead><tr><th>Ansatz</th><th>Beispiel</th><th>Chance</th><th>Kritik</th></tr></thead><tbody><tr><td><b>staatliche/EU-Regulierung</b></td><td>Digital Services Act (EU), Kennzeichnungspflichten der KI-Verordnung</td><td>Plattformen werden verpflichtet, Bußgelder</td><td>Gefahr von Overblocking, Abgrenzung legal/illegal, Durchsetzung gegenüber US-Konzernen</td></tr><tr><td><b>Selbstregulierung</b></td><td>Community-Regeln, Faktencheck-Partnerschaften</td><td>schnell, flexibel</td><td>Plattformen entscheiden nach Geschäftsinteresse; Faktenchecks wurden teils zurückgefahren</td></tr><tr><td><b>Zivilgesellschaft und Journalismus</b></td><td>Faktencheck-Redaktionen, Recherchenetzwerke</td><td>unabhängig, glaubwürdig</td><td>erreicht oft nicht die Betroffenen</td></tr><tr><td><b>Bildung</b></td><td>Medienkompetenz in Schule, Prebunking</td><td>langfristig, stärkt Mündigkeit</td><td>wirkt langsam</td></tr></tbody></table>"},
+        {"t": "text", "art": "Beispiel", "titel": "Quellencheck in 5 Schritten",
+         "html": "<ol><li><b>Wer?</b> Wer hat das veröffentlicht? Gibt es ein Impressum, eine Redaktion?</li><li><b>Was?</b> Werden Belege, Zahlen, Quellen genannt? Stimmen sie?</li><li><b>Wann?</b> Ist die Nachricht aktuell oder ein altes, neu verbreitetes Bild?</li><li><b>Wer noch?</b> Berichten seriöse Medien ebenfalls darüber? Gibt es einen Faktencheck?</li><li><b>Warum?</b> Welche Emotion soll ausgelöst werden? Wem nützt die Verbreitung?</li></ol>"},
+        {"t": "text", "art": "Erklärung", "titel": "Medien als Wirtschaftsunternehmen", "lk": True,
+         "html": "<p>Medien haben eine <b>öffentliche Aufgabe</b>, sind aber meist auch <b>private Unternehmen</b>, die Gewinn erzielen müssen. Daraus ergeben sich Spannungen:</p><ul><li><b>Finanzierung:</b> Werbung und Verkauf/Abos. Werbegelder fließen zunehmend zu großen Digitalplattformen; Auflagen von Tageszeitungen sinken seit Jahren. Folge: Stellenabbau, Zusammenlegung von Redaktionen, Lokaljournalismus schwindet („News Deserts“).</li><li><b>Aufmerksamkeitsökonomie:</b> Klicks und Verweildauer zählen – das belohnt Boulevardisierung, Personalisierung und Clickbait.</li><li><b>Medienkonzentration:</b> Wenige große Konzerne prägen Teile des Marktes; Meinungsvielfalt kann leiden. Die Medienkonzentration wird durch die Kommission zur Ermittlung der Konzentration im Medienbereich (KEK) geprüft.</li><li><b>Plattformökonomie:</b> Google, Meta, TikTok sind keine Redaktionen, bestimmen aber über Algorithmen die Reichweite journalistischer Inhalte.</li></ul><p><b>Gegenmodelle:</b> beitragsfinanzierter öffentlich-rechtlicher Rundfunk, stiftungs- oder genossenschaftlich finanzierter Journalismus, Paywalls und Abos.</p>"},
+        {"t": "text", "art": "Erklärung", "titel": "Personalisierung, Mediendemokratie und Medienethik", "lk": True,
+         "html": "<p>Politik richtet sich zunehmend nach den Regeln der Medien (<b>Mediatisierung</b>): Ereignisse werden für Kameras inszeniert, Botschaften auf kurze Clips zugeschnitten, Spitzenpersonen stehen im Mittelpunkt (<b>Personalisierung</b>). Bei Bundestagswahlen gibt es TV-Duelle, obwohl formal Parteien und nicht Kanzlerkandidaten gewählt werden.</p><p><b>Folgen:</b> Inhalte und komplexe Abwägungen treten zurück; Privates wird politisch relevant; Skandalisierung kann Karrieren beenden. Andererseits machen Personen Politik anschaulich und Verantwortung zurechenbar.</p><p><b>Medienethik:</b> Der Pressekodex verlangt u. a. Wahrhaftigkeit und Achtung der Menschenwürde (Ziffer 1), Sorgfalt (Ziffer 2), Trennung von Werbung und Redaktion (Ziffer 7) und den Schutz der Persönlichkeit (Ziffer 8). Der Presserat kann Rügen aussprechen. Für Influencer gelten diese Regeln nicht automatisch – eine Regulierungslücke.</p>"},
+    ],
+    "aufgaben": [
+        {
+            "id": "q1-4-a1",
+            "titel": "Wahlkampf im Zeitalter von KI und Algorithmen",
+            "kurs": "Grundkurs (auch für LK geeignet)",
+            "bezug": "Q1.4, insbesondere Funktionen und Probleme klassischer Massenmedien; Chancen und Risiken neuer politischer Kommunikationsformen im Internet (insbesondere Filterblasen, Fake News).",
+            "standards": "Analysekompetenz: Analysefragen unter Verwendung von Fachkategorien strukturiert bearbeiten; grundlegenden Problemgehalt differenziert beschreiben. Urteilskompetenz: mögliche Folgen unterschiedlicher Lösungsansätze abschätzen; sich für eine Lösungsperspektive entscheiden.",
+            "aufgaben": [
+                {"nr": 1, "operator": "zusammenfassen", "afb": "I", "be": 20, "text": "Fassen Sie die Aussagen des Textes zusammen. (Material)"},
+                {"nr": 2, "operator": "erklären", "afb": "II", "be": 25, "text": "Erklären Sie, wie Filterblasen und Echokammern entstehen können."},
+                {"nr": 3, "operator": "vergleichen", "afb": "II", "be": 25, "text": "Vergleichen Sie klassische Massenmedien und soziale Netzwerke hinsichtlich ihrer Funktionen für die politische Öffentlichkeit."},
+                {"nr": 4, "operator": "diskutieren", "afb": "III", "be": 30, "text": "Die Autorin fordert eine Pflicht für Plattformen, politische Inhalte vor Wahlen vorab zu prüfen. Diskutieren Sie diese Forderung."},
+            ],
+            "material": [
+                {"titel": "Material: Gastbeitrag „Die Wahl entscheidet sich im Feed“ (2026)",
+                 "absaetze": [
+                     "Drei Tage vor einer Landtagswahl taucht ein Video auf: Die Spitzenkandidatin einer Regierungspartei sagt darin, sie werde nach der Wahl die Pendlerpauschale abschaffen. Das Video wird binnen Stunden hunderttausendfach geteilt. Erst am nächsten Tag stellt sich heraus, dass es mit künstlicher Intelligenz erzeugt wurde. Die Richtigstellung erreicht nur einen Bruchteil derer, die das Original gesehen haben.",
+                     "Dieses Szenario ist erfunden – aber es ist nicht unrealistisch. Mit wenigen Klicks lassen sich heute Stimmen und Gesichter täuschend echt nachahmen. Und die Plattformen, auf denen sich vor allem junge Menschen informieren, sind auf genau solche Inhalte geeicht: Was überrascht, empört oder Angst macht, wird häufiger geteilt, länger angesehen und vom Algorithmus weiter nach oben gespült.",
+                     "Hinzu kommt, dass viele Nutzerinnen und Nutzer gar nicht mehr merken, wie sehr ihr Feed auf sie zugeschnitten ist. Wer sich einmal für ein Thema interessiert hat, bekommt mehr davon – und immer seltener die Gegenposition. In geschlossenen Gruppen und Kanälen bestätigen sich Gleichgesinnte gegenseitig. Die gemeinsame Faktengrundlage, ohne die eine demokratische Debatte nicht funktioniert, wird brüchig.",
+                     "Die klassischen Medien können das nur begrenzt auffangen. Zwar prüfen Redaktionen ihre Informationen und trennen Nachricht und Meinung. Doch ihre Reichweite bei jungen Menschen sinkt, und viele Lokalzeitungen haben in den vergangenen Jahren Redaktionen geschlossen. Gleichzeitig sparen manche Plattformen an Moderation und Faktenchecks.",
+                     "Der Digital Services Act der EU verpflichtet große Plattformen zwar bereits, Risiken für Wahlen zu bewerten und zu verringern. Doch das reicht nicht. Ich fordere: In den vier Wochen vor einer Wahl müssen Plattformen politische Inhalte mit großer Reichweite vor ihrer weiteren Verbreitung prüfen – auf Fälschungen, auf KI-Manipulation, auf offensichtliche Falschbehauptungen. Wer das nicht leistet, muss empfindliche Strafen zahlen.",
+                     "Kritiker werden einwenden, das sei Zensur. Aber Meinungsfreiheit bedeutet nicht, dass gefälschte Videos ungehindert Millionen Menschen erreichen dürfen. Eine Demokratie, die ihre Wahlen nicht vor Manipulation schützt, setzt ihr Fundament aufs Spiel.",
+                 ],
+                 "quelle": "Übungsmaterial: eigens für Feibitur verfasster Gastbeitrag einer fiktiven Medienwissenschaftlerin (2026). Das Eingangsszenario ist ausdrücklich erfunden."},
+            ],
+            "loesung": [
+                {"vorbemerkung": "Einleitung: Gastbeitrag einer (fiktiven) Medienwissenschaftlerin, „Die Wahl entscheidet sich im Feed“, 2026; Thema: Gefährdung von Wahlen durch KI-Fälschungen und Algorithmen, Forderung nach Vorabprüfung.",
+                 "punkte": [
+                     "Fiktives Szenario eines Deepfake-Videos kurz vor einer Wahl, schnelle Verbreitung, Richtigstellung erreicht wenige [1].",
+                     "Szenario sei realistisch: einfache KI-Fälschung; Plattformen belohnen Überraschung, Empörung und Angst [2].",
+                     "Personalisierte Feeds und geschlossene Gruppen führen zu Bestätigung eigener Meinungen; gemeinsame Faktengrundlage werde brüchig [3].",
+                     "Klassische Medien prüfen und trennen Nachricht und Meinung, verlieren aber Reichweite; Lokalredaktionen schließen; Plattformen sparen an Moderation [4].",
+                     "DSA verpflichtet zur Risikobewertung, reiche aber nicht; Forderung: Vorabprüfung reichweitenstarker politischer Inhalte vier Wochen vor Wahlen, Strafen [5].",
+                     "Zensur-Einwand wird zurückgewiesen; Schutz der Wahlen als Fundament der Demokratie [6].",
+                 ],
+                 "hinweis": "Zusammenfassen: strukturiert, komprimiert, indirekte Rede, Fachsprache, keine Wertung."},
+                {"punkte": [
+                    "Filterblase (Eli Pariser): algorithmische Personalisierung auf Basis von Interaktionsdaten (Likes, Verweildauer, Suchverlauf); Plattformen optimieren auf Aufmerksamkeit, um Werbeeinnahmen zu steigern.",
+                    "Verstärkungskreislauf: Interaktion → Profil → angepasster Feed → Bestätigung → weitere Interaktion; Gegenpositionen werden seltener angezeigt.",
+                    "Echokammer: Selbstselektion der Nutzer in Gruppen Gleichgesinnter, gegenseitige Bestätigung (Confirmation Bias, Gruppendruck); abweichende Informationen werden abgewertet.",
+                    "Rolle von Emotionalisierung, Social Bots und Desinformation als Verstärker.",
+                    "Differenzierung: Effektstärke empirisch umstritten; Mehrquellennutzung relativiert die Gefahr.",
+                    "Bezüge zum Material [2], [3].",
+                ],
+                 "hinweis": "Erklären: Rückführung auf Funktionsweisen (Geschäftsmodell, Algorithmus, psychologische Mechanismen)."},
+                {"punkte": [
+                    "Vergleichskriterien benennen (z. B. Information, Meinungsbildung/Forum, Kritik und Kontrolle, Gatekeeping/Qualitätssicherung, Zugang/Partizipation, Reichweite bei Jugendlichen, Geschäftsmodell).",
+                    "Klassische Massenmedien: redaktionelle Prüfung, Trennung von Nachricht und Kommentar, Pressekodex, investigativer Journalismus („vierte Gewalt“), aber Einbahnstraße, Auswahl nach Nachrichtenfaktoren, sinkende Reichweite/ökonomischer Druck.",
+                    "Soziale Netzwerke: niedrige Zugangshürden, Interaktivität, Partizipation, schnelle Mobilisierung, direkte Kommunikation von Politikern; aber algorithmische statt redaktioneller Auswahl, Desinformation, Hassrede, Fragmentierung.",
+                    "Gemeinsamkeiten (z. B. beide leisten Agenda-Setting, beide sind wirtschaftlich orientiert) und Unterschiede begründet darlegen; Fazit des Vergleichs.",
+                ],
+                 "hinweis": "Vergleichen: kriteriengeleitet Gemeinsamkeiten UND Unterschiede; ein bloßes Nacheinander beider Seiten ohne Gegenüberstellung genügt nicht für 'gut'."},
+                {"punkte": [
+                    "Pro: Schutz der Integrität von Wahlen und der Chancengleichheit der Parteien; Deepfakes sind schwer rechtzeitig zu widerlegen; Plattformen tragen Verantwortung für ihre Algorithmen; Ergänzung des DSA; abschreckende Wirkung von Strafen.",
+                    "Contra: Gefahr der Vorzensur (Art. 5 Abs. 1 Satz 3 GG: „Eine Zensur findet nicht statt“ – wenn auch primär gegen den Staat gerichtet), Overblocking (Plattformen löschen im Zweifel zu viel), schwierige Abgrenzung von Satire, Meinung und Falschbehauptung; private Konzerne entscheiden über politische Inhalte; technische und personelle Machbarkeit; Verlagerung auf andere Kanäle (Messenger); Gefahr des Missbrauchs durch Regierungen; DSA-Pflichten bereits vorhanden.",
+                    "Alternativen: Kennzeichnungspflicht für KI-Inhalte, schnelle Faktenchecks, Transparenz der Algorithmen, Medienkompetenz, Stärkung von Qualitätsjournalismus.",
+                    "Begründete Bewertung am Ende (Abwägung Freiheit vs. Schutz der demokratischen Willensbildung).",
+                ],
+                 "hinweis": "Diskutieren: Argumentation mit Pro und Contra, die zu einer begründeten Bewertung führt; Bezug auf die konkrete Forderung [5] notwendig."},
+            ],
+            "bewertung": {
+                "ausreichend": ["die Aussagen des Textes im Ansatz korrekt zusammengefasst werden,",
+                                "die Entstehung von Filterblasen und Echokammern ansatzweise erklärt wird,",
+                                "klassische Medien und soziale Netzwerke ansatzweise kriteriengeleitet verglichen werden,",
+                                "die Diskussion ansatzweise strukturiert ist und in eine ansatzweise nachvollziehbare, begründete Bewertung mündet."],
+                "gut": ["die Aussagen des Textes weitgehend korrekt, strukturiert und in eigenen Worten zusammengefasst werden,",
+                        "die Entstehung von Filterblasen und Echokammern differenziert und auf Funktionsmechanismen zurückgeführt erklärt wird,",
+                        "der Vergleich kriteriengeleitet, differenziert und mit Gemeinsamkeiten und Unterschieden erfolgt,",
+                        "die Diskussion strukturiert und weitgehend kohärent ist und in eine weitgehend klare und schlüssig begründete Bewertung mündet."],
+            },
+        },
+    ],
+}
