@@ -60,6 +60,7 @@
 
   // ---------------------------------------------------------------- Router
   function route() {
+    if (!SITE) return; // Daten noch nicht geladen – start() ruft route() danach auf
     var h = (location.hash || "#/").replace(/^#\/?/, "").split("/").filter(Boolean);
     if (h[0] === "powi") return renderPowi(h[1] || "grundlagen", h[2] || null, h[3] || "begriffe");
     if (h[0] === "religion") return renderReligion();
