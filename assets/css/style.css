@@ -885,3 +885,52 @@ body.no-scroll { overflow: hidden; }
   .m-sheet, .m-pile i, .m-score.bump, .m-streak, .m-card.miss .m-inner, .m-learn.in, .m-zoom, .m-zoom-card, .m-end-layer, .m-step-block { animation: none; }
   .m-card.hit { transform: rotate(var(--rot)); }
 }
+
+/* ================================================================== Podcast-Radio (Röhrenradio der 1950er) */
+.radio { --p: 0; --brass: #c9a24a; max-width: 620px; margin: 0 auto 1.6rem; }
+.radio-cab { position: relative; padding: 16px 20px 18px; border-radius: 36px 36px 14px 14px; isolation: isolate;
+  background: linear-gradient(180deg, rgba(255, 230, 190, .16), rgba(0, 0, 0, .22)), url("../img/holztisch.webp") 30% 40% / 560px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .22), inset 0 -8px 14px rgba(0, 0, 0, .45), 0 2px 0 #2b1709, 0 22px 30px -16px rgba(20, 22, 24, .7); }
+.radio-cab::before { content: ""; position: absolute; inset: 7px; border: 2px solid var(--brass); border-radius: 30px 30px 9px 9px; opacity: .55; pointer-events: none; z-index: -1; }
+.radio-cab::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -9px; height: 9px; border-radius: 0 0 6px 6px;
+  background: linear-gradient(90deg, #24130a 0 12%, transparent 12% 88%, #24130a 88%); }
+.radio-eye { display: block; width: 30px; height: 30px; margin: 0 auto 10px; border-radius: 50%; border: 3px solid var(--brass);
+  background: radial-gradient(circle, #0b130c 0 24%, #17301c 25% 62%, #08100a 63%); box-shadow: inset 0 2px 4px rgba(0, 0, 0, .7); transition: background-color 300ms ease; }
+.radio.on .radio-eye { background: radial-gradient(circle, #0b130c 0 22%, transparent 23%), conic-gradient(from 210deg, #b6ffc8, #3be37a 35deg, #0f3b1d 65deg 295deg, #3be37a 325deg, #b6ffc8); }
+.radio-dial { position: relative; display: block; height: 78px; border-radius: 10px; border: 3px solid var(--brass); cursor: pointer; overflow: hidden;
+  background: linear-gradient(180deg, #efe3c1, #ddc995); box-shadow: inset 0 3px 8px rgba(0, 0, 0, .35); transition: background-color 300ms ease; }
+.radio.on .radio-dial { background: linear-gradient(180deg, #fff4cf, #f3d68a); box-shadow: inset 0 3px 8px rgba(0, 0, 0, .25), inset 0 0 26px rgba(255, 186, 70, .55); }
+.radio-dial:focus-visible { outline: 3px solid var(--q4); outline-offset: 3px; }
+.radio-scale { position: absolute; left: 6%; right: 6%; top: 12px; height: 16px;
+  background: linear-gradient(#3b2a12, #3b2a12) 0 100% / 100% 2px no-repeat, repeating-linear-gradient(90deg, #3b2a12 0 1.5px, transparent 1.5px var(--tick)); }
+.radio-labels { position: absolute; left: 6%; right: 6%; top: 31px; height: 16px; font: 700 .72rem/1 var(--ui); color: #3b2a12; font-variant-numeric: tabular-nums; }
+.radio-labels span { position: absolute; transform: translateX(-50%); }
+.radio-labels i { position: absolute; right: -4%; font-style: normal; font-weight: 600; opacity: .8; }
+.radio-needle { position: absolute; top: 5px; bottom: 5px; left: calc(6% + var(--p) * 88%); width: 3px; margin-left: -1.5px; border-radius: 2px; background: #b3261e;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .12); transition: left 450ms linear; }
+.radio-brand { position: absolute; left: 0; right: 0; bottom: 7px; text-align: center; font: 800 .66rem/1 var(--ui); font-stretch: 80%; letter-spacing: .22em; text-transform: uppercase; color: #6b4c1c; }
+.radio-grille { display: flex; align-items: center; justify-content: center; height: 96px; margin-top: 12px; border-radius: 8px; border: 3px solid var(--brass);
+  background: var(--grain), repeating-linear-gradient(45deg, rgba(90, 60, 20, .16) 0 2px, transparent 2px 5px), repeating-linear-gradient(-45deg, rgba(90, 60, 20, .16) 0 2px, transparent 2px 5px), linear-gradient(#dccaa0, #c6af80);
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, .3); }
+.radio-badge { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; color: #3b2510;
+  background: radial-gradient(circle at 35% 30%, #f7df93, #b98a2f); box-shadow: 0 2px 4px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .6);
+  font: 850 1.6rem/1 var(--ui); font-stretch: var(--poster-stretch); }
+.radio-keys { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.radio-key { display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: 54px; border: 0; border-radius: 6px 6px 11px 11px; cursor: pointer;
+  background: linear-gradient(180deg, #fffaf0, #eee2c8); color: #3b2a12; font: 800 1rem/1 var(--ui); letter-spacing: .08em; text-transform: uppercase;
+  box-shadow: 0 6px 0 #b6a27a, 0 9px 12px rgba(0, 0, 0, .45); transition: transform 120ms var(--ease-out), box-shadow 120ms var(--ease-out); }
+.radio-key svg { width: 20px; height: 20px; }
+.radio-key[aria-pressed="true"] { transform: translateY(5px); background: linear-gradient(180deg, #ece0c5, #ddcda8); box-shadow: 0 1px 0 #b6a27a, 0 3px 5px rgba(0, 0, 0, .45); }
+.radio-key:focus-visible { outline: 3px solid var(--q4); outline-offset: 3px; }
+.radio-plate { margin: 16px auto 0; padding: .45rem .8rem; border-radius: 4px; text-align: center; color: #2a1a08; font: 600 .9rem/1.35 var(--ui);
+  background: linear-gradient(#ecd48c, #c49b44); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 1px 2px rgba(0, 0, 0, .4); }
+.radio-time { display: inline-block; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.radio-note { margin: 1.1rem 0 0; text-align: center; font-size: .84rem; color: var(--g5); }
+@media (max-width: 560px) {
+  .radio-cab { padding: 14px 14px 16px; border-radius: 28px 28px 12px 12px; }
+  .radio-dial { height: 70px; }
+  .radio-grille { height: 70px; }
+  .radio-key { min-height: 50px; font-size: .9rem; }
+  .radio-plate { font-size: .84rem; }
+}
+@media (prefers-reduced-motion: reduce) { .radio-needle, .radio-key, .radio-eye, .radio-dial { transition: none; } }
