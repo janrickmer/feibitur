@@ -202,11 +202,11 @@
     }).join("");
     var sel = $(".tab[aria-selected=true]", tabsEl);
     if (sel && tabsEl.scrollWidth > tabsEl.clientWidth) tabsEl.scrollLeft = Math.max(0, sel.offsetLeft - 16);
+    $all(".tab", tabsEl).forEach(function (b) { b.addEventListener("click", function () { go("powi/" + b.getAttribute("data-tab")); }); });
     if (tab.id === "tools") return renderToolsTab(tab, topicId);
     var valid = topicId && TOPIC_META[topicId];
     if (valid) store("zuletzt", { tab: tab.id, topic: topicId, sec: TOPIC_META[topicId].methode ? "inhalte" : section });
     var z = store("zuletzt") || {};
-    $all(".tab", tabsEl).forEach(function (b) { b.addEventListener("click", function () { go("powi/" + b.getAttribute("data-tab")); }); });
 
     var panel = $("#tabpanel");
     var side = '<aside class="sidebar"><h2>Unterthemen</h2>' + tab.themen.map(function (t) {
