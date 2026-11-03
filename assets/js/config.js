@@ -4,5 +4,5 @@
  * Beispiel: "https://feibitur-chat.DEINNAME.workers.dev"
  */
 window.FEIBITUR_CONFIG = {
-  chatEndpoint: ""
+  chatEndpoint: "https://feibitur-chat.feindt.workers.dev"
 };
