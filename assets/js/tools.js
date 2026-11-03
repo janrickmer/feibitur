@@ -62,27 +62,27 @@
 
   // ------------------------------------------------------------------ Übersicht
   var TOOLS = [
-    { slug: "lernplan", g: "Planen und Überblick behalten", t: "Abi-Countdown und Lernplan", d: "Tage bis zur Prüfung und ein Wochenplan, der die Schwerpunkte des Abiturerlasses zuerst abdeckt – mit Kalender-Export." },
-    { slug: "fortschritt", g: "Planen und Überblick behalten", t: "Fortschritts-Dashboard", d: "Ampel je Unterthema: Karteikarten, bearbeitete Aufgaben und Selbsteinschätzung auf einen Blick." },
-    { slug: "kannlisten", g: "Planen und Überblick behalten", t: "„Ich kann …“-Checklisten", d: "Kann-Sätze aus Kerncurriculum und Abiturerlass – schätze dich mit Rot, Gelb oder Grün ein." },
-    { slug: "operatoren", g: "Üben mit sofortiger Rückmeldung", t: "Operatoren-Trainer", d: "Definitionen erkennen, Aufgaben verstehen und prüfen, ob eine Antwort den Operator erfüllt." },
-    { slug: "schnelltest", g: "Üben mit sofortiger Rückmeldung", t: "Schnelltests", d: "10 Fragen je Unterthema mit Erklärung – falsche Begriffe wandern in deine Lernkartei." },
-    { slug: "wiederholung", g: "Üben mit sofortiger Rückmeldung", t: "Tägliche Wiederholung (Lernkartei)", d: "Lernkartei mit 5 Fächern über alle Themen: Was heute fällig ist, kommt dran." },
-    { slug: "simulation", g: "Abiturnah trainieren", t: "Abi-Simulation", d: "Drei komplette Vorschläge, einen auswählen, mit Timer schreiben – Korrekturdatei für den ganzen Vorschlag." },
-    { slug: "baukasten", g: "Abiturnah trainieren", t: "Formulierungs-Baukasten", d: "Einleitungssatz-Generator und Satzbausteine für Analyse, Urteil und Fazit." },
-    { slug: "beispiele", g: "Abiturnah trainieren", t: "Schwach vs. stark", d: "Musterantworten je Operator: Was macht den Unterschied zwischen einer schwachen und einer starken Lösung?" },
-    { slug: "begriffsnetz", g: "Vernetzen und Wiederholen", t: "Begriffsnetz", d: "Sieh, wie Fachbegriffe über alle Halbjahre zusammenhängen – ideal für Querverbindungen im Abitur." },
-    { slug: "lernzettel", g: "Vernetzen und Wiederholen", t: "Lernzettel und Karteikarten drucken", d: "Ein Lernzettel je Unterthema und Karteikarten zum Ausschneiden – als Ausdruck oder PDF." },
-    { slug: "vorlesen", g: "Vernetzen und Wiederholen", t: "Vorlesen", d: "Lass dir Inhalte von der Sprachausgabe deines Geräts vorlesen – Einstellungen für Stimme und Tempo." },
+    { slug: "lernplan", k: "Lernplan", g: "Planen und Überblick behalten", t: "Abi-Countdown und Lernplan", d: "Tage bis zur Prüfung und ein Wochenplan, der die Schwerpunkte des Abiturerlasses zuerst abdeckt – mit Kalender-Export." },
+    { slug: "fortschritt", k: "Fortschritt", g: "Planen und Überblick behalten", t: "Fortschritts-Dashboard", d: "Ampel je Unterthema: Karteikarten, bearbeitete Aufgaben und Selbsteinschätzung auf einen Blick." },
+    { slug: "kannlisten", k: "Kann-Listen", g: "Planen und Überblick behalten", t: "„Ich kann …“-Checklisten", d: "Kann-Sätze aus Kerncurriculum und Abiturerlass – schätze dich mit Rot, Gelb oder Grün ein." },
+    { slug: "operatoren", k: "Operatoren", g: "Üben mit sofortiger Rückmeldung", t: "Operatoren-Trainer", d: "Definitionen erkennen, Aufgaben verstehen und prüfen, ob eine Antwort den Operator erfüllt." },
+    { slug: "schnelltest", k: "Schnelltest", g: "Üben mit sofortiger Rückmeldung", t: "Schnelltests", d: "10 Fragen je Unterthema mit Erklärung – falsche Begriffe wandern in deine Lernkartei." },
+    { slug: "wiederholung", k: "Wiederholung", g: "Üben mit sofortiger Rückmeldung", t: "Tägliche Wiederholung (Lernkartei)", d: "Lernkartei mit 5 Fächern über alle Themen: Was heute fällig ist, kommt dran." },
+    { slug: "simulation", k: "Abi-Simulation", g: "Abiturnah trainieren", t: "Abi-Simulation", d: "Drei komplette Vorschläge, einen auswählen, mit Timer schreiben – Korrekturdatei für den ganzen Vorschlag." },
+    { slug: "baukasten", k: "Baukasten", g: "Abiturnah trainieren", t: "Formulierungs-Baukasten", d: "Einleitungssatz-Generator und Satzbausteine für Analyse, Urteil und Fazit." },
+    { slug: "beispiele", k: "Schwach vs. stark", g: "Abiturnah trainieren", t: "Schwach vs. stark", d: "Musterantworten je Operator: Was macht den Unterschied zwischen einer schwachen und einer starken Lösung?" },
+    { slug: "begriffsnetz", k: "Begriffsnetz", g: "Vernetzen und Wiederholen", t: "Begriffsnetz", d: "Sieh, wie Fachbegriffe über alle Halbjahre zusammenhängen – ideal für Querverbindungen im Abitur." },
+    { slug: "lernzettel", k: "Lernzettel", g: "Vernetzen und Wiederholen", t: "Lernzettel und Karteikarten drucken", d: "Ein Lernzettel je Unterthema und Karteikarten zum Ausschneiden – als Ausdruck oder PDF." },
+    { slug: "vorlesen", k: "Vorlesen", g: "Vernetzen und Wiederholen", t: "Vorlesen", d: "Lass dir Inhalte von der Sprachausgabe deines Geräts vorlesen – Einstellungen für Stimme und Tempo." },
   ];
 
   function shell(title, sub, inner, slug) {
     document.title = title + " – Feibitur";
-    F.app.innerHTML = F.topbar((slug ? '<a class="btn btn-small btn-tools" href="#/lerntools" aria-label="Alle Lerntools">' + I.tools + "<span>Alle Lerntools</span></a>" : "") + '<a class="btn btn-small" href="#/powi">Politik und Wirtschaft</a>') +
-      '<section class="tools-hero"><div class="tools-hero-in"><h1>' + esc(title) + "</h1>" + (sub ? "<p>" + sub + "</p>" : "") + "</div></section>" +
-      '<main class="tools-main" id="tools-main">' + inner + "</main>" + F.footer();
-    window.scrollTo(0, 0);
-    return $("#tools-main");
+    var host = document.getElementById("tool-host");
+    if (!host) { F.go("powi/tools/" + (slug || "")); return document.createElement("div"); }
+    host.innerHTML = '<article class="tool-panel"><header class="tool-head"><h2>' + esc(title) + "</h2>" + (sub ? "<p>" + sub + "</p>" : "") + "</header>" +
+      '<div class="tools-main" id="tools-main">' + inner + "</div></article>";
+    return $("#tools-main", host);
   }
 
   function overview() {
@@ -90,10 +90,10 @@
     TOOLS.forEach(function (t) { if (groups.indexOf(t.g) < 0) groups.push(t.g); });
     var html = groups.map(function (g) {
       return '<section class="tool-group"><h2>' + esc(g) + '</h2><div class="tool-grid">' + TOOLS.filter(function (t) { return t.g === g; }).map(function (t) {
-        return '<a class="tool-card" href="#/lerntools/' + t.slug + '"><span class="tool-title">' + esc(t.t) + '</span><span class="tool-desc">' + esc(t.d) + "</span>" + I.arrow + "</a>";
+        return '<a class="tool-card" href="#/powi/tools/' + t.slug + '"><span class="tool-title">' + esc(t.t) + '</span><span class="tool-desc">' + esc(t.d) + "</span>" + I.arrow + "</a>";
       }).join("") + "</div></section>";
     }).join("");
-    shell("Lerntools", "Werkzeuge für dein Selbstlernen in Politik und Wirtschaft. Alles läuft in deinem Browser – dein Lernstand wird nur auf deinem Gerät gespeichert.", html);
+    shell("Vorbereitungs-Tools", "Werkzeuge für dein Selbstlernen in Politik und Wirtschaft. Alles läuft in deinem Browser – dein Lernstand wird nur auf deinem Gerät gespeichert. Sichere ihn regelmäßig über „Aktuellen Leistungsstand laden / speichern“.", html);
   }
 
   // ------------------------------------------------------------------ 1. Lernplan
@@ -122,7 +122,7 @@
     else if (lern <= 0) html += '<p class="placeholder">Bis zur Prüfung bleibt nur noch die Wiederholungsphase. Konzentriere dich auf die tägliche Wiederholung und die Abi-Simulation.</p>';
     html += '<p class="muted">Wochenplan mit ' + ms.length + " Unterthemen" + (alle ? "" : " (nur Erlass-Schwerpunkte 2027)") + '. Methoden-Grundlagen (Materialanalyse, Sach- und Werturteil) stehen in Woche 1. Hake erledigte Wochen ab.</p><div class="plan">';
     plan.forEach(function (wk, i) {
-      var items = wk.wdh ? ['<li>Tägliche Wiederholung der Lernkartei (<a href="#/lerntools/wiederholung">öffnen</a>)</li>', '<li>Mindestens eine <a href="#/lerntools/simulation">Abi-Simulation</a> unter Zeitdruck schreiben</li>', '<li>Kann-Listen durchgehen: Was ist noch rot oder gelb?</li>']
+      var items = wk.wdh ? ['<li>Tägliche Wiederholung der Lernkartei (<a href="#/powi/tools/wiederholung">öffnen</a>)</li>', '<li>Mindestens eine <a href="#/powi/tools/simulation">Abi-Simulation</a> unter Zeitdruck schreiben</li>', '<li>Kann-Listen durchgehen: Was ist noch rot oder gelb?</li>']
         : wk.themen.map(function (m) { return '<li><a href="' + topicLink(m) + '">' + esc(m.nr + " " + m.titel) + "</a></li>"; });
       if (i === 0 && !wk.wdh) items.unshift('<li><a href="#/powi/grundlagen">Grundlagen: Materialanalyse, Sachurteil, Werturteil</a></li>');
       var todo = wk.wdh ? "" : (wk.themen.length ? '<p class="muted small">Je Thema: Fachbegriffe bis mindestens Fach 3, Inhalte durcharbeiten, Kann-Liste auf Grün, je eine Aufgabe aus AFB I, II und III.</p>' : '<p class="muted small">Puffer: Liegengebliebenes nachholen und wiederholen.</p>');
@@ -186,9 +186,9 @@
           '<td><a href="' + topicLink(m) + '">' + esc(m.nr) + "</a> " + esc(m.titel) + (m.erlass ? ' <span class="badge badge-abi">Abi 2027</span>' : "") + "</td>" +
           '<td class="pcell">' + bar(sicher, cards.length, "Karteikarten in Fach 4 oder 5") + "</td><td class=\"pcell\">" + bar(doneT, tasks.length, "bearbeitete Aufgaben") + "</td><td class=\"pcell\">" + bar(kc.g, kc.total, "Kann-Sätze auf Grün") + "</td></tr>";
       }).join("");
-      main.innerHTML = '<div class="tools-controls">' + kursSwitch() + '<a class="btn btn-small btn-primary" href="#/lerntools/wiederholung">Heute fällige Karten: ' + dueAll + "</a></div>" +
+      main.innerHTML = '<div class="tools-controls">' + kursSwitch() + '<a class="btn btn-small btn-primary" href="#/powi/tools/wiederholung">Heute fällige Karten: ' + dueAll + "</a></div>" +
         '<div class="table-scroll"><table class="ptable"><thead><tr><th></th><th>Unterthema</th><th>Karteikarten sicher<br><span class="muted small">(Fach 4–5)</span></th><th>Aufgaben bearbeitet</th><th>Kann-Liste grün</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
-        '<p class="muted small">Ampel: Durchschnitt der drei Werte – Grün ab 70 %, Gelb ab 35 %, grau = noch nicht begonnen. Aufgaben hakst du in den Übungsaufgaben ab, Kann-Sätze in den <a href="#/lerntools/kannlisten">Kann-Listen</a>.</p>' +
+        '<p class="muted small">Ampel: Durchschnitt der drei Werte – Grün ab 70 %, Gelb ab 35 %, grau = noch nicht begonnen. Aufgaben hakst du in den Übungsaufgaben ab, Kann-Sätze in den <a href="#/powi/tools/kannlisten">Kann-Listen</a>.</p>' +
         '<div class="tools-actions"><button class="btn btn-small" id="reset-all">Gesamten Lernstand auf diesem Gerät löschen</button></div>';
       bindKurs(main, function () { fortschritt(main); });
       $("#reset-all", main).addEventListener("click", function () {
@@ -651,12 +651,171 @@
   // ------------------------------------------------------------------ Router
   var FN = { lernplan: lernplan, fortschritt: fortschritt, kannlisten: kannlisten, operatoren: operatoren, schnelltest: schnelltest, wiederholung: wiederholung,
     simulation: simulation, baukasten: baukasten, beispiele: beispiele, begriffsnetz: begriffsnetz, lernzettel: lernzettel, vorlesen: vorlesen };
-  function render(parts) {
-    var slug = parts[0];
+  function render(parts) { F.go("powi/tools/" + (parts[0] || "")); } // alte Adressen #/lerntools/…
+  function renderInto(slug) {
+    if (slug === "lernstand") return lernstand();
     var t = TOOLS.filter(function (x) { return x.slug === slug; })[0];
     if (!t) return data().then(overview, overview);
     var main = shell(t.t, t.d, '<p class="muted">Lade …</p>', slug);
-    data().then(function () { FN[slug](main); }).catch(function () { main.innerHTML = '<p class="placeholder">Die Daten für die Lerntools konnten nicht geladen werden. Bitte lade die Seite neu.</p>'; });
+    data().then(function () { FN[slug](main); }).catch(function () { main.innerHTML = '<p class="placeholder">Die Daten für die Vorbereitungs-Tools konnten nicht geladen werden. Bitte lade die Seite neu.</p>'; });
   }
-  window.FeibiturTools = { render: render };
+
+  // ------------------------------------------------------------------ Lernstand als PDF speichern und wieder laden
+  var LS_PREFIX = "feibitur.", LS_SKIP = { chatConsent: 1 }; // Einwilligungen gelten nur für das jeweilige Gerät
+  var MARK_A = "FEIBITUR-LERNSTAND-BEGIN", MARK_B = "FEIBITUR-LERNSTAND-END";
+  function collect() {
+    var d = {};
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf(LS_PREFIX) === 0 && !LS_SKIP[k.slice(LS_PREFIX.length)]) d[k.slice(LS_PREFIX.length)] = localStorage.getItem(k);
+      }
+    } catch (e) {}
+    return d;
+  }
+  function parseVal(v) { try { return JSON.parse(v); } catch (e) { return null; } }
+  function summary(d) {
+    var l = parseVal(d.leitner) || {}, f = [0, 0, 0, 0, 0, 0];
+    Object.keys(l).forEach(function (k) { var e = l[k]; if (e && e.f) f[e.f]++; });
+    var erl = Object.keys(parseVal(d.erledigt) || {}).length, kann = Object.keys(parseVal(d.kann) || {}).length;
+    var kurs = parseVal(d.kurs);
+    return { karten: Object.keys(l).length, f5: f[5], f4: f[4], erledigt: erl, kann: kann, kurs: kurs === "LK" ? "Leistungskurs" : kurs === "GK" ? "Grundkurs" : "nicht gewählt", keys: Object.keys(d).length };
+  }
+  function summaryHTML(sm, when) {
+    return '<dl class="ls-sum">' + (when ? "<dt>Gespeichert am</dt><dd>" + esc(when) + "</dd>" : "") +
+      "<dt>Kurs</dt><dd>" + esc(sm.kurs) + "</dd><dt>Karteikarten mit Lernstand</dt><dd>" + sm.karten + (sm.karten ? " (davon " + sm.f5 + " in Fach 5, " + sm.f4 + " in Fach 4)" : "") + "</dd>" +
+      "<dt>Als bearbeitet markierte Aufgaben</dt><dd>" + sm.erledigt + "</dd><dt>Kann-Einschätzungen</dt><dd>" + sm.kann + "</dd></dl>";
+  }
+  function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
+  function unb64(s64) { return decodeURIComponent(escape(atob(s64))); }
+  function sha(text) {
+    if (!(window.crypto && crypto.subtle)) return Promise.resolve("");
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function (buf) { return Array.prototype.map.call(new Uint8Array(buf), function (x) { return ("0" + x.toString(16)).slice(-2); }).join(""); });
+  }
+  // Minimale PDF (PDF 1.4): sichtbarer Hinweis + unsichtbar eingebettete Lernstandsdatei
+  var WIN = { "€": 128, "‚": 130, "„": 132, "…": 133, "‘": 145, "’": 146, "“": 147, "”": 148, "–": 150, "—": 151 };
+  function pdfStr(t) {
+    var out = "";
+    for (var i = 0; i < t.length; i++) {
+      var ch = t[i], c = t.charCodeAt(i);
+      if (ch === "(" || ch === ")" || ch === "\\") out += "\\" + ch;
+      else if (c < 128) out += ch;
+      else { var w = WIN[ch] || (c < 256 ? c : 63); out += "\\" + ("00" + w.toString(8)).slice(-3); }
+    }
+    return out;
+  }
+  function wrap(t, n) {
+    var words = t.split(" "), lines = [], cur = "";
+    words.forEach(function (w) { if ((cur + " " + w).trim().length > n) { lines.push(cur); cur = w; } else cur = (cur + " " + w).trim(); });
+    if (cur) lines.push(cur); return lines;
+  }
+  function buildPDF(payload, whenText) {
+    var lines = [["F1", 22, "Feibitur – Lernstand"], ["F2", 11, "Gespeichert am " + whenText], ["", 0, ""]];
+    var hint = "Diese Datei enthält deinen Lernstand aus Feibitur (Karteikarten, Vorbereitungs-Tools, bearbeitete Aufgaben und Einstellungen). " +
+      "Um deinen aktuellen Leistungsstand einsehen zu können, lade diese Datei auf https://feibitur.janrickmer.de unter „Vorbereitungs-Tools“ im Bereich „Aktuellen Leistungsstand laden / speichern“ hoch.";
+    wrap(hint, 86).forEach(function (l) { lines.push(["F2", 12, l]); });
+    lines.push(["", 0, ""]);
+    wrap("Bitte bearbeite oder speichere diese Datei nicht in einem anderen Programm, sonst kann Feibitur den Lernstand nicht mehr einlesen. Bewahre sie am besten an einem sicheren Ort auf, z. B. in deinem Cloud-Speicher.", 92).forEach(function (l) { lines.push(["F2", 10, l]); });
+    var y = 780, content = "BT\n";
+    lines.forEach(function (l) {
+      if (!l[0]) { y -= 10; return; }
+      y -= l[1] * 1.45;
+      content += "/" + l[0] + " " + l[1] + " Tf 1 0 0 1 56 " + y.toFixed(1) + " Tm (" + pdfStr(l[2]) + ") Tj\n";
+    });
+    content += "ET\n";
+    var file = MARK_A + "\n" + payload + "\n" + MARK_B + "\n";
+    var objs = [
+      "<< /Type /Catalog /Pages 2 0 R /Names << /EmbeddedFiles 7 0 R >> >>",
+      "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+      "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>",
+      "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
+      "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
+      "<< /Length " + content.length + " >>\nstream\n" + content + "endstream",
+      "<< /Names [(feibitur-lernstand.txt) 8 0 R] >>",
+      "<< /Type /Filespec /F (feibitur-lernstand.txt) /UF (feibitur-lernstand.txt) /Desc (Feibitur-Lernstand) /EF << /F 9 0 R >> >>",
+      "<< /Type /EmbeddedFile /Subtype /text#2Fplain /Length " + file.length + " >>\nstream\n" + file + "endstream"
+    ];
+    var out = "%PDF-1.4\n%\u00e2\u00e3\u00cf\u00d3\n", offs = [];
+    objs.forEach(function (o, i) { offs.push(out.length); out += (i + 1) + " 0 obj\n" + o + "\nendobj\n"; });
+    var xref = out.length;
+    out += "xref\n0 " + (objs.length + 1) + "\n0000000000 65535 f \n" + offs.map(function (o) { return ("0000000000" + o).slice(-10) + " 00000 n \n"; }).join("");
+    out += "trailer\n<< /Size " + (objs.length + 1) + " /Root 1 0 R /Info << /Title (Feibitur - Lernstand) /Producer (Feibitur) >> >>\nstartxref\n" + xref + "\n%%EOF\n";
+    var bytes = new Uint8Array(out.length);
+    for (var i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+    return new Blob([bytes], { type: "application/pdf" });
+  }
+  function readPDF(file) {
+    return new Promise(function (res, rej) {
+      var fr = new FileReader();
+      fr.onerror = function () { rej(new Error("Die Datei konnte nicht gelesen werden.")); };
+      fr.onload = function () {
+        var u = new Uint8Array(fr.result), s = "";
+        for (var i = 0; i < u.length; i += 8192) s += String.fromCharCode.apply(null, u.subarray(i, i + 8192));
+        var a = s.indexOf(MARK_A), b = s.indexOf(MARK_B, a);
+        if (a < 0 || b < 0) return rej(new Error("In dieser Datei wurde kein Feibitur-Lernstand gefunden. Lade bitte eine PDF hoch, die du hier über „Lernstand als PDF herunterladen“ gespeichert hast."));
+        try {
+          var obj = JSON.parse(unb64(s.slice(a + MARK_A.length, b).replace(/\s+/g, "")));
+          if (!obj || obj.app !== "Feibitur" || !obj.data) throw new Error();
+          sha(JSON.stringify(obj.data)).then(function (h) {
+            if (obj.sha256 && h && obj.sha256 !== h) rej(new Error("Die Datei ist beschädigt oder wurde verändert und kann nicht eingelesen werden."));
+            else res(obj);
+          });
+        } catch (e) { rej(new Error("Die Lernstandsdaten in dieser Datei sind beschädigt.")); }
+      };
+      fr.readAsArrayBuffer(file);
+    });
+  }
+  function fmtWhen(iso) {
+    var d = new Date(iso);
+    return d.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }) + ", " + d.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) + " Uhr";
+  }
+  function lernstand() {
+    var main = shell("Aktuellen Leistungsstand laden / speichern", "Sichere deinen Lernstand als PDF-Datei – und hol ihn zurück, falls deine Browserdaten gelöscht wurden oder du ein anderes Gerät nutzt.",
+      '<div class="ls-grid">' +
+      '<section class="ls-card ls-load"><h3>Lernstand laden</h3><p>Lade hier eine Lernstand-PDF hoch, die du früher bei Feibitur gespeichert hast. Die Datei wird nur in deinem Browser ausgewertet und nirgendwohin übertragen.</p>' +
+      '<label class="ls-drop" id="ls-drop"><input type="file" id="ls-file" accept="application/pdf,.pdf"><span class="ls-drop-big">PDF hier ablegen</span><span class="ls-drop-small">oder antippen, um eine Datei auszuwählen</span></label>' +
+      '<div class="ls-status" id="ls-status" aria-live="polite"></div></section>' +
+      '<section class="ls-card ls-save"><h3>Lernstand speichern</h3><p>Lade deinen aktuellen Lernstand als PDF herunter. Darin stecken unsichtbar alle Daten: Karteikarten (Fächer und Wiederholungstermine), bearbeitete Aufgaben, Kann-Listen, Lernplan, Abi-Simulation, Bestleistungen und Einstellungen.</p>' +
+      '<div id="ls-now"></div><button class="btn btn-primary ls-btn" id="ls-dl">' + I.download + " Lernstand als PDF herunterladen</button>" +
+      '<p class="muted small">Tipp: Speichere die Datei regelmäßig, z. B. einmal pro Woche, an einem sicheren Ort (Cloud-Speicher, E-Mail an dich selbst).</p></section></div>');
+    function now() { var d = collect(); $("#ls-now", main).innerHTML = "<p><b>Auf diesem Gerät gespeichert:</b></p>" + summaryHTML(summary(d)); return d; }
+    now();
+    $("#ls-dl", main).addEventListener("click", function () {
+      var d = now(), created = new Date().toISOString(), when = fmtWhen(created);
+      sha(JSON.stringify(d)).then(function (h) {
+        var payload = b64(JSON.stringify({ app: "Feibitur", version: 1, created: created, sha256: h, data: d }));
+        var blob = buildPDF(payload, when), a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "Feibitur-Lernstand_" + created.slice(0, 10) + ".pdf";
+        document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+      });
+    });
+    var st = $("#ls-status", main), drop = $("#ls-drop", main), inp = $("#ls-file", main);
+    function handle(file) {
+      if (!file) return;
+      st.innerHTML = '<p class="muted">Datei wird gelesen …</p>';
+      readPDF(file).then(function (obj) {
+        var cur = collect(), hasCur = Object.keys(cur).some(function (k) { return k !== "kurs" && k !== "hinweisGesehen"; });
+        st.innerHTML = '<div class="ls-found"><p><b>Lernstand in der Datei gefunden:</b></p>' + summaryHTML(summary(obj.data), fmtWhen(obj.created)) +
+          (hasCur ? '<p class="ls-warn">Auf diesem Gerät ist bereits ein Lernstand gespeichert. Er wird durch den Lernstand aus der Datei <b>ersetzt</b>.</p>' : "") +
+          '<div class="tools-actions"><button class="btn btn-primary" id="ls-apply">' + (hasCur ? "Lernstand auf diesem Gerät ersetzen" : "Lernstand übernehmen") + '</button><button class="btn" id="ls-cancel">Abbrechen</button></div></div>';
+        $("#ls-cancel", st).addEventListener("click", function () { st.innerHTML = ""; inp.value = ""; });
+        $("#ls-apply", st).addEventListener("click", function () {
+          if (hasCur && !confirm("Lernstand auf diesem Gerät wirklich durch den Lernstand aus der Datei ersetzen?")) return;
+          try {
+            var del = [];
+            for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf(LS_PREFIX) === 0 && !LS_SKIP[k.slice(LS_PREFIX.length)]) del.push(k); }
+            del.forEach(function (k) { localStorage.removeItem(k); });
+            Object.keys(obj.data).forEach(function (k) { if (!LS_SKIP[k] && typeof obj.data[k] === "string") localStorage.setItem(LS_PREFIX + k, obj.data[k]); });
+          } catch (e) { st.innerHTML = '<p class="ls-error">Der Lernstand konnte nicht gespeichert werden (Speicher des Browsers nicht verfügbar).</p>'; return; }
+          st.innerHTML = '<p class="ls-ok"><b>Fertig!</b> Dein Lernstand vom ' + esc(fmtWhen(obj.created)) + ' ist jetzt auf diesem Gerät verfügbar.</p><p><a class="btn btn-small" href="#/powi/tools/fortschritt">Zum Fortschritts-Dashboard</a></p>';
+          inp.value = ""; now();
+        });
+      }).catch(function (e) { st.innerHTML = '<p class="ls-error">' + esc(e.message) + "</p>"; inp.value = ""; });
+    }
+    inp.addEventListener("change", function () { handle(inp.files[0]); });
+    ["dragenter", "dragover"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); }); });
+    ["dragleave", "drop"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); }); });
+    drop.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]); });
+  }
+  window.FeibiturTools = { render: render, renderInto: renderInto, tools: TOOLS };
 })();
