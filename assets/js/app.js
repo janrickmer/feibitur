@@ -717,9 +717,74 @@
     var weg = topic ? topic.inhalte.length - blocks.length : 0;
     var main = (!topic || !topic.inhalte.length) ? emptySection("Die Inhalte zu diesem Unterthema werden noch eingepflegt.") : blocks.map(renderBlock).join("") +
       (weg ? '<p class="muted kurs-note">' + weg + " Abschnitt" + (weg === 1 ? "" : "e") + " nur für den Leistungskurs ausgeblendet (du hast „Grundkurs“ gewählt).</p>" : "");
-    body.innerHTML = '<div class="content-grid"><div class="content-main">' + main + '</div><aside class="chat" id="chat"></aside></div>';
+    body.innerHTML = '<div class="content-grid"><div class="content-main">' + (meta.podcast ? radioHTML(meta) : "") + main + '</div><aside class="chat" id="chat"></aside></div>';
     bindSpeak(body);
+    if (meta.podcast) bindRadio(body, meta);
     renderChat($("#chat", body), meta);
+  }
+
+  // ---------------------------------------------------------------- Podcast-Radio (Röhrenradio mit Start- und Pause-Taste)
+  function mmss(t) { t = Math.max(0, Math.round(t || 0)); return Math.floor(t / 60) + ":" + ("0" + (t % 60)).slice(-2); }
+  function radioHTML(meta) {
+    var p = meta.podcast, dauer = p.dauer, labels = "";
+    for (var m = 0; m * 60 <= dauer; m += 5) labels += '<span style="left:' + (m * 60 / dauer * 100).toFixed(2) + '%">' + m + "</span>";
+    return '<section class="radio" aria-label="Podcast zum Unterthema ' + esc(meta.nr) + '">' +
+      '<div class="radio-cab"><span class="radio-eye" aria-hidden="true"></span>' +
+      '<div class="radio-dial" role="slider" tabindex="0" aria-label="Abspielposition (Pfeiltasten: 15 Sekunden vor oder zurück)" aria-valuemin="0" aria-valuemax="' + dauer + '" aria-valuenow="0" aria-valuetext="0:00 von ' + mmss(dauer) + '" style="--tick:' + (60 / dauer * 100).toFixed(3) + '%">' +
+      '<span class="radio-scale" aria-hidden="true"></span><span class="radio-labels" aria-hidden="true">' + labels + '<i>Min.</i></span>' +
+      '<span class="radio-needle" aria-hidden="true"></span><span class="radio-brand" aria-hidden="true">Feibitur · Podcast</span></div>' +
+      '<div class="radio-grille" aria-hidden="true"><span class="radio-badge">F</span></div>' +
+      '<div class="radio-keys"><button class="radio-key" data-radio="play" aria-pressed="false">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg><span>Start</span></button>' +
+      '<button class="radio-key" data-radio="pause" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z" fill="currentColor"/></svg><span>Pause</span></button></div>' +
+      '<div class="radio-plate"><span class="radio-title">Podcast zu ' + esc(meta.nr) + ": „" + esc(p.titel) + '“</span> <span class="radio-time" aria-live="off">0:00 / ' + mmss(dauer) + "</span></div></div>" +
+      '<p class="radio-note">KI-generierter Podcast (Google NotebookLM) auf Grundlage eines geprüften Feibitur-Informationstextes. KI kann sich irren – im Zweifel gilt der Text unten.</p>' +
+      '<audio preload="none" src="' + esc(p.src) + '"></audio></section>';
+  }
+  function bindRadio(root, meta) {
+    var box = $(".radio", root), audio = $("audio", box), dial = $(".radio-dial", box), time = $(".radio-time", box);
+    var play = $('[data-radio="play"]', box), pause = $('[data-radio="pause"]', box), key = "podcast." + meta.id;
+    var dauer = meta.podcast.dauer, saved = +(store(key) || 0), lastSave = 0;
+    function dur() { return isFinite(audio.duration) && audio.duration > 0 ? audio.duration : dauer; }
+    function show(t) {
+      var d = dur(), p = Math.min(1, Math.max(0, t / d));
+      box.style.setProperty("--p", p.toFixed(4));
+      time.textContent = mmss(t) + " / " + mmss(d);
+      dial.setAttribute("aria-valuenow", Math.round(t));
+      dial.setAttribute("aria-valuetext", mmss(t) + " von " + mmss(d));
+    }
+    function setPos(t) {
+      t = Math.max(0, Math.min(dur() - 1, t));
+      if (audio.readyState >= 1) audio.currentTime = t; else saved = t;
+      store(key, Math.round(t)); show(t);
+    }
+    function state(on) {
+      box.classList.toggle("on", on);
+      play.setAttribute("aria-pressed", String(on)); pause.setAttribute("aria-pressed", String(!on));
+    }
+    show(saved);
+    audio.addEventListener("loadedmetadata", function () { if (saved > 0 && saved < audio.duration - 2) audio.currentTime = saved; show(audio.currentTime); });
+    audio.addEventListener("timeupdate", function () {
+      show(audio.currentTime);
+      if (Math.abs(audio.currentTime - lastSave) >= 5) { lastSave = audio.currentTime; store(key, Math.round(audio.currentTime)); }
+    });
+    audio.addEventListener("play", function () { state(true); if (speechSupported()) speechSynthesis.cancel(); });
+    audio.addEventListener("pause", function () { state(false); store(key, Math.round(audio.currentTime || saved)); });
+    audio.addEventListener("ended", function () { state(false); unstore(key); saved = 0; show(0); });
+    audio.addEventListener("error", function () { state(false); time.textContent = "Der Podcast konnte nicht geladen werden."; });
+    play.addEventListener("click", function () { var pr = audio.play(); if (pr && pr.catch) pr.catch(function () { state(false); }); });
+    pause.addEventListener("click", function () { audio.pause(); });
+    dial.addEventListener("click", function (e) {
+      var r = $(".radio-scale", dial).getBoundingClientRect();
+      setPos((e.clientX - r.left) / r.width * dur());
+    });
+    dial.addEventListener("keydown", function (e) {
+      var t = audio.readyState >= 1 ? audio.currentTime : saved;
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") { e.preventDefault(); setPos(t + 15); }
+      else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { e.preventDefault(); setPos(t - 15); }
+      else if (e.key === "Home") { e.preventDefault(); setPos(0); }
+      else if (e.key === " " || e.key === "Enter") { e.preventDefault(); if (audio.paused) play.click(); else pause.click(); }
+    });
   }
 
   // ---------------------------------------------------------------- Chatbot
@@ -842,7 +907,7 @@
       });
     });
   }
-  window.addEventListener("hashchange", function () { if (speechSupported()) speechSynthesis.cancel(); });
+  window.addEventListener("hashchange", function () { if (speechSupported()) speechSynthesis.cancel(); $all(".radio audio").forEach(function (a) { a.pause(); }); });
 
   // ---------------------------------------------------------------- Übungsaufgaben
   function renderAufgaben(body, meta, topic) {

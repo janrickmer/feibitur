@@ -329,6 +329,11 @@
    "themen": [
     {
      "id": "q1-1",
+     "podcast": {
+      "src": "assets/audio/q1-1.mp3",
+      "titel": "Das Grundgesetz im Stresstest der Politik",
+      "dauer": 1456
+     },
      "nr": "Q1.1",
      "titel": "Verfassung und Verfassungswirklichkeit: Rechtsstaatlichkeit und Verfassungskonflikte",
      "kcgo": {
@@ -350,6 +355,11 @@
     },
     {
      "id": "q1-2",
+     "podcast": {
+      "src": "assets/audio/q1-2.mp3",
+      "titel": "Deutschlands Parteiendemokratie im Stresstest",
+      "dauer": 1186
+     },
      "nr": "Q1.2",
      "titel": "Herausforderungen der Parteiendemokratie",
      "kcgo": {
