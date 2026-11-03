@@ -194,7 +194,7 @@ TABS = [
          "erlass_hinweis": "Kein Schwerpunkt 2027. Die Gerechtigkeitsbegriffe sind aber über Q2.4 prüfungsrelevant – auch im Grundkurs!"},
     ]},
     {"id": "q2", "kurz": "Q2", "titel": "Q2: Wirtschaft und Wirtschaftspolitik in der sozialen Marktwirtschaft", "themen": [
-        {"id": "q2-1", "nr": "Q2.1", "titel": "Konjunkturanalyse und Konjunkturpolitik – Herausforderungen prozessorientierter Wirtschaftspolitik",
+        {"id": "q2-1", "podcast": {"src": "assets/audio/q2-1.mp3", "titel": "Wie die Schuldenbremse die Regierung sprengte", "dauer": 1643}, "nr": "Q2.1", "titel": "Konjunkturanalyse und Konjunkturpolitik – Herausforderungen prozessorientierter Wirtschaftspolitik",
          "kcgo": {"gn": ["Analyse und Prognose wirtschaftlicher Konjunktur anhand von Konjunkturindikatoren",
                          "Grundlagen der keynesianischen stabilisierungspolitischen Konzeption (insbesondere Krisenanalyse, Bedeutung der effektiven Gesamtnachfrage, Rolle des Staates, Multiplikatoreffekt)",
                          "Möglichkeiten und Varianten nachfrageorientierter Politik (insbesondere Fiskalpolitik, gegebenenfalls Geld- und Tarifpolitik)",
