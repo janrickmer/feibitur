@@ -11,11 +11,11 @@
  * Benötigt im Worker:
  *   - Workers-AI-Bindung mit dem Variablennamen  AI
  *   - optional Variable ALLOWED_ORIGINS (kommagetrennt), Standard: https://feibitur.janrickmer.de
- *   - optional Variable MODEL, Standard: @cf/meta/llama-3.3-70b-instruct-fp8-fast
+ *   - optional Variable MODEL, Standard: @cf/mistralai/mistral-small-3.1-24b-instruct
  */
 
 const DEFAULT_ORIGINS = "https://feibitur.janrickmer.de";
-const DEFAULT_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
+const DEFAULT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
 
 function systemPrompt(thema, stichworte) {
   return (

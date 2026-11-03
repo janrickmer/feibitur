@@ -751,7 +751,7 @@
     }
     var hist = chatHistory[meta.id] || (chatHistory[meta.id] = []);
     el.innerHTML = head + '<div class="chat-log" id="chat-log" aria-live="polite"></div>' +
-      '<form class="chat-form" id="chat-form"><label class="visually-hidden" for="chat-in">Frage an den Chatbot</label><textarea id="chat-in" rows="2" placeholder="Deine Frage zum Thema …" maxlength="1200"></textarea><button class="btn btn-primary" type="submit" aria-label="Senden">➤</button></form>' +
+      '<form class="chat-form" id="chat-form"><label class="visually-hidden" for="chat-in">Frage an den Chatbot</label><textarea id="chat-in" rows="2" placeholder="Deine Frage zum Thema …" maxlength="1200"></textarea><button class="btn btn-primary" type="submit" aria-label="Senden">' + ICON.arrow + '</button></form>' +
       '<div class="chat-foot"><span>KI kann Fehler machen. Verlauf wird nicht gespeichert.</span><button class="linklike" id="chat-off">Chatbot deaktivieren</button></div>';
     var log = $("#chat-log", el);
     function add(role, text) {
