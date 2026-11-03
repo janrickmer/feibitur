@@ -724,6 +724,7 @@
   }
 
   // ---------------------------------------------------------------- Podcast-Radio (Röhrenradio mit Start- und Pause-Taste)
+  var RADIO_TEMPI = [1, 1.2, 1.5];
   function mmss(t) { t = Math.max(0, Math.round(t || 0)); return Math.floor(t / 60) + ":" + ("0" + (t % 60)).slice(-2); }
   function radioHTML(meta) {
     var p = meta.podcast, dauer = p.dauer, labels = "";
@@ -737,6 +738,8 @@
       '<div class="radio-keys"><button class="radio-key" data-radio="play" aria-pressed="false">' +
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg><span>Start</span></button>' +
       '<button class="radio-key" data-radio="pause" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z" fill="currentColor"/></svg><span>Pause</span></button></div>' +
+      '<div class="radio-tempo" role="group" aria-label="Abspielgeschwindigkeit"><span class="radio-tempo-label" aria-hidden="true">Tempo</span>' +
+      RADIO_TEMPI.map(function (r) { return '<button class="radio-speed" data-speed="' + r + '" aria-pressed="false" aria-label="Geschwindigkeit ' + String(r).replace(".", ",") + '-fach">' + String(r).replace(".", ",") + "×</button>"; }).join("") + "</div>" +
       '<div class="radio-plate"><span class="radio-title">Podcast zu ' + esc(meta.nr) + ": „" + esc(p.titel) + '“</span> <span class="radio-time" aria-live="off">0:00 / ' + mmss(dauer) + "</span></div></div>" +
       '<p class="radio-note">KI-generierter Podcast (Google NotebookLM) auf Grundlage eines geprüften Feibitur-Informationstextes. KI kann sich irren – im Zweifel gilt der Text unten.</p>' +
       '<audio preload="none" src="' + esc(p.src) + '"></audio></section>';
@@ -758,17 +761,25 @@
       if (audio.readyState >= 1) audio.currentTime = t; else saved = t;
       store(key, Math.round(t)); show(t);
     }
+    var rate = +(store("podcastTempo") || 1);
+    if (RADIO_TEMPI.indexOf(rate) < 0) rate = 1;
+    function tempo(r) {
+      rate = r; audio.defaultPlaybackRate = r; audio.playbackRate = r; store("podcastTempo", r);
+      $all(".radio-speed", box).forEach(function (bt) { bt.setAttribute("aria-pressed", String(+bt.getAttribute("data-speed") === r)); });
+    }
+    tempo(rate);
+    $all(".radio-speed", box).forEach(function (bt) { bt.addEventListener("click", function () { tempo(+bt.getAttribute("data-speed")); }); });
     function state(on) {
       box.classList.toggle("on", on);
       play.setAttribute("aria-pressed", String(on)); pause.setAttribute("aria-pressed", String(!on));
     }
     show(saved);
-    audio.addEventListener("loadedmetadata", function () { if (saved > 0 && saved < audio.duration - 2) audio.currentTime = saved; show(audio.currentTime); });
+    audio.addEventListener("loadedmetadata", function () { audio.playbackRate = rate; if (saved > 0 && saved < audio.duration - 2) audio.currentTime = saved; show(audio.currentTime); });
     audio.addEventListener("timeupdate", function () {
       show(audio.currentTime);
       if (Math.abs(audio.currentTime - lastSave) >= 5) { lastSave = audio.currentTime; store(key, Math.round(audio.currentTime)); }
     });
-    audio.addEventListener("play", function () { state(true); if (speechSupported()) speechSynthesis.cancel(); });
+    audio.addEventListener("play", function () { if (audio.playbackRate !== rate) audio.playbackRate = rate; state(true); if (speechSupported()) speechSynthesis.cancel(); });
     audio.addEventListener("pause", function () { state(false); store(key, Math.round(audio.currentTime || saved)); });
     audio.addEventListener("ended", function () { state(false); unstore(key); saved = 0; show(0); });
     audio.addEventListener("error", function () { state(false); time.textContent = "Der Podcast konnte nicht geladen werden."; });

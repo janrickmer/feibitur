@@ -922,6 +922,13 @@ body.no-scroll { overflow: hidden; }
 .radio-key svg { width: 20px; height: 20px; }
 .radio-key[aria-pressed="true"] { transform: translateY(5px); background: linear-gradient(180deg, #ece0c5, #ddcda8); box-shadow: 0 1px 0 #b6a27a, 0 3px 5px rgba(0, 0, 0, .45); }
 .radio-key:focus-visible { outline: 3px solid var(--q4); outline-offset: 3px; }
+.radio-tempo { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 10px; margin-top: 14px; }
+.radio-tempo-label { font: 800 .72rem/1 var(--ui); letter-spacing: .2em; text-transform: uppercase; color: #f2e2b8; margin-right: 2px; }
+.radio-speed { min-width: 66px; min-height: 42px; padding: 0 .7rem; border: 0; border-radius: 5px 5px 9px 9px; cursor: pointer;
+  background: linear-gradient(180deg, #fffaf0, #eee2c8); color: #3b2a12; font: 800 .95rem/1 var(--ui); font-variant-numeric: tabular-nums;
+  box-shadow: 0 5px 0 #b6a27a, 0 7px 10px rgba(0, 0, 0, .45); transition: transform 120ms var(--ease-out), box-shadow 120ms var(--ease-out); }
+.radio-speed[aria-pressed="true"] { transform: translateY(4px); background: linear-gradient(180deg, #ece0c5, #ddcda8); box-shadow: 0 1px 0 #b6a27a, 0 3px 5px rgba(0, 0, 0, .45); }
+.radio-speed:focus-visible { outline: 3px solid var(--q4); outline-offset: 3px; }
 .radio-plate { margin: 16px auto 0; padding: .45rem .8rem; border-radius: 4px; text-align: center; color: #2a1a08; font: 600 .9rem/1.35 var(--ui);
   background: linear-gradient(#ecd48c, #c49b44); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 1px 2px rgba(0, 0, 0, .4); }
 .radio-time { display: inline-block; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -931,6 +938,7 @@ body.no-scroll { overflow: hidden; }
   .radio-dial { height: 70px; }
   .radio-grille { height: 70px; }
   .radio-key { min-height: 50px; font-size: .9rem; }
+  .radio-speed { min-width: 58px; min-height: 40px; font-size: .9rem; }
   .radio-plate { font-size: .84rem; }
 }
-@media (prefers-reduced-motion: reduce) { .radio-needle, .radio-key, .radio-eye, .radio-dial { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .radio-needle, .radio-key, .radio-speed, .radio-eye, .radio-dial { transition: none; } }
