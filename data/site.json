@@ -578,6 +578,11 @@
    "themen": [
     {
      "id": "q3-1",
+     "podcast": {
+      "src": "assets/audio/q3-1.mp3",
+      "titel": "Vom Wehrdienst bis zum hybriden Krieg",
+      "dauer": 993
+     },
      "nr": "Q3.1",
      "titel": "Internationale Konflikte und Konfliktbearbeitung in einer differenzierten Staatenwelt",
      "kcgo": {
@@ -599,6 +604,11 @@
     },
     {
      "id": "q3-2",
+     "podcast": {
+      "src": "assets/audio/q3-2.mp3",
+      "titel": "Das Ende der naiven Globalisierung",
+      "dauer": 871
+     },
      "nr": "Q3.2",
      "titel": "Strukturwandel der Weltwirtschaft als Herausforderung ökonomischer Globalisierung",
      "kcgo": {
