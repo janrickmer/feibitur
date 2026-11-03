@@ -398,19 +398,23 @@
     var w = t.b.split(/[\s(/-]/)[0];
     return String(t.kurz).replace(/<[^>]+>/g, "").replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), "…");
   }
-  function openMemory(terms, titel) {
+  var MEMO_ENDPOINT = (CFG.memoryEndpoint || "").trim();
+  var CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  function openMemory(terms, titel, thema) {
     if (terms.length < 4) { alert("Für ein Memory werden mindestens 4 Fachbegriffe benötigt."); return; }
+    thema = String(thema || "mix").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 24) || "mix";
     var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     var EASE_OUT = "cubic-bezier(0.23, 1, 0.32, 1)", EASE_IO = "cubic-bezier(0.77, 0, 0.175, 1)";
     var ov = document.createElement("div");
     ov.className = "memory-overlay";
     ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "Fachbegriffe-Memory");
     document.body.appendChild(ov); document.body.classList.add("no-scroll");
-    var G = null, timers = [], raf = 0, lastFocus = document.activeElement, prefs = { names: ["Spieler 1", "Spieler 2"], n: 0 };
+    var G = null, NET = null, timers = [], raf = 0, lastFocus = document.activeElement, prefs = { names: ["Spieler 1", "Spieler 2"], n: 0, mode: "lokal" };
     function later(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
     function clearTimers() { timers.forEach(clearTimeout); timers = []; if (raf) cancelAnimationFrame(raf); raf = 0; }
     function close() {
       if (G && !G.over && G.found > 0 && !confirm("Spiel wirklich beenden?")) return;
+      netStop(true);
       clearTimers();
       ov.remove(); document.body.classList.remove("no-scroll");
       document.removeEventListener("keydown", onKey); window.removeEventListener("resize", onResize);
@@ -422,60 +426,233 @@
     var maxPairs = Math.min(12, terms.length);
     var LAMP = '<div class="m-lamp" aria-hidden="true"></div>';
     var X = '<button class="m-x" aria-label="Memory schließen">' + ICON.close + "</button>";
+    function on() { return !!(G && G.online); }
+    // Grammatik je nach Spieler: lokal echte Namen, online „Du“ / „Gegner/-in“
+    function who(p, du, sie) { return on() && p === 0 ? "<b>Du</b> " + du : "<b>" + esc(G.names[p]) + "</b> " + sie; }
 
     // ------------------------------------------------ Einstellungen
     function setup() {
-      clearTimers(); G = null;
+      clearTimers(); G = null; netStop(true);
       var opts = [4, 6, 8, 10, 12].filter(function (n) { return n <= maxPairs; });
       var def = prefs.n && opts.indexOf(prefs.n) >= 0 ? prefs.n : (opts.indexOf(8) >= 0 ? 8 : opts[opts.length - 1]);
+      var online = MEMO_ENDPOINT && prefs.mode === "online";
       ov.innerHTML = '<div class="m-table">' + LAMP + '<div class="m-setup">' + X +
         '<form class="m-sheet" id="m-form" autocomplete="off"><h2>Fachbegriffe-Memory</h2><p class="m-topic">' + esc(titel) + "</p>" +
         '<ol class="m-rules"><li>Deckt abwechselnd zwei Karten auf: einen <b>Fachbegriff</b> und seine <b>Beschreibung</b>.</li>' +
         "<li>Passen sie zusammen, gibt es einen Punkt – und du bist gleich noch einmal dran.</li>" +
-        "<li>Kein Paar? Dann tippt ihr auf „Nächster Spieler“. Aufgedeckte Karten vergrößerst du mit einem weiteren Tipp.</li></ol>" +
-        '<div class="m-names"><label class="m-nameplate"><span>Spieler/in 1</span><input id="m-n1" value="' + esc(prefs.names[0]) + '" maxlength="20" required></label>' +
-        '<span class="m-vs" aria-hidden="true">gegen</span><label class="m-nameplate"><span>Spieler/in 2</span><input id="m-n2" value="' + esc(prefs.names[1]) + '" maxlength="20" required></label></div>' +
+        "<li>Kein Paar? Dann geht es mit „Nächster Spieler“ weiter. Aufgedeckte Karten vergrößerst du mit einem weiteren Tipp.</li></ol>" +
+        (MEMO_ENDPOINT ? '<fieldset class="m-mode"><legend>Wie spielt ihr?</legend>' +
+          '<label><input type="radio" name="m-mode" value="lokal"' + (online ? "" : " checked") + '><span>Zu zweit an diesem Gerät</span></label>' +
+          '<label><input type="radio" name="m-mode" value="online"' + (online ? " checked" : "") + '><span>Online – jede Person an ihrem Gerät</span></label></fieldset>' : "") +
+        '<div class="m-names" id="m-names"' + (online ? " hidden" : "") + '><label class="m-nameplate"><span>Spieler/in 1</span><input id="m-n1" value="' + esc(prefs.names[0]) + '" maxlength="20"></label>' +
+        '<span class="m-vs" aria-hidden="true">gegen</span><label class="m-nameplate"><span>Spieler/in 2</span><input id="m-n2" value="' + esc(prefs.names[1]) + '" maxlength="20"></label></div>' +
+        '<div class="m-online-note" id="m-online-note"' + (online ? "" : " hidden") + '><p>Beim Online-Spiel werden eure Spielzüge über einen Vermittlungsdienst bei <b>Cloudflare</b> (Cloudflare, Inc., USA) an das andere Gerät weitergeleitet; technisch bedingt wird dabei auch deine IP-Adresse übertragen. Namen werden nicht übertragen, gespeichert wird nichts. <a href="datenschutz.html#memory-online">Mehr dazu</a></p>' +
+        (store("memoryOnlineConsent") ? "" : '<label class="m-consent"><input type="checkbox" id="m-consent"> <span>Ich willige ein, dass meine Spielzüge und meine IP-Adresse dafür an Cloudflare übertragen werden.</span></label>') + "</div>" +
         '<fieldset class="m-pairs"><legend>Wie viele Paare liegen auf dem Tisch?</legend>' + opts.map(function (n) {
           return '<label><input type="radio" name="m-pairs" value="' + n + '"' + (n === def ? " checked" : "") + "><span>" + n + "</span></label>";
         }).join("") + "</fieldset>" +
-        '<p class="m-privacy">Die Namen werden nicht gespeichert.</p><button class="btn btn-primary m-go" id="m-start" type="submit">Karten austeilen</button></form></div></div>';
+        '<p class="m-privacy" id="m-privacy">' + (online ? "Online gilt die Paarzahl der Person, deren Code im Alphabet zuerst kommt." : "Die Namen werden nicht gespeichert.") + '</p><button class="btn btn-primary m-go" id="m-start" type="submit">' + (online ? "Weiter zum Code" : "Karten austeilen") + "</button></form></div></div>";
       $(".m-x", ov).addEventListener("click", close);
+      $all("input[name=m-mode]", ov).forEach(function (r) {
+        r.addEventListener("change", function () {
+          prefs.mode = r.value; var o = r.value === "online";
+          $("#m-names", ov).hidden = o; $("#m-online-note", ov).hidden = !o;
+          $("#m-start", ov).textContent = o ? "Weiter zum Code" : "Karten austeilen";
+          $("#m-privacy", ov).textContent = o ? "Online gilt die Paarzahl der Person, deren Code im Alphabet zuerst kommt." : "Die Namen werden nicht gespeichert.";
+        });
+      });
       $("#m-form", ov).addEventListener("submit", function (e) {
         e.preventDefault();
         var n = +(($("input[name=m-pairs]:checked", ov) || {}).value || def);
+        if (MEMO_ENDPOINT && prefs.mode === "online") {
+          var cb = $("#m-consent", ov);
+          if (cb && !cb.checked) { cb.focus(); cb.closest("label").classList.add("m-need"); return; }
+          if (cb) store("memoryOnlineConsent", true);
+          prefs.n = n; lobby(); return;
+        }
         start([$("#m-n1", ov).value.trim() || "Spieler 1", $("#m-n2", ov).value.trim() || "Spieler 2"], n, 0);
       });
       $("#m-start", ov).focus();
     }
 
+    // ------------------------------------------------ Online: Codes austauschen und verbinden
+    function myCode() {
+      var c = sess("memoCode");
+      if (!c || !/^[A-HJ-NP-Z2-9]{4}$/.test(c)) {
+        c = ""; var r = new Uint8Array(4); (window.crypto || {}).getRandomValues ? crypto.getRandomValues(r) : r.forEach(function (x, i) { r[i] = Math.random() * 256; });
+        for (var i = 0; i < 4; i++) c += CODE_CHARS[r[i] % CODE_CHARS.length];
+        sess("memoCode", c);
+      }
+      return c;
+    }
+    function lobby(msg) {
+      clearTimers(); G = null; netStop(true);
+      var me = myCode();
+      ov.innerHTML = '<div class="m-table">' + LAMP + '<div class="m-setup">' + X +
+        '<form class="m-sheet m-lobby" id="m-lobby" autocomplete="off"><h2>Online-Memory</h2><p class="m-topic">' + esc(titel) + "</p>" +
+        '<p class="m-code-label">Dein Code</p><p class="m-code" aria-label="Dein Code: ' + me.split("").join(" ") + '">' + me + "</p>" +
+        '<p>Nenne der anderen Person diesen Code. Sie öffnet dasselbe Memory, wählt „Online“ und nennt dir ihren Code.</p>' +
+        '<label class="m-peer"><span>Code der anderen Person</span><input id="m-peer" inputmode="text" autocapitalize="characters" spellcheck="false" maxlength="4" placeholder="z. B. ' + (me === "K7M2" ? "R4TX" : "K7M2") + '"></label>' +
+        '<p class="m-net" id="m-net" aria-live="polite">' + (msg || "") + '</p>' +
+        '<div class="m-lobby-actions"><button class="btn btn-primary m-go" id="m-connect" type="submit">Verbinden</button><button class="btn" type="button" id="m-back">Zurück</button></div></form></div></div>';
+      $(".m-x", ov).addEventListener("click", close);
+      $("#m-back", ov).addEventListener("click", setup);
+      var inp = $("#m-peer", ov);
+      inp.addEventListener("input", function () { var v = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, "").replace(/[IO01]/g, ""); if (v !== inp.value) inp.value = v; });
+      $("#m-lobby", ov).addEventListener("submit", function (e) {
+        e.preventDefault();
+        var peer = inp.value.trim().toUpperCase();
+        if (!/^[A-HJ-NP-Z2-9]{4}$/.test(peer)) { $("#m-net", ov).textContent = "Bitte gib den vierstelligen Code der anderen Person ein."; inp.focus(); return; }
+        if (peer === me) { $("#m-net", ov).textContent = "Das ist dein eigener Code – gib den Code der anderen Person ein."; inp.focus(); return; }
+        inp.disabled = true; $("#m-connect", ov).disabled = true;
+        netStart(me, peer);
+      });
+      inp.focus();
+    }
+    function netMsg(t) { var m = $("#m-net", ov); if (m) m.textContent = t; }
+    function netStart(me, peer) {
+      NET = { me: me, peer: peer, host: [me, peer].sort()[0] === me, ws: null, paired: false, stopped: false, tries: 0, queue: [], ping: 0, round: 0 };
+      netMsg("Verbinde …");
+      netOpen();
+    }
+    function netOpen() {
+      if (!NET || NET.stopped) return;
+      var n = NET, ws;
+      try { ws = new WebSocket(MEMO_ENDPOINT + "?ich=" + n.me + "&du=" + n.peer + "&thema=" + encodeURIComponent(thema)); }
+      catch (e) { netMsg("Die Verbindung zum Spiel-Server ist nicht möglich."); return; }
+      n.ws = ws;
+      ws.onopen = function () { n.tries = 0; clearInterval(n.ping); n.ping = setInterval(function () { if (ws.readyState === 1) ws.send('{"t":"ping"}'); }, 25000); };
+      ws.onmessage = function (ev) { if (NET !== n) return; var m; try { m = JSON.parse(ev.data); } catch (e) { return; } netIn(m); };
+      ws.onclose = function () {
+        clearInterval(n.ping);
+        if (NET !== n || n.stopped) return;
+        n.paired = false; n.tries++;
+        if (n.tries > 6 && !G) { netMsg("Die Verbindung zum Spiel-Server ist nicht möglich. Prüfe deine Internetverbindung und versuche es später noch einmal."); var b = $("#m-connect", ov); if (b) { b.disabled = false; $("#m-peer", ov).disabled = false; } NET = null; return; }
+        banner("Verbindung unterbrochen – verbinde neu …");
+        later(netOpen, Math.min(15000, 600 * Math.pow(2, n.tries)));
+      };
+    }
+    function netStop(sayBye) {
+      if (!NET) return;
+      var n = NET; NET = null; n.stopped = true; clearInterval(n.ping);
+      try { if (sayBye && n.ws && n.ws.readyState === 1) n.ws.send('{"t":"bye"}'); n.ws && n.ws.close(1000); } catch (e) {}
+    }
+    function send(m) { if (NET && NET.ws && NET.ws.readyState === 1) NET.ws.send(JSON.stringify(m)); }
+    function banner(t) {
+      var b = $(".m-banner", ov);
+      if (!t) { if (b) b.remove(); return; }
+      if (!$(".m-table", ov) || !G) { netMsg(t); return; }
+      if (!b) { b = document.createElement("div"); b.className = "m-banner"; b.setAttribute("role", "status"); $(".m-table", ov).appendChild(b); }
+      b.textContent = t;
+    }
+    function netIn(m) {
+      switch (m.t) {
+        case "wait": netMsg("Verbunden. Warte, bis die andere Person deinen Code " + NET.me + " eingibt …"); break;
+        case "paired":
+          NET.paired = true; NET.gone = false; banner("");
+          if (G && !G.over) { if (NET.host) sendState(); }
+          else if (!G) { if (NET.host) dealOnline(); else netMsg("Verbunden! Die Karten werden ausgeteilt …"); }
+          break;
+        case "peer-left": if (NET) NET.paired = false; if (NET && NET.gone) break; if (G) banner("Gegner/-in ist gerade nicht verbunden – warte …"); else netMsg("Die andere Person hat die Verbindung getrennt. Warte …"); break;
+        case "deal": startOnline(m); break;
+        case "state": adoptState(m.s); break;
+        case "flip": case "next": NET.queue.push(m); pump(); break;
+        case "again": if (NET.host && (!G || G.over)) dealOnline(); break;
+        case "bye":
+          if (NET) { NET.paired = false; NET.gone = true; }
+          if (G && !G.over) { G.over = true; status("Gegner/-in hat das Spiel verlassen."); banner("Gegner/-in hat das Spiel verlassen."); }
+          else if (G) banner("Gegner/-in hat das Spiel verlassen.");
+          break;
+      }
+    }
+    function dealOnline() {
+      if (!NET) return;
+      NET.round++;
+      var first = NET.round % 2 === 1 ? NET.me : NET.peer; // Gastgeber beginnt, bei der Revanche abwechselnd
+      var d = makeDeck(prefs.n || 8);
+      var msg = { t: "deal", round: NET.round, n: prefs.n || 8, first: first, deck: d.map(function (c) { return { pair: c.pair, kind: c.kind, text: c.text, term: c.term, kurz: c.kurz, rot: c.rot }; }) };
+      send(msg); startOnline(msg);
+    }
+    function startOnline(m) {
+      clearTimers(); banner("");
+      if (NET) { NET.queue = []; NET.round = m.round; }
+      var deck = m.deck.map(function (c, i) { return { pair: c.pair, kind: c.kind, text: String(c.text), term: String(c.term), kurz: String(c.kurz || ""), rot: +c.rot || 0, id: i, state: "down" }; });
+      var p = m.first === (NET && NET.me) ? 0 : 1;
+      G = newGame(["Du", "Gegner/-in"], deck, m.n, p);
+      G.online = true;
+      board(); deal();
+    }
+    function snapshot() {
+      return { deck: G.deck.map(function (c) { return { pair: c.pair, kind: c.kind, text: c.text, term: c.term, kurz: c.kurz, rot: c.rot, state: c.state }; }),
+        n: G.n, player: G.player, first: G.first, scores: G.scores, piles: G.piles, open: G.open.map(function (c) { return c.id; }), phase: G.phase, found: G.found, moves: G.moves, misses: G.misses, run: G.run, best: G.best, round: NET.round, over: G.over };
+    }
+    function sendState() {
+      if (!G || !NET) return;
+      if (G.phase === "deal" || G.phase === "wait") { later(sendState, 400); return; }
+      send({ t: "state", s: snapshot() });
+    }
+    function adoptState(s) {
+      clearTimers(); banner("");
+      var sw = function (a) { return [a[1], a[0]]; };
+      var deck = s.deck.map(function (c, i) { return { pair: c.pair, kind: c.kind, text: String(c.text), term: String(c.term), kurz: String(c.kurz || ""), rot: +c.rot || 0, id: i, state: c.state === "up" ? "down" : c.state }; });
+      G = newGame(["Du", "Gegner/-in"], deck, s.n, 1 - s.player);
+      G.online = true; G.first = 1 - s.first; G.scores = sw(s.scores); G.piles = sw(s.piles); G.misses = sw(s.misses); G.run = sw(s.run); G.best = sw(s.best);
+      G.found = s.found; G.moves = s.moves; G.phase = s.phase === "reveal" || s.phase === "pick2" ? s.phase : "pick1";
+      if (NET) { NET.round = s.round; NET.queue = []; }
+      board();
+      G.deck.forEach(function (c) { if (c.state === "gone") { var b = el(c); b.classList.add("gone"); b.disabled = true; } });
+      G.open = s.open.map(function (id) { return G.deck[id]; });
+      G.open.forEach(function (c) { flip(c, true); });
+      [0, 1].forEach(function (p) { var pile = $('.m-player[data-p="' + p + '"] .m-pile', ov); G.piles[p].forEach(function () { var i = document.createElement("i"); i.style.setProperty("--r", (Math.random() * 16 - 8).toFixed(1) + "deg"); pile.appendChild(i); }); });
+      if (G.phase === "reveal") showNext();
+      status();
+      if (s.over) end();
+    }
+    // Eingehende Züge erst ausführen, wenn das eigene Spiel bereit ist (Animationen laufen auf beiden Geräten)
+    function pump() {
+      if (!NET || !G) return;
+      while (NET.queue.length) {
+        var m = NET.queue[0];
+        if (m.t === "flip") { if (G.phase !== "pick1" && G.phase !== "pick2") return; NET.queue.shift(); var c = G.deck[+m.id]; if (c) click(c, true); }
+        else if (m.t === "next") { if (G.phase !== "reveal") return; NET.queue.shift(); next(true); }
+        else NET.queue.shift();
+      }
+    }
+
     // ------------------------------------------------ Spiel
-    function start(names, n, first) {
-      clearTimers();
-      prefs.names = names; prefs.n = n;
+    function makeDeck(n) {
       var pick = shuffle(terms).slice(0, n), deck = [];
       pick.forEach(function (t, i) {
         var kurz = String(t.kurz || "").replace(/<[^>]+>/g, "");
         deck.push({ pair: i, kind: "b", text: t.b, term: t.b, kurz: kurz });
         deck.push({ pair: i, kind: "d", text: memoText(t), term: t.b, kurz: kurz });
       });
-      deck = shuffle(deck).map(function (c, i) { c.id = i; c.rot = +(Math.random() * 5 - 2.5).toFixed(1); c.state = "down"; return c; });
-      G = { names: names, deck: deck, n: n, player: first, first: first, scores: [0, 0], piles: [[], []], open: [], phase: "deal", found: 0, over: false,
+      return shuffle(deck).map(function (c, i) { c.id = i; c.rot = +(Math.random() * 5 - 2.5).toFixed(1); c.state = "down"; return c; });
+    }
+    function newGame(names, deck, n, first) {
+      return { names: names, deck: deck, n: n, player: first, first: first, scores: [0, 0], piles: [[], []], open: [], phase: "deal", found: 0, over: false,
         moves: 0, misses: [0, 0], run: [0, 0], best: [0, 0] };
+    }
+    function start(names, n, first) {
+      clearTimers();
+      prefs.names = names; prefs.n = n;
+      G = newGame(names, makeDeck(n), n, first);
       board();
       deal();
     }
     function plate(i) {
-      return '<div class="m-player" data-p="' + i + '"><span class="m-pile" aria-hidden="true"></span><span class="m-who"><span class="m-name">' + esc(G.names[i]) + '</span><span class="m-turn">ist dran</span></span>' +
+      var du = on() && i === 0;
+      return '<div class="m-player" data-p="' + i + '"><span class="m-pile" aria-hidden="true"></span><span class="m-who"><span class="m-name">' + esc(G.names[i]) + '</span><span class="m-turn">' + (du ? "bist dran" : "ist dran") + "</span></span>" +
         '<span class="m-score" aria-label="Punkte">0</span><span class="m-streak" hidden></span></div>';
     }
     function board() {
-      ov.innerHTML = '<div class="m-table">' + LAMP +
+      ov.innerHTML = '<div class="m-table' + (on() ? " m-online" : "") + '">' + LAMP +
         '<header class="m-head">' + plate(0) + '<div class="m-mid"><div class="m-progress" aria-hidden="true"><span></span></div><div class="m-count"></div></div>' + plate(1) + X + "</header>" +
         '<main class="m-felt"><div class="m-grid">' + G.deck.map(cardHTML).join("") + '</div><div class="m-deck" aria-hidden="true"></div></main>' +
         '<footer class="m-foot"><div class="m-learn intro">Nach jedem gefundenen Paar steht hier die Kurzdefinition des Fachbegriffs – zum Mitlernen.</div><div class="m-bar"><p class="m-msg" aria-live="polite"></p><button class="btn btn-primary m-nextbtn" id="m-next" hidden>Nächster Spieler</button></div></footer></div>';
       $(".m-x", ov).addEventListener("click", close);
-      $("#m-next", ov).addEventListener("click", next);
-      $all(".m-card", ov).forEach(function (b) { b.addEventListener("click", function () { click(G.deck[+b.getAttribute("data-c")]); }); });
+      $("#m-next", ov).addEventListener("click", function () { next(false); });
+      $all(".m-card", ov).forEach(function (b) { b.addEventListener("click", function () { click(G.deck[+b.getAttribute("data-c")], false); }); });
       fit(); status();
       if (window.ResizeObserver) { var ro = new ResizeObserver(function () { if (G && !G.over) fit(); }); ro.observe($(".m-felt", ov)); }
     }
@@ -514,10 +691,12 @@
         var st = $(".m-streak", pl);
         st.hidden = G.run[i] < 2; st.textContent = "Serie ×" + G.run[i];
       });
+      var tbl = $(".m-table", ov); if (tbl) tbl.classList.toggle("m-wait-turn", on() && p === 1 && !G.over);
       $(".m-progress span", ov).style.transform = "scaleX(" + (G.found / G.n) + ")";
       $(".m-count", ov).textContent = G.found + " von " + G.n + " Paaren · Zug " + (G.moves + 1);
       $(".m-msg", ov).innerHTML = msg || (G.phase === "deal" ? "Die Karten werden ausgeteilt …" :
-        "<b>" + esc(G.names[p]) + "</b> ist dran: " + (G.phase === "pick2" ? "Decke die zweite Karte auf." : "Decke eine Karte auf."));
+        who(p, "bist dran", "ist dran") + ": " + (on() && p === 1 ? (G.phase === "pick2" ? "deckt die zweite Karte auf …" : "deckt eine Karte auf …") : (G.phase === "pick2" ? "Decke die zweite Karte auf." : "Decke eine Karte auf.")));
+      if (on()) later(pump, 0);
     }
     function deal() {
       var cards = $all(".m-card", ov), deck = $(".m-deck", ov);
@@ -552,9 +731,24 @@
       l.innerHTML = '<span class="m-learn-k">Gut gemerkt?</span><b>' + esc(c.term) + "</b>" + (c.kurz ? " – " + esc(c.kurz) : "");
       l.classList.remove("intro", "in"); void l.offsetWidth; l.classList.add("in");
     }
-    function click(c) {
+    function showNext() {
+      var nx = $("#m-next", ov);
+      if (on()) {
+        nx.hidden = G.player !== 0;
+        nx.textContent = "Weiter – Gegner/-in ist dran";
+      } else nx.hidden = false;
+      if (!nx.hidden) nx.focus({ preventScroll: true });
+    }
+    function click(c, remote) {
       if (!G || G.over || c.state === "gone") return;
-      if (c.state === "up") { zoom(c); return; }
+      if (c.state === "up" && !remote) { zoom(c); return; }
+      if (on() && !remote) {
+        if (G.player !== 0) { status(who(1, "", "ist dran") + " – warte auf den nächsten Zug."); return; }
+        if (!NET || !NET.paired) { banner("Keine Verbindung zu Gegner/-in – warte …"); return; }
+        if (G.phase !== "pick1" && G.phase !== "pick2") return;
+        send({ t: "flip", id: c.id });
+      }
+      if (c.state === "up") return;
       if (G.phase === "pick1") {
         flip(c, true); G.open = [c]; G.phase = "pick2"; status(); return;
       }
@@ -565,15 +759,16 @@
         G.phase = "wait";
         G.run[p]++; G.best[p] = Math.max(G.best[p], G.run[p]);
         var serie = G.run[p] >= 2 ? " <span class=\"m-serie\">Serie ×" + G.run[p] + "!</span>" : "";
-        status("<b>Paar!</b> " + esc(G.names[p]) + " bekommt einen Punkt und ist noch einmal dran." + serie);
+        status("<b>Paar!</b> " + who(p, "bekommst einen Punkt und bist noch einmal dran.", "bekommt einen Punkt und ist noch einmal dran.") + serie);
         learn(a);
         later(function () { el(a).classList.add("hit"); el(b).classList.add("hit"); }, reduce ? 0 : 380);
         later(function () { collect([a, b], p); }, reduce ? 900 : 1500);
       } else {
         G.phase = "reveal"; G.misses[p]++; G.run[p] = 0;
-        status("Kein Paar. Schaut euch beide Karten in Ruhe an – dann ist <b>" + esc(G.names[1 - p]) + "</b> dran.");
+        status(on() ? (p === 0 ? "Kein Paar. Schau dir beide Karten an – dann ist <b>Gegner/-in</b> dran." : "Kein Paar. Schau dir die Karten an – gleich bist <b>du</b> dran.")
+          : "Kein Paar. Schaut euch beide Karten in Ruhe an – dann ist <b>" + esc(G.names[1 - p]) + "</b> dran.");
         later(function () { [a, b].forEach(function (x) { var e = el(x); e.classList.remove("miss"); void e.offsetWidth; e.classList.add("miss"); }); }, reduce ? 0 : 420);
-        var nx = $("#m-next", ov); nx.hidden = false; nx.focus({ preventScroll: true });
+        showNext();
       }
     }
     // Gefundenes Paar fliegt auf den Stapel des Spielers
@@ -610,13 +805,18 @@
         ], { duration: 640, delay: i * 70, easing: EASE_IO, fill: "forwards" }).onfinish = function () { fly.remove(); finish(); };
       });
     }
-    function next() {
+    function next(remote) {
       if (!G || G.phase !== "reveal") return;
+      if (on() && !remote) {
+        if (G.player !== 0) return;
+        if (!NET || !NET.paired) { banner("Keine Verbindung zu Gegner/-in – warte …"); return; }
+        send({ t: "next" });
+      }
       G.open.forEach(function (c) { flip(c, false); var e = el(c); if (e) e.classList.remove("miss"); });
       G.open = []; G.player = 1 - G.player; G.phase = "pick1";
       $("#m-next", ov).hidden = true;
       status();
-      var first = $(".m-card:not(.gone)", ov); if (first) first.focus({ preventScroll: true });
+      if (!on() || G.player === 0) { var first = $(".m-card:not(.gone)", ov); if (first) first.focus({ preventScroll: true }); }
     }
 
     // ------------------------------------------------ Siegerehrung
@@ -628,11 +828,12 @@
       function step(i, place) {
         return '<div class="m-step m-place-' + place + (w < 0 ? " m-tie" : "") + '"><span class="m-step-name">' + esc(G.names[i]) + '</span><span class="m-step-pairs">' + s[i] + (s[i] === 1 ? " Paar" : " Paare") + '</span><span class="m-step-block"><span>' + (w < 0 ? "1" : place) + "</span></span></div>";
       }
+      var title = w < 0 ? "Unentschieden!" : on() ? (w === 0 ? "Herzlichen Glückwunsch – du hast gewonnen!" : "Gegner/-in hat gewonnen!") : "Herzlichen Glückwunsch, " + esc(G.names[w]) + "!";
+      var sub = w < 0 ? "Ihr habt beide gleich viele Paare gefunden." : on() ? (w === 0 ? "Du gewinnst mit " + s[0] + " zu " + s[1] + "." : "Gegner/-in gewinnt mit " + s[1] + " zu " + s[0] + ". Beim nächsten Mal klappt’s!") : esc(G.names[w]) + " gewinnt das Fachbegriffe-Memory mit " + s[w] + " zu " + s[1 - w] + ".";
       var layer = document.createElement("div");
       layer.className = "m-end-layer";
       layer.innerHTML = '<canvas class="m-confetti" aria-hidden="true"></canvas><div class="m-end-scroll"><section class="m-sheet m-end" role="alertdialog" aria-labelledby="m-end-title">' + X +
-        '<h2 id="m-end-title">' + (w < 0 ? "Unentschieden!" : "Herzlichen Glückwunsch, " + esc(G.names[w]) + "!") + "</h2>" +
-        '<p class="m-end-sub">' + (w < 0 ? "Ihr habt beide gleich viele Paare gefunden." : esc(G.names[w]) + " gewinnt das Fachbegriffe-Memory mit " + s[w] + " zu " + s[1 - w] + ".") + "</p>" +
+        '<h2 id="m-end-title">' + title + "</h2>" + '<p class="m-end-sub">' + sub + "</p>" +
         '<div class="m-podium">' + step(order[1], 2) + step(order[0], 1) + "</div>" +
         '<table class="m-stats"><thead><tr><th scope="col"><span class="visually-hidden">Wert</span></th><th scope="col">' + esc(G.names[0]) + '</th><th scope="col">' + esc(G.names[1]) + "</th></tr></thead><tbody>" +
         "<tr><th scope=\"row\">Gefundene Paare</th><td>" + s[0] + "</td><td>" + s[1] + "</td></tr>" +
@@ -642,13 +843,17 @@
         '<details class="m-found"><summary>Gefundene Fachbegriffe ansehen</summary><div class="m-found-cols">' + [0, 1].map(function (i) {
           return "<div><b>" + esc(G.names[i]) + "</b><ul>" + (G.piles[i].length ? G.piles[i].map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") : "<li>keine Paare</li>") + "</ul></div>";
         }).join("") + "</div></details>" +
-        '<div class="m-end-actions"><button class="btn btn-primary" id="m-again">Revanche</button><button class="btn" id="m-setup">Neue Einstellungen</button><button class="btn" id="m-close">Schließen</button></div>' +
-        '<p class="m-privacy">Bei der Revanche beginnt ' + esc(G.names[1 - G.first]) + ".</p></section></div>";
+        '<div class="m-end-actions"><button class="btn btn-primary" id="m-again">Revanche</button>' + (on() ? "" : '<button class="btn" id="m-setup">Neue Einstellungen</button>') + '<button class="btn" id="m-close">' + (on() ? "Spiel verlassen" : "Schließen") + "</button></div>" +
+        '<p class="m-privacy" id="m-again-note">Bei der Revanche beginnt ' + (on() ? (G.first === 0 ? "Gegner/-in" : "du") : esc(G.names[1 - G.first])) + ".</p></section></div>";
       $(".m-table", ov).appendChild(layer);
       $(".m-x", layer).addEventListener("click", close);
       $("#m-close", layer).addEventListener("click", close);
-      $("#m-setup", layer).addEventListener("click", setup);
-      $("#m-again", layer).addEventListener("click", function () { start(G.names, G.n, 1 - G.first); });
+      if (!on()) $("#m-setup", layer).addEventListener("click", setup);
+      $("#m-again", layer).addEventListener("click", function () {
+        if (!on()) { start(G.names, G.n, 1 - G.first); return; }
+        if (!NET || !NET.paired) { $("#m-again-note", layer).textContent = "Gegner/-in ist nicht mehr verbunden."; return; }
+        if (NET.host) dealOnline(); else { send({ t: "again" }); $("#m-again-note", layer).textContent = "Revanche angefragt – die Karten werden gleich ausgeteilt …"; }
+      });
       $("#m-again", layer).focus({ preventScroll: true });
       if (!reduce) confetti($(".m-confetti", layer));
     }
@@ -690,7 +895,7 @@
     var cards = terms.map(function (t) { return { key: cardKey(meta.id, t.b), b: t.b, lang: t.lang, kurz: t.kurz }; });
     body.innerHTML = memoryBtnHTML() + '<div id="cs"></div>' + glossarHTML();
     bindGlossar(body);
-    $("[data-memory]", body).addEventListener("click", function () { openMemory(terms, meta.nr + " " + meta.titel); });
+    $("[data-memory]", body).addEventListener("click", function () { openMemory(terms, meta.nr + " " + meta.titel, meta.id); });
     cardSession($("#cs", body), cards, {
       onReset: function () { var l = leitner(); cards.forEach(function (c) { delete l[c.key]; }); saveLeitner(l); }
     });

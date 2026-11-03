@@ -386,7 +386,7 @@
       $("[data-memory]", main).addEventListener("click", function () {
         var tid = $("#w-sel", main).value; store("wThema", tid);
         var x = all.filter(function (y) { return y.meta.id === tid; })[0];
-        F.openMemory(x.topic.begriffe.filter(termOK), x.meta.nr + " " + x.meta.titel);
+        F.openMemory(x.topic.begriffe.filter(termOK), x.meta.nr + " " + x.meta.titel, x.meta.id);
       });
       $("#w-due", main).addEventListener("click", function () { F.cardSession(sess, due, { dueFirst: true, limit: 40 }); sess.scrollIntoView({ behavior: "smooth" }); });
       $("#w-new", main).addEventListener("click", function () {
@@ -661,7 +661,7 @@
   }
 
   // ------------------------------------------------------------------ Lernstand als PDF speichern und wieder laden
-  var LS_PREFIX = "feibitur.", LS_SKIP = { chatConsent: 1 }; // Einwilligungen gelten nur für das jeweilige Gerät
+  var LS_PREFIX = "feibitur.", LS_SKIP = { chatConsent: 1, memoryOnlineConsent: 1 }; // Einwilligungen gelten nur für das jeweilige Gerät
   var MARK_A = "FEIBITUR-LERNSTAND-BEGIN", MARK_B = "FEIBITUR-LERNSTAND-END";
   function collect() {
     var d = {};

@@ -1,0 +1,15 @@
+{
+  // Feibitur – Vermittler für das Online-Fachbegriffe-Memory (Cloudflare Worker + Durable Object, kostenloser Tarif)
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "feibitur-memory",
+  "main": "src/index.js",
+  "compatibility_date": "2026-06-01",
+  "workers_dev": true,
+  // Keine Protokolle: Spielzüge und IP-Adressen werden nicht aufgezeichnet
+  "observability": { "enabled": false },
+  "durable_objects": {
+    "bindings": [{ "name": "RAUM", "class_name": "Raum" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Raum"] }],
+  "vars": { "ALLOWED_ORIGINS": "https://feibitur.janrickmer.de" }
+}
