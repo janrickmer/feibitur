@@ -70,7 +70,7 @@
     var h = (location.hash || "#/").replace(/^#\/?/, "").split("/").filter(Boolean);
     if (h[0] === "powi") return renderPowi(h[1] || "grundlagen", h[2] || null, h[3] || "begriffe");
     if (h[0] === "religion") return renderReligion();
-    if (h[0] === "lerntools" && window.FeibiturTools) { current.topic = null; return window.FeibiturTools.render(h.slice(1)); }
+    if (h[0] === "lerntools") return go("powi/tools/" + (h[1] || ""));
     renderHome();
   }
   function go(path) { if (location.hash === "#/" + path) route(); else location.hash = "#/" + path; }
@@ -107,6 +107,33 @@
   function toolsBtn() { return '<a class="btn btn-small btn-tools" href="#/lerntools" aria-label="Lerntools">' + ICON.tools + "<span>Lerntools</span></a>"; }
   var SEC_NAME = { begriffe: "Fachbegriffe", inhalte: "Inhalte", aufgaben: "Übungsaufgaben" };
   function hjShort(t) { return t.id === "grundlagen" ? "G" : t.kurz; }
+  var TOOL_TAB = { id: "tools", kurz: "Tools", titel: "Vorbereitungs-Tools", themen: [] };
+  function renderToolsTab(tab, slug) {
+    var T = window.FeibiturTools, tools = T ? T.tools : [], groups = [];
+    current.topic = null;
+    tools.forEach(function (t) { if (groups.indexOf(t.g) < 0) groups.push(t.g); });
+    var valid = slug && (slug === "lernstand" || tools.some(function (t) { return t.slug === slug; }));
+    var side = '<aside class="sidebar sidebar-tools"><h2>Vorbereitungs-Tools</h2>' + groups.map(function (g) {
+      return '<h3 class="tool-grp">' + esc(g) + "</h3>" + tools.filter(function (t) { return t.g === g; }).map(function (t) {
+        return '<button class="topic-btn" data-tool="' + t.slug + '" aria-expanded="' + (t.slug === slug) + '"><span class="topic-nr">' + esc(t.k) + '</span><span class="topic-title">' + esc(t.t) + "</span></button>";
+      }).join("");
+    }).join("") + "</aside>";
+    var panel = $("#tabpanel");
+    var wasSlug = panel.getAttribute("data-tool");
+    panel.className = "tabpanel tabpanel-tools" + (valid ? " has-topic" : "");
+    panel.setAttribute("data-tool", slug || "");
+    panel.innerHTML = side + '<div class="stage" id="stage"><div class="tools-bar"><a class="btn btn-primary btn-ls" href="#/powi/tools/lernstand"' + (slug === "lernstand" ? ' aria-current="page"' : "") + ">" + ICON.download + "<span>Aktuellen Leistungsstand laden / speichern</span></a></div><div id=\"tool-host\"></div></div>";
+    $all(".topic-btn", panel).forEach(function (b) {
+      b.addEventListener("click", function () { var id = b.getAttribute("data-tool"); go("powi/tools/" + (id === slug ? "" : id)); });
+    });
+    if (T) T.renderInto(valid ? slug : "");
+    var tp = $(".tool-panel", panel);
+    if (tp && valid && wasSlug !== slug) {
+      tp.classList.add("paste");
+      var r = $("#stage").getBoundingClientRect();
+      if (r.top < 0 || r.top > window.innerHeight * 0.5) $("#stage").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
   function hjName(t) { return String(t.titel).replace(/^Q\d:\s*/, ""); }
   function footer() {
     return '<footer class="site-foot"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · Feibitur speichert deinen Lernstand nur in deinem Browser.</footer>';
@@ -119,9 +146,8 @@
     var weiter = zm ? '<a class="weiter" href="#/powi/' + z.tab + "/" + z.topic + "/" + z.sec + '"><span>Weiter, wo du aufgehört hast:</span> <b>' + esc(zm.nr) + " · " + esc(SEC_NAME[z.sec] || "") + "</b>" + ICON.arrow + "</a>" : "";
     app.innerHTML = '<div class="home"><header class="home-head"><h1 class="wordmark">Feibitur</h1><p>Deine Vorbereitung auf das Landesabitur</p></header>' +
       '<main class="home-choices">' +
-      '<button class="choice choice-powi" data-go="powi"><span class="choice-title">Politik und Wirtschaft</span><span class="choice-sub">Fachbegriffe, Inhalte und Übungsaufgaben für Q1–Q4</span>' +
-      '<span class="hj-strip" aria-hidden="true"><i data-hj="grundlagen">G</i><i data-hj="q1">Q1</i><i data-hj="q2">Q2</i><i data-hj="q3">Q3</i><i data-hj="q4">Q4</i></span></button>' +
-      '<button class="choice choice-tools" data-go="lerntools"><span class="choice-title">Lerntools</span><span class="choice-sub">Lernplan, Fortschritt, Operatoren-Trainer, Abi-Simulation und mehr (Politik und Wirtschaft)</span></button>' +
+      '<button class="choice choice-powi" data-go="powi"><span class="choice-title">Politik und Wirtschaft</span><span class="choice-sub">Fachbegriffe, Inhalte, Übungsaufgaben und Vorbereitungs-Tools für Q1–Q4</span>' +
+      '<span class="hj-strip" aria-hidden="true"><i data-hj="tools">Tools</i><i data-hj="grundlagen">G</i><i data-hj="q1">Q1</i><i data-hj="q2">Q2</i><i data-hj="q3">Q3</i><i data-hj="q4">Q4</i></span></button>' +
       '<button class="choice choice-rel" data-go="religion"><span class="choice-title">ev. Religion</span><span class="choice-sub">Noch keine Inhalte</span></button>' +
       weiter + '</main>' + footer() + '</div>';
     $all("[data-go]", app).forEach(function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
@@ -157,10 +183,11 @@
 
   function renderPowi(tabId, topicId, section) {
     document.title = "Politik und Wirtschaft – Feibitur";
-    var tab = SITE.tabs.filter(function (t) { return t.id === tabId; })[0] || SITE.tabs[0];
+    var TABS = [TOOL_TAB].concat(SITE.tabs);
+    var tab = TABS.filter(function (t) { return t.id === tabId; })[0] || SITE.tabs[0];
     var existing = $("#powi-root");
     if (!existing) {
-      app.innerHTML = topbar(toolsBtn() + '<a class="btn btn-small" href="#/">Startseite</a>') +
+      app.innerHTML = topbar('<a class="btn btn-small" href="#/">Startseite</a>') +
         '<div id="powi-root"><section class="powi-hero"><div class="powi-hero-in"><h1>Politik und Wirtschaft</h1><p>Vorbereitung auf das Landesabitur 2027 in Hessen</p></div>' +
         kursSwitchHTML() + "</section>" +
         renderHinweis() + '<div class="tabs-wrap"><div class="tabs" role="tablist" aria-label="Kurshalbjahre"></div></div><div id="tabpanel"></div></div>' + footer();
@@ -170,11 +197,12 @@
     }
     $("#powi-root").setAttribute("data-hj", tab.id);
     var tabsEl = $(".tabs");
-    tabsEl.innerHTML = SITE.tabs.map(function (t) {
+    tabsEl.innerHTML = TABS.map(function (t) {
       return '<button class="tab" role="tab" data-hj="' + t.id + '" aria-selected="' + (t.id === tab.id) + '" data-tab="' + t.id + '"><span class="tab-nr">' + esc(hjShort(t)) + '</span><span class="tab-long">' + esc(hjName(t)) + "</span></button>";
     }).join("");
     var sel = $(".tab[aria-selected=true]", tabsEl);
     if (sel && tabsEl.scrollWidth > tabsEl.clientWidth) tabsEl.scrollLeft = Math.max(0, sel.offsetLeft - 16);
+    if (tab.id === "tools") return renderToolsTab(tab, topicId);
     var valid = topicId && TOPIC_META[topicId];
     if (valid) store("zuletzt", { tab: tab.id, topic: topicId, sec: TOPIC_META[topicId].methode ? "inhalte" : section });
     var z = store("zuletzt") || {};
@@ -892,7 +920,7 @@
     if (!speechSupported()) return false;
     speechSynthesis.cancel();
     var v = pickVoice();
-    if (!v) { alert("Auf diesem Gerät ist keine lokale deutsche Stimme verfügbar. In den Lerntools unter „Vorlesen“ kannst du die Einstellungen anpassen."); return false; }
+    if (!v) { alert("Auf diesem Gerät ist keine lokale deutsche Stimme verfügbar. In den Vorbereitungs-Tools unter „Vorlesen“ kannst du die Einstellungen anpassen."); return false; }
     var chunks = String(text).replace(/\s+/g, " ").match(/[^.!?]+[.!?]*\s*/g) || [text];
     chunks.forEach(function (c, i) {
       var u = new SpeechSynthesisUtterance(c);
