@@ -456,6 +456,11 @@
    "themen": [
     {
      "id": "q2-1",
+     "podcast": {
+      "src": "assets/audio/q2-1.mp3",
+      "titel": "Wie die Schuldenbremse die Regierung sprengte",
+      "dauer": 1643
+     },
      "nr": "Q2.1",
      "titel": "Konjunkturanalyse und Konjunkturpolitik – Herausforderungen prozessorientierter Wirtschaftspolitik",
      "kcgo": {
