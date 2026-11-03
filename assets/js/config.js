@@ -6,5 +6,5 @@
  */
 window.FEIBITUR_CONFIG = {
   chatEndpoint: "https://feibitur-chat.feindt.workers.dev",
-  memoryEndpoint: ""
+  memoryEndpoint: "wss://feibitur-memory.feindt.workers.dev/spiel"
 };
