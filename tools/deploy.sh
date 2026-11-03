@@ -1,13 +1,13 @@
 #!/bin/sh
 # Veröffentlicht den aktuellen Stand des Arbeits-Branches auf gh-pages (GitHub Pages).
-# Interne Design-Arbeitsdateien (.impeccable/) werden dabei nicht mitveröffentlicht.
+# Interne Design-Arbeitsdateien (.impeccable/) und die Podcast-Quelltexte (tools/podcast/) werden nicht mitveröffentlicht.
 set -e
 cd "$(dirname "$0")/.."
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 git fetch -q origin gh-pages || true
 IDX=$(mktemp)
 GIT_INDEX_FILE="$IDX" git read-tree HEAD
-GIT_INDEX_FILE="$IDX" git rm -r -q --cached --ignore-unmatch .impeccable
+GIT_INDEX_FILE="$IDX" git rm -r -q --cached --ignore-unmatch .impeccable tools/podcast
 TREE=$(GIT_INDEX_FILE="$IDX" git write-tree)
 rm -f "$IDX"
 PARENT=$(git rev-parse -q --verify origin/gh-pages || true)
