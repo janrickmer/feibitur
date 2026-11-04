@@ -1,5 +1,5 @@
 {
- "stand": "2026-11-03",
+ "stand": "2026-11-04",
  "hinweis": {
   "titel": "Worauf es im Landesabitur 2027 ankommt",
   "quelle": "Abiturerlass zum Landesabitur 2027 (Erlass vom 2. Juli 2025), Abschnitt „Politik und Wirtschaft“ sowie allgemeine Durchführungsbestimmungen.",
@@ -484,6 +484,11 @@
     },
     {
      "id": "q2-2",
+     "podcast": {
+      "src": "assets/audio/q2-2.mp3",
+      "titel": "Braucht die Soziale Marktwirtschaft ständiges Wachstum?",
+      "dauer": 1678
+     },
      "nr": "Q2.2",
      "titel": "Nachhaltiges Wachstum und fairer Wettbewerb – Herausforderungen wirtschaftlicher Ordnungspolitik",
      "kcgo": {
@@ -508,6 +513,11 @@
     },
     {
      "id": "q2-3",
+     "podcast": {
+      "src": "assets/audio/q2-3.mp3",
+      "titel": "Wie die EZB die Inflation steuert",
+      "dauer": 1126
+     },
      "nr": "Q2.3",
      "titel": "Sicherung der Preisniveaustabilität in der Europäischen Währungsunion",
      "kcgo": {
