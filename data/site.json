@@ -1,5 +1,5 @@
 {
- "stand": "2026-11-05",
+ "stand": "2026-11-08",
  "hinweis": {
   "titel": "Worauf es im Landesabitur 2027 ankommt",
   "quelle": "Abiturerlass zum Landesabitur 2027 (Erlass vom 2. Juli 2025), Abschnitt „Politik und Wirtschaft“ sowie allgemeine Durchführungsbestimmungen.",
@@ -540,6 +540,11 @@
     },
     {
      "id": "q2-4",
+     "podcast": {
+      "src": "assets/audio/q2-4.mp3",
+      "titel": "Warum trotz Millionen Arbeitslosen Fachkräfte fehlen",
+      "dauer": 1821
+     },
      "nr": "Q2.4",
      "titel": "Arbeitsmarkt- und Tarifpolitik",
      "kcgo": {
@@ -753,6 +758,11 @@
     },
     {
      "id": "q4-3",
+     "podcast": {
+      "src": "assets/audio/q4-3.mp3",
+      "titel": "Vom Friedensprojekt zur Aufrüstungsunion",
+      "dauer": 1353
+     },
      "nr": "Q4.3",
      "titel": "Die Europäische Union als globaler Akteur",
      "kcgo": {
