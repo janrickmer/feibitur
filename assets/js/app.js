@@ -58,7 +58,14 @@
     $("#gate-form").addEventListener("submit", function (e) {
       e.preventDefault();
       sha256(input.value.trim()).then(function (h) {
-        if (h === PW_HASH) { sess("ok", "1"); gate.hidden = true; app.hidden = false; start(); }
+        if (h === PW_HASH) {
+          sess("ok", "1");
+          var card = $(".gate-card"), done = function () { gate.hidden = true; app.hidden = false; start(); };
+          if (card.animate && !(window.FeibiturMotion && FeibiturMotion.reduced())) {
+            card.animate([{ transform: "rotate(-.8deg)", opacity: 1 }, { transform: "translateY(-36px) rotate(-4deg)", opacity: 0 }],
+              { duration: 240, easing: "cubic-bezier(.7, 0, .84, 0)", fill: "forwards" }).onfinish = done;
+          } else done();
+        }
         else { $("#gate-error").hidden = false; input.select(); }
       });
     });
@@ -74,9 +81,27 @@
     renderHome();
   }
   function go(path) { if (location.hash === "#/" + path) route(); else location.hash = "#/" + path; }
+  var lastParts = null;
+  function parts() { return (location.hash || "#/").replace(/^#\/?/, "").split("/").filter(Boolean); }
+  function navigate() {
+    var h = parts(), prev = lastParts, kind = null;
+    lastParts = h;
+    if (prev) {
+      var a = prev[0] === "powi", b = h[0] === "powi";
+      if ((!prev[0] && b) || (a && !h[0])) kind = "plakat";
+      else if (a && b && (prev[1] || "grundlagen") !== (h[1] || "grundlagen")) kind = "tab";
+    }
+    var reduce = window.FeibiturMotion && FeibiturMotion.reduced();
+    if (!kind || reduce || !document.startViewTransition) return route();
+    var root = document.documentElement;
+    root.setAttribute("data-vt", kind);
+    var vt = document.startViewTransition(route);
+    vt.finished.then(function () { root.removeAttribute("data-vt"); }, function () { root.removeAttribute("data-vt"); });
+  }
 
   function start() {
-    window.addEventListener("hashchange", route);
+    window.addEventListener("hashchange", navigate);
+    lastParts = parts();
     fetchJSON("data/site.json").then(function (s) {
       SITE = s;
       s.tabs.forEach(function (t) { t.themen.forEach(function (th) { th.tab = t.id; TOPIC_META[th.id] = th; }); });
@@ -140,17 +165,27 @@
   }
 
   // ---------------------------------------------------------------- Startseite
+  var homeShown = false;
   function renderHome() {
     document.title = "Feibitur";
     var z = store("zuletzt"), zm = z && TOPIC_META[z.topic];
     var weiter = zm ? '<a class="weiter" href="#/powi/' + z.tab + "/" + z.topic + "/" + z.sec + '"><span>Weiter, wo du aufgehört hast:</span> <b>' + esc(zm.nr) + " · " + esc(SEC_NAME[z.sec] || "") + "</b>" + ICON.arrow + "</a>" : "";
-    app.innerHTML = '<div class="home"><header class="home-head"><h1 class="wordmark">Feibitur</h1><p>Deine Vorbereitung auf das Landesabitur</p></header>' +
+    var enter = !homeShown; homeShown = true;
+    var M = window.FeibiturMotion;
+    // Ohne motion.js (z. B. alte Datei im Zwischenspeicher) bleibt es bei der festen Wortmarke
+    var head = M ? '<h1 class="visually-hidden">Feibitur</h1>' +
+      '<div class="wender" aria-hidden="true"><div class="wender-slats"><div class="wender-still">' + M.markHTML() + '</div></div></div>' +
+      '<div class="home-sub"><p>Deine Vorbereitung auf das Landesabitur</p><button class="wender-pause" type="button" aria-pressed="false" hidden>' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M8 5l11 7-11 7z"/></svg><span>Plakatwand anhalten</span></button></div>'
+      : '<h1 class="wordmark">Feibitur</h1><p>Deine Vorbereitung auf das Landesabitur</p>';
+    app.innerHTML = '<div class="home' + (enter ? " enter" : "") + '"><header class="home-head">' + head + '</header>' +
       '<main class="home-choices">' +
       '<button class="choice choice-powi" data-go="powi"><span class="choice-title">Politik und Wirtschaft</span><span class="choice-sub">Fachbegriffe, Inhalte, Übungsaufgaben und Vorbereitungs-Tools für Q1–Q4</span>' +
       '<span class="hj-strip" aria-hidden="true"><i data-hj="tools">Tools</i><i data-hj="grundlagen">G</i><i data-hj="q1">Q1</i><i data-hj="q2">Q2</i><i data-hj="q3">Q3</i><i data-hj="q4">Q4</i></span></button>' +
       '<button class="choice choice-rel" data-go="religion"><span class="choice-title">ev. Religion</span><span class="choice-sub">Noch keine Inhalte</span></button>' +
       weiter + '</main>' + footer() + '</div>';
     $all("[data-go]", app).forEach(function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
+    if (M) M.wender($(".wender", app), SITE, $(".wender-pause", app));
     window.scrollTo(0, 0);
   }
 

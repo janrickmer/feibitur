@@ -260,7 +260,7 @@ Geltungsbereich: Diese Datei beschreibt die PoWi-Welt „Plakatwand“ (Fachseit
 - Zwei Stimmen: Plakatschrift für Nummern und Titel, Source Serif 4 für alles Lesbare (höchstens 68 Zeichen).
 - Zustand als Zeichen mit Wort: Störer, Erledigt-Streifen, Zuletzt-Fähnchen.
 - Kabelbinder-Laschen und Laternenmast als wiederkehrende Signaturen.
-- Bewegung heißt Kleben: 380 ms mit leichtem Überschwingen, sonst kurze, ruhige Rückmeldung.
+- Bewegung heißt Kleben: 380 ms mit leichtem Überschwingen, sonst kurze, ruhige Rückmeldung. Die Startseite trägt eine drehende Plakatwand (Prismenwender), jeder Seitenwechsel wird von oben überklebt; Lesebereiche bleiben still.
 - Alles selbst gehostet: Schriften als OFL-Dateien im Repo, Bilder mit Herkunftsnachweis.
 
 ## Colors
@@ -316,7 +316,7 @@ Die Betongrau-Leiter, kühl (Farbton um 240°), vom Papier bis zum Druckschwarz:
 **Character:** Archivo in 66 % Breite und Gewicht 850 ist die Plakatschrift: schmal, schwer, in Versalien, mit Durchschuss unter 1 wie gedruckte Wahlplakate. Source Serif 4 ist die ruhige Lesestimme daneben. Beide liegen als WOFF2 (latin und latin-ext, SIL OFL) in `assets/fonts`; der lateinische Archivo-Schnitt wird vorgeladen.
 
 ### Hierarchy
-- **Display** (850, clamp(4.4rem, 19vw, 12rem), 0.82, Breite 66 %, Versalien): nur die Wortmarke „Feibitur“ auf Start- und Passwortseite.
+- **Display** (850, clamp(4.4rem, 19vw, 12rem), 0.82, Breite 66 %, Versalien): nur die Wortmarke „Feibitur“ auf der Passwortseite (dort clamp(3.4rem, 17vw, 5.2rem)) und als Plakat des Prismenwenders (21cqw, unter 560px Breite der Wand 24.5cqw). Ohne `motion.js` steht sie auf der Startseite wie früher fest.
 - **Headline** (850, clamp(2.6rem, 8.5vw, 6.2rem), 0.84, Breite 66 %, Versalien): Seitentitel der Fachwelt und der Lerntools.
 - **Poster-Nummer** (850, clamp(3.6rem, 9vw, 6.4rem), 0.8): die Unterthemen-Nummer („Q2.3“) im Themenplakat. Halbjahresplakate tragen ihre Kennung in 2.3rem, Mast-Schilder in 1.5rem, Aufgaben ihre Nummer in 1.9rem, alle im selben Schnitt.
 - **Headline-Poster** (850, clamp(2rem, 5.2vw, 4.6rem), 0.9, Breite 66 %, Versalien, Silbentrennung): Titel des Unterthemas über die volle Plakatbreite.
@@ -338,7 +338,7 @@ Die Betongrau-Leiter, kühl (Farbton um 240°), vom Papier bis zum Druckschwarz:
 
 Die Wand ist der Raum, die Bögen sind die Inhalte. Zwischen zwei Bögen bleibt immer Wand sichtbar (`wall-gap` 10px in der Plakatbahn, `stack` 1.1rem zwischen Inhaltsbögen). Seitliche Rinne 16px (`gutter`), in der Fachwelt unter 560px 10px (`gutter-tight`).
 
-- **Startseite** (max. 1180px): Wortmarke in Display-Größe (bis 12rem), darunter ein asymmetrisches Raster 1.55fr / 1fr. Die PoWi-Karte überspannt zwei Zeilen (min. 340px) und trägt unten die Halbjahresleiste randabfallend; rechts gestapelt Lerntools (schwarz) und ev. Religion (`g1`, Platzhalter). Darunter der gelbe Weiter-Zettel. Unter 860px einspaltig.
+- **Startseite** (max. 1180px): oben der Prismenwender über die volle Breite (Seitenverhältnis 2.4 : 1, unter 560px 1 : 1.02), darunter links der Untertitel in Serif und rechts der Knopf „Plakatwand anhalten“. Dann ein asymmetrisches Raster 1.55fr / 1fr: Die PoWi-Karte überspannt zwei Zeilen (min. 340px) und trägt unten die Halbjahresleiste mit Tools randabfallend; rechts ev. Religion (`g1`, Platzhalter). Darunter der gelbe Weiter-Zettel. Unter 860px einspaltig.
 - **Fachwelt PoWi** (max. 1400px): Kopf mit Titel links und Kurswahl rechts, darunter der Abitur-Aushang, dann die Halbjahres-Plakatbahn (fünf gleiche Spalten, Abstand 10px, aktives Plakat 10px angehoben). Darunter Mast (300px, ab 1100px 250px, klebt oben mit 0.8rem) und Plakatfläche. Inhalte stehen 2fr / 1fr mit dem klebenden Chat rechts; unter 1024px darunter (max. 560px hoch).
 - **Mobil** (≤ 860px): Die Plakatbahn wird ein waagerecht scrollbarer Streifen aus 150px breiten Plakaten mit Scroll-Snap. Ist ein Unterthema offen, wird der Mast zur waagerechten Schild-Leiste über dem Plakat: eine 6px-Metallstange quer, Schilder nur mit Nummer, ohne Kabelbinder.
 - **Lerntools** (max. 1100px): Gruppen als schwarzer Plakatkopf mit einem Bogen darunter; jedes Werkzeug ist eine Zeile (Titel 15rem · Beschreibung · Pfeil), keine Kacheln.
@@ -411,8 +411,19 @@ Kopf vollflächig in der Halbjahresfarbe, zwei Kabelbinder-Laschen (34 × 13px, 
 - **Erledigt-Streifen:** 150px, Kontrollgrün mit Weiß, Wort „Erledigt“, über der Ecke einer bearbeiteten Aufgabe; für Screenreader zusätzlich „bearbeitet“.
 - **Zuletzt-Fähnchen:** Goldgelber Zettel „Zuletzt hier“ (0.68rem, Versalien), 2.5° gedreht, oben rechts am zuletzt besuchten Mast-Schild. Auf der Startseite entspricht ihm der Weiter-Zettel.
 
+### Prismenwender (Signatur der Startseite)
+Die Wortmarke steht auf einer drehenden Plakatwand, wie sie im Straßenwahlkampf hängt (`assets/js/motion.js`). Ein Druckschwarz-Rahmen (10px, mobil 7px) mit zwei Kabelbindern in Schiefer hält 12 senkrechte Lamellen (unter 900px 9, unter 560px 6). Jede Lamelle ist ein dreiseitiges Prisma (CSS 3D, `perspective` 2200px, Seitenabstand = Lamellenbreite / 2√3) und trägt auf jeder Seite ihren Ausschnitt desselben Plakats; feine Fugen entstehen aus 1px-Innenschatten, nicht aus Lücken.
+- **Plakate:** Wortmarke (Plakatweiß, „Feibitur“ in Display-Schnitt, unten die Vierer-Leiste G · Q1 · Q2 · Q3 · Q4), dann Grundlagen und Q1–Q4 in ihrer Halbjahresfarbe (Kennung 30cqw, Titel 5.8cqw ohne Silbentrennung, Fußband in Plakatweiß mit den Unterthemen-Nummern; bei Q4 Druckschwarz mit Goldgelb) und zuletzt die Vorbereitungs-Tools (`--tl`). Alle Angaben kommen aus `site.json` und der Tool-Liste, nichts ist erfunden. Unter 560px Wandbreite stehen Kennung und Titel untereinander.
+- **Ablauf:** Beim ersten Öffnen zeigt die Wand Blueback (die Rückseite des Plakatpapiers) und dreht nach 0,7 s auf die Wortmarke; danach hält jedes Plakat 3,8 s. Eine Drehung dauert 900ms in `--ease-io`, die Lamellen starten von links nach rechts im Abstand von 55ms, ihre Flächen dunkeln in der Drehung auf 72 % ab. Die gerade verdeckte Seite bekommt erst dann das nächste Plakat.
+- **Kontrolle:** Die Wand dreht nur, solange sie zu mindestens 25 % sichtbar ist und der Tab im Vordergrund liegt. Der Knopf „Plakatwand anhalten“ / „Plakatwand weiterdrehen“ (44px, 2px Druckschwarz-Rahmen, Pause- bzw. Abspielsymbol, `aria-pressed`) stoppt sie dauerhaft für diesen Besuch. Die Wand selbst ist `aria-hidden`; die Überschrift „Feibitur“ steht unsichtbar für Screenreader davor.
+- **Bewegung reduzieren:** Keine Lamellen, kein Knopf; die Wortmarke steht still.
+- **Erster Auftritt:** Nach dem Passwort werden die Bögen der Startseite nacheinander angeklebt (`paste`, 420/500/580ms Verzögerung), nur beim ersten Aufruf je Seitenladen.
+
+### Seitenübergänge
+Mit der View Transitions API (`navigate()` in `app.js`) wird jeder Wechsel zwischen Startseite und Politik und Wirtschaft zu einem neuen Plakat, das von oben über das alte geklebt wird (`ueberkleben`: `clip-path` von unten offen auf geschlossen plus 10px Absenken, 440ms `--ease-out`; das alte Bild bleibt still darunter). Beim Wechsel des Halbjahrs (auch Vorbereitungs-Tools) wandert das aktive Halbjahresplakat in `--t-paste` / `--ease-paste` an seinen neuen Platz, und die Fläche darunter (`#tabpanel`) wird in 380ms überklebt, das alte Bild verschwindet am Ende in 120ms. Unterthemen öffnen weiter mit dem Ankleben des Themenplakats; Bereichswechsel und Lesebereiche bekommen keinen Übergang. Browser ohne View Transitions und „Bewegung reduzieren“ wechseln ohne Animation.
+
 ### Passwortseite
-Ein einzelner weißer Bogen (max. 420px) mittig auf der Wand, −0.8° gedreht, mit zwei Kabelbindern; Wortmarke, Satz in Schiefer, Feld, schwarzer Knopf, unten randabfallend die fünf Halbjahresstreifen (14px).
+Ein einzelner weißer Bogen (max. 420px) mittig auf der Wand, −0.8° gedreht, mit zwei Kabelbindern; Wortmarke, Satz in Schiefer, Feld, schwarzer Knopf, unten randabfallend die fünf Halbjahresstreifen (14px). Beim Laden wird der Bogen angeklebt (380ms `--ease-paste`, von −2.4° auf −0.8°), die Streifen werden nacheinander wie mit dem Kleisterpinsel von links gezogen (520ms `--ease-out`, ab 260ms im Abstand von 60ms). Nach dem richtigen Passwort wird der Bogen abgezogen (240ms, nach oben und auf −4°).
 
 ### Fachbegriffe-Memory: der Holztisch (Signatur)
 Ein Vollbild-Raum innerhalb der Fachwelt. Grund ist das Holzfoto (`assets/img/holztisch.webp`, CC0, Kachel 760px) über Nussbaum, mit dunkler Vignette, schwachem Lichtstreif und warmem Lampenkegel von oben. Spielbogen (Einstellungen, Siegerehrung) sind weiße Bögen (max. 540px, −0.7°) mit Kartenstärke.
@@ -431,7 +442,7 @@ Schwarzer Gruppenkopf in Plakatschrift, darunter ein Bogen mit Werkzeug-Zeilen, 
 - **Do** jeden Inhaltsabschnitt als eigenen weißen Bogen kleben (`--paper`, Ecken 0, `--sheet-shadow`) und zwischen den Bögen die Betongrau-Wand sichtbar lassen (mindestens 10px, im Lesefluss 1.1rem).
 - **Do** Nummern, Titel und Stempel in Plakatschrift setzen (Archivo, `--poster-stretch` 66 %, 850, Versalien, Durchschuss 0.8–0.9) und alles Lesbare in Source Serif 4 (1.0625rem / 1.62, höchstens 68ch).
 - **Do** jeden Zustand mit Zeichen und Wort markieren: Störer „Nur LK“, Streifen „Erledigt“, Fähnchen „Zuletzt hier“, Halbjahreskennung im Plakat.
-- **Do** für alles Klebende `--t-paste` (380ms) mit `--ease-paste` nutzen, für Rückmeldungen 150–220ms `--ease-out`, für Wenden `--ease-io`, und unter `prefers-reduced-motion` darauf verzichten.
+- **Do** für alles Klebende `--t-paste` (380ms) mit `--ease-paste` nutzen, für Rückmeldungen 150–220ms `--ease-out`, für Wenden und den Prismenwender `--ease-io`, für Seitenwechsel das Überkleben, und unter `prefers-reduced-motion` darauf verzichten.
 - **Do** Bedienelemente mindestens 44px hoch, fast eckig (2px) und mit 2px Druckschwarz-Rahmen bauen.
 - **Do** jedes Inhalts-Schaubild durch `plakat_svg` schicken (Archivo, eckige Kästen, Weltfarben); Aufgabenmaterialien bleiben im Original.
 - **Do** Schriften und Bilder nur aus dem Repo laden (`assets/fonts`, `assets/img`) und neben jedes Rasterbild eine Herkunftsdatei (`*.json`) legen.
@@ -444,4 +455,5 @@ Schwarzer Gruppenkopf in Plakatschrift, darunter ein Bogen mit Werkzeug-Zeilen, 
 - **Don't** Lesetexte, Tabellen oder Aufgaben schräg stellen; Drehung gibt es nur für einzeln aufgeklebte Objekte (bis 2.5°) und Stempel (−4°).
 - **Don't** Spitzmarken oder Etiketten über Überschriften oder auf Memory-Kartenflächen setzen; Begriff und Beschreibung unterscheiden sich durch Kopfband und Schrift.
 - **Don't** Goldgelb als Schriftfarbe auf Weiß einsetzen.
+- **Don't** Lesebereiche, Tabellen oder Aufgaben beim Scrollen einblenden oder bewegen; dauerhaft laufende Bewegung gibt es nur im Prismenwender, und nur mit Anhalte-Knopf.
 - **Don't** die Plakatwand in ein anderes Fach übernehmen; ev. Religion bekommt eine eigene Welt.
