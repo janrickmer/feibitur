@@ -1025,3 +1025,89 @@ body.no-scroll { overflow: hidden; }
 .m-online.m-wait-turn .m-felt { filter: saturate(.9); }
 @media (hover: hover) and (pointer: fine) { .m-online.m-wait-turn .m-card:not(.up):not(.gone):hover { transform: rotate(var(--rot)); } }
 @media (max-width: 640px) { .m-online .m-name { white-space: normal; line-height: 1.05; font-size: .82rem; } }
+
+/* ================================================================== Bewegung: Prismenwender, Übergänge */
+.home-head { padding-bottom: 1.2rem; }
+.wender { position: relative; container-type: inline-size; background: var(--ink); padding: 10px; box-shadow: 0 1px 1px rgba(20, 22, 24, .1), 0 22px 40px -22px rgba(20, 22, 24, .6); }
+.wender::before, .wender::after { content: ""; position: absolute; top: -7px; width: 34px; height: 13px; background: var(--g5); border-radius: 3px; z-index: 1; }
+.wender::before { left: 12%; } .wender::after { right: 12%; }
+.wender-slats { position: relative; aspect-ratio: 2.4 / 1; overflow: hidden; perspective: 2200px; background: var(--ink); }
+.wender-slat { position: absolute; top: 0; bottom: 0; transform-style: preserve-3d; }
+.wender-face { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; box-shadow: inset -1px 0 0 rgba(20, 22, 24, .22), inset 1px 0 0 rgba(255, 255, 255, .12); backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--paper); }
+.wp-clip { position: absolute; top: 0; bottom: 0; }
+.wender-still { position: absolute; inset: 0; }
+.wender-still .wp { position: absolute; inset: 0; }
+
+/* Plakate auf den Lamellen – Maße in cqw, damit jede Lamelle denselben Ausschnitt trägt */
+.wp { position: absolute; inset: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; column-gap: 3.4cqw;
+  padding: 3.6cqw 4cqw 0; background: var(--hj); color: var(--hj-ink); font-family: var(--ui); text-transform: uppercase; }
+.wp-code { grid-row: 1; align-self: start; font: 850 30cqw/.78 var(--ui); font-stretch: var(--poster-stretch); letter-spacing: -.01em; margin-left: -.06em; }
+.wp-title { grid-row: 1; align-self: end; padding-bottom: 2.6cqw; font: 850 5.8cqw/.9 var(--ui); font-stretch: var(--poster-stretch); hyphens: manual; -webkit-hyphens: manual; overflow-wrap: anywhere; text-wrap: balance; }
+.wp-foot { grid-column: 1 / -1; display: flex; gap: 2.6cqw; margin: 0 -4cqw; padding: 1.5cqw 4cqw 1.6cqw; background: var(--paper); color: var(--ink);
+  font: 850 2.3cqw/1 var(--ui); font-stretch: 80%; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.wp[data-hj="q4"] .wp-foot { background: var(--ink); color: var(--q4); }
+.wp-code.is-long { font-size: 17cqw; }
+.wp-mark { background: var(--paper); color: var(--ink); grid-template-columns: 1fr; align-content: stretch; }
+.wp-word { align-self: center; justify-self: start; font: 850 21cqw/.8 var(--ui); font-stretch: var(--poster-stretch); letter-spacing: -.005em; margin: 0 0 0 -.05em; }
+.wp-vier { grid-column: 1; display: grid; grid-template-columns: repeat(5, 1fr); height: 3.2cqw; margin: 0 -4cqw; }
+.wp-vier i { background: var(--hj); }
+.wp-blank { background: var(--blueback) var(--grain); }
+@container (max-width: 560px) {
+  .wp { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr) auto; padding: 6cqw 6cqw 0; }
+  .wp-code { font-size: 42cqw; }
+  .wp-code.is-long { font-size: 26cqw; }
+  .wp-title { grid-row: 2; font-size: 8.6cqw; padding-bottom: 4cqw; }
+  .wp-foot { flex-wrap: wrap; gap: 1.6cqw 4cqw; margin: 0 -6cqw; padding: 3cqw 6cqw 3.2cqw; font-size: 4.6cqw; }
+  .wp-mark { grid-template-rows: minmax(0, 1fr) auto; }
+  .wp-word { font-size: 24.5cqw; }
+  .wp-vier { height: 6cqw; margin: 0 -6cqw; }
+}
+@media (max-width: 560px) { .wender-slats { aspect-ratio: 1 / 1.02; } .wender { padding: 7px; } }
+
+.home-sub { display: flex; align-items: center; justify-content: space-between; gap: .6rem 1.2rem; flex-wrap: wrap; margin-top: .9rem; }
+.home-sub p { margin: 0; font: 500 clamp(1.05rem, 2.4vw, 1.35rem)/1.3 var(--read); color: var(--g6); }
+.wender-pause { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .35rem .8rem .35rem .6rem; border: 2px solid var(--ink); border-radius: 2px;
+  background: transparent; color: var(--ink); font: 700 .88rem/1.15 var(--ui); font-stretch: 92%; cursor: pointer; transition: background-color 150ms ease, transform 160ms var(--ease-out); }
+.wender-pause[hidden] { display: none; }
+.wender-pause svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.wender-pause .i-play { display: none; fill: currentColor; stroke-width: 2; }
+.wender-pause.is-paused .i-play { display: block; } .wender-pause.is-paused .i-pause { display: none; }
+.wender-pause:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .wender-pause:hover { background: var(--paper); } }
+
+/* Erster Auftritt der Startseite: die Bögen werden nacheinander angeklebt */
+.home.enter .home-choices > * { animation: paste var(--t-paste) var(--ease-paste) backwards; transform-origin: 50% 0; }
+.home.enter .home-choices > :nth-child(1) { animation-delay: 420ms; }
+.home.enter .home-choices > :nth-child(2) { animation-delay: 500ms; }
+.home.enter .home-choices > :nth-child(3) { animation-delay: 580ms; }
+
+/* Passwortseite: Bogen wird angeklebt, die Halbjahresstreifen mit dem Kleisterpinsel gezogen */
+.gate-card { animation: gate-paste var(--t-paste) var(--ease-paste) backwards; transform-origin: 50% 0; }
+@keyframes gate-paste { from { opacity: 0; transform: translateY(-16px) rotate(-2.4deg) scale(1.02); } 45% { opacity: 1; } to { opacity: 1; transform: rotate(-.8deg); } }
+.gate-stripes i { animation: pinsel 520ms var(--ease-out) backwards; }
+.gate-stripes i:nth-child(1) { animation-delay: 260ms; } .gate-stripes i:nth-child(2) { animation-delay: 320ms; } .gate-stripes i:nth-child(3) { animation-delay: 380ms; }
+.gate-stripes i:nth-child(4) { animation-delay: 440ms; } .gate-stripes i:nth-child(5) { animation-delay: 500ms; }
+@keyframes pinsel { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* Übergänge (View Transitions): Jeder Seitenwechsel ist ein neues Plakat, das von oben über das alte geklebt wird.
+   Beim Halbjahreswechsel wandert zusätzlich das aktive Halbjahresplakat an seinen neuen Platz. */
+@supports (view-transition-name: none) {
+  .tab[aria-selected="true"] { view-transition-name: hj-aktiv; }
+  #tabpanel { view-transition-name: tafel; }
+}
+@keyframes ueberkleben { from { clip-path: inset(0 0 100% 0); transform: translateY(-10px); } to { clip-path: inset(0 0 0 0); transform: none; } }
+@keyframes vt-weg { to { opacity: 0; } }
+html[data-vt]::view-transition-old(root) { animation: none; }
+html[data-vt="plakat"]::view-transition-new(root) { animation: ueberkleben 440ms var(--ease-out) both; }
+html[data-vt="plakat"]::view-transition-group(hj-aktiv), html[data-vt="plakat"]::view-transition-group(tafel) { animation: none; }
+html[data-vt="plakat"]::view-transition-new(hj-aktiv), html[data-vt="plakat"]::view-transition-new(tafel) { animation: ueberkleben 440ms var(--ease-out) both; }
+html[data-vt="tab"]::view-transition-new(root) { animation: none; }
+html[data-vt="tab"]::view-transition-group(hj-aktiv) { animation-duration: var(--t-paste); animation-timing-function: var(--ease-paste); }
+html[data-vt="tab"]::view-transition-group(tafel) { animation: none; }
+html[data-vt="tab"]::view-transition-old(tafel) { animation: vt-weg 120ms linear 300ms both; }
+html[data-vt="tab"]::view-transition-new(tafel) { animation: ueberkleben var(--t-paste) var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home.enter .home-choices > *, .gate-card, .gate-stripes i { animation: none; }
+  .wender-pause { transition: none; }
+}

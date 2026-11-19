@@ -10,7 +10,7 @@ related_targets: ["assets/css/style.css","assets/js/app.js","assets/js/tools.js"
 Scope and visitor mode: read (Fachwelt PoWi: Themenseiten, Lerntools); das Memory ist ein Spielmoment innerhalb dieser Welt.
 Audience/job: Q-Phase Hessen, GK/LK, lernt am Handy (abends), Laptop (Schreibtisch), Tablet. Findet Thema, Bereich, Lernstand sofort; liest lange Texte mühelos; kommt gern wieder.
 Constraints: alles selbst gehostet (Schriften als Dateien im Repo), keine Fremdressourcen; kein Sound; Aufbau aus dem Auftrag bleibt (Unterthemen-Liste links, drei Bereiche, 2/3 Inhalt + Chatbot rechts, grüner Korrektur-Knopf, 3-Schritte-Anleitung); politische Neutralität (keine einzelne Parteifarbe als Markenfarbe); Religion bekommt später eine eigene Welt.
-Memorable moment: das Unterthema öffnet als Plakat, das an den Mast geklebt wird; im Memory fliegen gefundene Paare auf den Stapel des Spielers.
+Memorable moment: das Unterthema öffnet als Plakat, das an den Mast geklebt wird; im Memory fliegen gefundene Paare auf den Stapel des Spielers. Auf der Startseite dreht ein Prismenwender (Wahlkampf-Wendetafel) Wortmarke und Halbjahresplakate; Seitenwechsel werden überklebt (Erweiterung „animate“, November 2026, nach Vorbild motionsites.ai, nur per Code, ohne Video).
 Unresolved: keine.
 
 ## Direction contract
